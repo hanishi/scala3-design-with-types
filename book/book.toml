@@ -1,0 +1,17 @@
+[book]
+title = "Design with Types"
+description = "Practical Scala 3 from Basics to Type-Level Programming"
+authors = ["hanishi"]
+language = "en"
+src = "src"
+
+[build]
+build-dir = "../docs"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+no-section-label = false
+
+[output.html.search]
+enable = true

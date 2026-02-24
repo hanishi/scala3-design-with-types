@@ -1,0 +1,1614 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Design with Types</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Practical Scala 3 from Basics to Type-Level Programming">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-db37cde3.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-afb68cc0.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Design with Types</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="design-with-types--practical-scala-3-from-basics-to-type-level-programming"><a class="header" href="#design-with-types--practical-scala-3-from-basics-to-type-level-programming">Design with Types — Practical Scala 3 from Basics to Type-Level Programming</a></h1>
+<blockquote>
+<p>This tutorial is designed to be worked through with <code>scala-cli</code>,
+having a conversation with the compiler at every step.
+The most important part of each step: <strong>compile first, read the error, then understand.</strong></p>
+</blockquote>
+<h2 id="who-this-is-for"><a class="header" href="#who-this-is-for">Who This Is For</a></h2>
+<p>You use type parameters — <code>List[Int]</code>, <code>Option[String]</code>, <code>Map[K, V]</code> — every day.
+But <code>[+A]</code>, <code>[B &gt;: A]</code>, <code>match</code> types, <code>=:=</code>? Those feel like a different language.
+You’ve been told they’re “advanced” and moved on. That’s completely reasonable.</p>
+<p>This tutorial argues they’re not advanced — they click once you see the problems they solve.
+The concepts build on each other in a straight line, and every one of them addresses
+a concrete problem you’ve already encountered.</p>
+<h2 id="why-this-matters"><a class="header" href="#why-this-matters">Why This Matters</a></h2>
+<p>Here’s the fundamental tension: on the JVM, generics are <strong>erased</strong>.
+At runtime, <code>List[Int]</code> and <code>List[String]</code> are both just <code>List</code>.
+The JVM doesn’t know what types your collections hold.</p>
+<p>That means <strong>compile time is your only chance</strong> to catch type errors.
+Everything in this tutorial — variance, opaque types, typeclasses, match types —
+is about giving the compiler more information so it can catch more mistakes
+<em>before</em> erasure throws that information away.</p>
+<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
+<p><strong>Part 1: The Type System</strong> (Steps 0–5) covers how to <em>use</em> Scala’s type system
+effectively — type parameters, variance, bounds, opaque types, type members, and typeclasses.
+This is what most production Scala code needs.</p>
+<p><strong>Part 2: Type-Level Programming</strong> (Steps 6–8) covers types that <em>compute</em> —
+match types, compile-time validation, and type equality proofs.
+These techniques show up in library design and domain modeling where
+the compiler can catch entire classes of bugs that the type system alone can’t.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="setup"><a class="header" href="#setup">Setup</a></h1>
+<pre><code class="language-bash"># Install scala-cli (if you haven't already)
+curl -sSLf https://scala-cli.virtuslab.org/get | sh
+
+# Verify
+scala-cli version
+# Scala 3.x is required
+</code></pre>
+<h2 id="using-the-example-files"><a class="header" href="#using-the-example-files">Using the Example Files</a></h2>
+<p>Every code example in this book is available as a ready-to-run file in the <code>examples/</code> directory. Clone the repository and run any example:</p>
+<pre><code class="language-bash">git clone https://github.com/hanishi/scala3-design-with-types.git
+cd scala3-design-with-types
+
+# Run a specific example
+scala-cli run examples/step0/step0.scala
+
+# Or cd into a step directory
+cd examples/step2
+scala-cli run step2c.scala
+</code></pre>
+<p>Each file is self-contained — just pick the step you’re reading and run the corresponding file.</p>
+<blockquote>
+<p><strong>Important:</strong> Always run a single file at a time — do <strong>not</strong> compile an entire directory (e.g., <code>scala-cli compile examples/step2/</code>). Files within a step intentionally redefine the same classes (<code>Product</code>, <code>Book</code>, <code>Box</code>, etc.) with different signatures to show a progression. Compiling them together will produce duplicate-definition errors.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="part-1-the-type-system"><a class="header" href="#part-1-the-type-system">Part 1: The Type System</a></h1>
+<p>Part 1 (Steps 0–5) covers how to <em>use</em> Scala’s type system effectively — type parameters, variance, bounds, opaque types, type members, and typeclasses. This is what most production Scala code needs.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-0-life-without-types"><a class="header" href="#step-0-life-without-types">Step 0: Life Without Types</a></h1>
+<p>Let’s feel what happens when type information is lost.</p>
+<h2 id="0-1-the-anything-goes-list"><a class="header" href="#0-1-the-anything-goes-list">0-1. The Anything-Goes List</a></h2>
+<pre><code class="language-scala">// step0.scala
+@main def step0(): Unit =
+  // In Scala, you can't omit type parameters.
+  // But you can use Any to make a list that holds everything.
+  val xs: List[Any] = List(100, "hello", true, 3.14)
+
+  // What do you get when you pull something out?
+  val first: Any = xs.head  // It's 100... but the type is Any
+
+  // Try to do arithmetic — compile error
+  // val doubled = first * 2
+  // error: value * is not a member of Any
+
+  println(first)            // prints 100
+  println(first.getClass)   // class java.lang.Integer
+</code></pre>
+<p><strong>Try it:</strong></p>
+<pre><code>&gt; scala-cli run step0.scala
+</code></pre>
+<p>Uncomment <code>first * 2</code> and compile. Read the error.
+The compiler says <code>Any</code> has no <code>*</code> method.</p>
+<p><strong>The insight:</strong> The value <em>is</em> 100 at runtime, but the compiler doesn’t know that.
+The moment type information is lost, the compiler can no longer protect you.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-1-type-parameters-are-contracts"><a class="header" href="#step-1-type-parameters-are-contracts">Step 1: Type Parameters Are Contracts</a></h1>
+<h2 id="1-1-build-your-own-box"><a class="header" href="#1-1-build-your-own-box">1-1. Build Your Own Box</a></h2>
+<pre><code class="language-scala">// step1.scala
+
+// A box that holds anything (no type parameter)
+class AnyBox(val value: Any)
+
+// A box with a type parameter
+class Box[A](val value: A)
+
+@main def step1(): Unit =
+  // AnyBox: easy to put things in
+  val anyBox = AnyBox(42)
+  // val n: Int = anyBox.value  // Compile error! Any is not Int
+  val n: Int = anyBox.value.asInstanceOf[Int]  // Dangerous cast
+
+  // Box[A]: the type is preserved
+  val intBox = Box(42)       // Inferred as Box[Int]
+  val m: Int = intBox.value  // Comes out as Int — no cast needed
+
+  // Wrong type? Compile error.
+  // val s: String = intBox.value  // error: Found Int, Required String
+
+  println(s"AnyBox: $n, Box[Int]: $m")
+</code></pre>
+<p><strong>Try it:</strong></p>
+<pre><code>&gt; scala-cli run step1.scala
+</code></pre>
+<p>Then uncomment <code>val s: String = intBox.value</code>.</p>
+<p><strong>The insight:</strong> The <code>A</code> in <code>Box[A]</code> doesn’t “remember” what you put in.
+The compiler <strong>commits</strong> to <code>A = Int</code> at construction time. That’s a contract.
+When you take the value out, it’s guaranteed to be <code>Int</code>.</p>
+<h2 id="1-2-type-parameters-in-functions--contracts-propagate"><a class="header" href="#1-2-type-parameters-in-functions--contracts-propagate">1-2. Type Parameters in Functions — Contracts Propagate</a></h2>
+<pre><code class="language-scala">// step1b.scala
+
+def first[A](xs: List[A]): A = xs.head
+
+@main def step1b(): Unit =
+  val names = List("Scala", "Rust", "Go")
+  val top: String = first(names)  // Compiler resolves A = String
+  println(top)
+
+  val nums = List(1, 2, 3)
+  val one: Int = first(nums)      // Compiler resolves A = Int
+  println(one)
+
+  // What about this?
+  val mixed = List(1, "two", 3.0)
+  val what = first(mixed)         // What is A here?
+  println(what.getClass)
+</code></pre>
+<p><strong>Inspect the types:</strong></p>
+<pre><code>&gt; scala-cli run step1b.scala
+&gt; # To see the inferred type:
+&gt; scala-cli compile step1b.scala -- -Xprint:typer 2&gt;&amp;1 | grep "mixed"
+</code></pre>
+<p><code>mixed</code> is inferred as <code>List[Int | String | Double]</code> — a union type. This is a Scala 3 thing.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-2-variance--earning-the-compilers-trust"><a class="header" href="#step-2-variance--earning-the-compilers-trust">Step 2: Variance — Earning the Compiler’s Trust</a></h1>
+<p>Variance is not a set of rules to memorize.
+It’s something you experience by asking “why won’t this compile?” alongside the compiler.
+The starting point is <strong>invariant</strong> (no compatibility). The fact that this is the default matters.</p>
+<h2 id="2-1-invariant--the-default-wall"><a class="header" href="#2-1-invariant--the-default-wall">2-1. Invariant — The Default Wall</a></h2>
+<pre><code class="language-scala">// step2a.scala
+
+class Product(val name: String)
+class Book(name: String, val isbn: String) extends Product(name)
+
+// Define our own Box. The type parameter is [A] — invariant.
+class Box[A](val value: A)
+
+@main def step2a(): Unit =
+  val bookBox: Box[Book] = Box(Book("Scala in Depth", "978-1617295"))
+
+  // Book is a subtype of Product. So is Box[Book] a subtype of Box[Product]?
+  // val productBox: Box[Product] = bookBox
+  // error: Found Box[Book], Required Box[Product]
+
+  println("Box[Book] is NOT Box[Product]")
+</code></pre>
+<p><strong>Uncomment and compile.</strong></p>
+<p>The compiler treats <code>Box[Book]</code> and <code>Box[Product]</code> as <strong>completely different types</strong>.
+Just because <code>Book &lt;: Product</code> doesn’t mean <code>Box[Book] &lt;: Box[Product]</code>.
+The compiler’s default: <em>“Show me it’s safe, and I’ll allow it.”</em></p>
+<h2 id="2-2-why-invariant-is-the-default--break-it-to-understand"><a class="header" href="#2-2-why-invariant-is-the-default--break-it-to-understand">2-2. Why Invariant Is the Default — Break It to Understand</a></h2>
+<pre><code class="language-scala">// step2b.scala
+
+class Product(val name: String)
+class Book(name: String) extends Product(name)
+class Electronics(name: String) extends Product(name)
+
+// What if Box were covariant? Let's think about a mutable box.
+class MutBox[A](var value: A)
+
+@main def step2b(): Unit =
+  val bookBox: MutBox[Book] = MutBox(Book("Scala in Depth"))
+
+  // If this were allowed... (it's actually a compile error)
+  // val productBox: MutBox[Product] = bookBox
+  // productBox.value = Electronics("Keyboard")  // Product allows Electronics...
+  // val book: Book = bookBox.value  // ...but now a Keyboard comes out as a Book!
+
+  println("That's why a mutable box must be invariant")
+</code></pre>
+<p>This is a thought experiment, but in Java <strong>it actually happens</strong>:</p>
+<pre><code class="language-java">// Java — this compiles!
+Book[] books = { new Book("Scala") };
+Product[] products = books;        // Java arrays are covariant
+products[0] = new Electronics("Keyboard");  // ArrayStoreException at runtime!
+</code></pre>
+<p>Scala’s invariant default is a design decision to <strong>eliminate this class of bugs at compile time</strong>.</p>
+<h2 id="2-3-making-it-covariant--what-a-means"><a class="header" href="#2-3-making-it-covariant--what-a-means">2-3. Making It Covariant — What <code>+A</code> Means</a></h2>
+<pre><code class="language-scala">// step2c.scala
+
+class Product(val name: String):
+  override def toString = s"Product($name)"
+class Book(name: String) extends Product(name):
+  override def toString = s"Book($name)"
+
+// A read-only box. The + declares it covariant.
+class ReadBox[+A](val value: A)
+
+@main def step2c(): Unit =
+  val bookBox: ReadBox[Book] = ReadBox(Book("Scala in Depth"))
+
+  // With +A, this compiles!
+  val productBox: ReadBox[Product] = bookBox
+  println(productBox.value)  // Book(Scala in Depth)
+
+  // ReadBox only has a val (read-only).
+  // Reading a Book as a Product is always safe.
+</code></pre>
+<p><code>+A</code> declares: <em>“This type only <strong>outputs</strong> A, so it’s safe to widen in the subtype direction.”</em>
+The compiler <strong>verifies</strong> this claim — it checks that you’re only using <code>A</code> in output positions.</p>
+<blockquote>
+<p><strong>Checkpoint:</strong> You now know the core idea — <code>+A</code> means “this type only produces <code>A</code>.”
+The next sections show what happens when you push the boundaries.</p>
+</blockquote>
+<h2 id="2-4-testing-the-compilers-checks"><a class="header" href="#2-4-testing-the-compilers-checks">2-4. Testing the Compiler’s Checks</a></h2>
+<pre><code class="language-scala">// step2d.scala
+
+class Product(val name: String)
+class Book(name: String) extends Product(name)
+class Electronics(name: String) extends Product(name)
+
+// Try +A with a var → the compiler catches the mismatch
+// class MutBox[+A](var value: A)
+// error: covariant type A occurs in contravariant position
+//        in type A of parameter value_=
+
+// OK, only a val. But add a setter method?
+class Box[+A](val value: A):
+  // def set(a: A): Box[A] = Box(a)
+  // error: covariant type A occurs in contravariant position
+  //        in type A of parameter a
+
+  override def toString = s"Box($value)"
+
+@main def step2d(): Unit =
+  println("Uncomment each block and read the error messages")
+</code></pre>
+<p><strong>This is the heart of the matter.</strong> Uncomment each block one at a time.</p>
+<p>The compiler says “<code>A</code> occurs in contravariant position.”
+A method parameter is an <strong>input</strong> — the consuming side — a contravariant position.
+You declared <code>+A</code> (safe as output), but you’re putting it in an input position. Contradiction.</p>
+<p><strong>Dig deeper:</strong></p>
+<pre><code>&gt; scala-cli compile step2d.scala -- -explain
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-2-bounds-and-contravariance"><a class="header" href="#step-2-bounds-and-contravariance">Step 2: Bounds and Contravariance</a></h1>
+<h2 id="2-5-lower-bounds--escaping-the-variance-constraint"><a class="header" href="#2-5-lower-bounds--escaping-the-variance-constraint">2-5. Lower Bounds — Escaping the Variance Constraint</a></h2>
+<p>This is where bounds enter the picture. A bound is not a separate concept from variance —
+it’s <strong>the tool for adding methods to covariant types</strong>.</p>
+<pre><code class="language-scala">// step2e.scala
+
+class Product(val name: String):
+  override def toString = s"Product($name)"
+class Book(name: String) extends Product(name):
+  override def toString = s"Book($name)"
+class Electronics(name: String) extends Product(name):
+  override def toString = s"Electronics($name)"
+
+class Box[+A](val value: A):
+  // Can't use A directly as a parameter. But we can accept "A or wider."
+  def set[B &gt;: A](b: B): Box[B] = Box(b)
+
+  override def toString = s"Box($value)"
+
+@main def step2e(): Unit =
+  val bookBox: Box[Book] = Box(Book("Scala in Depth"))
+  println(bookBox)                    // Box(Book(Scala in Depth))
+
+  // Put a Book in → stays Box[Book]
+  val bookBox2: Box[Book] = bookBox.set(Book("FP in Scala"))
+  println(bookBox2)                   // Box(Book(FP in Scala))
+
+  // Put Electronics in → widens to Box[Product] (common parent of Book and Electronics)
+  val productBox: Box[Product] = bookBox.set(Electronics("Keyboard"))
+  println(productBox)                 // Box(Electronics(Keyboard))
+
+  // The type widened automatically in the safe direction.
+  // Box[Book].set(Electronics) → Box[Product]
+  // Nobody gets deceived. The widening is expressed in the type.
+</code></pre>
+<p><code>[B &gt;: A]</code> means “B is a supertype of A (A or wider).”
+This is exactly what <code>List[+A]</code>’s <code>prepended</code> does:</p>
+<pre><code class="language-scala">// Simplified definition of List
+sealed abstract class List[+A]:
+  def prepended[B &gt;: A](elem: B): List[B]
+</code></pre>
+<p>Prepend an <code>Electronics</code> to a <code>List[Book]</code> and you get <code>List[Product]</code>. The types don’t lie.</p>
+<h2 id="2-6-upper-bounds--requiring-minimum-capabilities"><a class="header" href="#2-6-upper-bounds--requiring-minimum-capabilities">2-6. Upper Bounds — Requiring Minimum Capabilities</a></h2>
+<p>If lower bounds <strong>widen</strong>, upper bounds <strong>narrow</strong>.</p>
+<pre><code class="language-scala">// step2f.scala
+
+// E-commerce example
+trait Product:
+  def name: String
+  def price: Double
+
+trait Shippable extends Product:
+  def weight: Double
+  def shippingCost: Double = weight * 0.5
+
+case class Book(name: String, price: Double, weight: Double) extends Shippable
+case class Laptop(name: String, price: Double, weight: Double) extends Shippable
+case class GiftCard(name: String, price: Double) extends Product  // Not shippable
+
+// Only Shippable products can be sorted by shipping cost
+def sortByShipping[A &lt;: Shippable](products: List[A]): List[A] =
+  products.sortBy(_.shippingCost)
+
+@main def step2f(): Unit =
+  val items = List(
+    Book("Scala in Depth", 45.0, 0.8),
+    Book("FP Simplified", 35.0, 1.2),
+  )
+  sortByShipping(items).foreach(p =&gt; println(s"${p.name}: shipping=${p.shippingCost}"))
+
+  // Try sorting GiftCards?
+  // val cards = List(GiftCard("Amazon $50", 50.0))
+  // sortByShipping(cards)  // Compile error! GiftCard is not Shippable
+</code></pre>
+<p><code>&lt;:</code> means “this type must have at least this capability.”
+Not an <code>instanceof</code> check at runtime — rejected at compile time.</p>
+<blockquote>
+<p><strong>You now have the full toolkit for the output side:</strong> covariance (<code>+A</code>) for safe widening,
+lower bounds (<code>&gt;:</code>) to add methods without breaking covariance, and upper bounds (<code>&lt;:</code>)
+to require capabilities. Next up: the input side.</p>
+</blockquote>
+<h2 id="2-7-contravariance--consumer-compatibility"><a class="header" href="#2-7-contravariance--consumer-compatibility">2-7. Contravariance — Consumer Compatibility</a></h2>
+<p>Finally, <code>-A</code>. This is compatibility for the <strong>input</strong> side.</p>
+<pre><code class="language-scala">// step2g.scala
+
+class Product(val name: String):
+  override def toString = s"Product($name)"
+class Book(name: String, val isbn: String) extends Product(name):
+  override def toString = s"Book($name)"
+
+// PriceFormatter[-A]: the - declares it contravariant
+trait PriceFormatter[-A]:
+  def format(item: A): String
+
+class ProductFormatter extends PriceFormatter[Product]:
+  def format(item: Product): String = s"${item.name}: (price on request)"
+
+class BookFormatter extends PriceFormatter[Book]:
+  def format(item: Book): String = s"${item.name} (ISBN: ${item.isbn}): (price on request)"
+
+@main def step2g(): Unit =
+  val productFormatter: PriceFormatter[Product] = ProductFormatter()
+
+  // If it can format any Product, it can format a Book
+  // → PriceFormatter[Product] is usable as PriceFormatter[Book]
+  val formatterForBook: PriceFormatter[Book] = productFormatter  // OK!
+  println(formatterForBook.format(Book("Scala in Depth", "978-1617295")))
+
+  // The reverse doesn't work: a Book-only formatter can't handle all Products
+  val bookFormatter: PriceFormatter[Book] = BookFormatter()
+  // val formatterForProduct: PriceFormatter[Product] = bookFormatter  // Compile error!
+</code></pre>
+<h2 id="2-8-putting-it-all-together"><a class="header" href="#2-8-putting-it-all-together">2-8. Putting It All Together</a></h2>
+<p>Variance and bounds are not separate topics. They’re one story:</p>
+<pre><code>1. Invariant is the default     → The compiler starts cautious — no compatibility assumed
+2. +A (covariant)               → You declare "output only, safe to widen"
+3. Compiler verifies             → Checks that A only appears in output positions
+4. &gt;: (lower bound)             → The tool to safely add methods to covariant types
+5. &lt;: (upper bound)             → The tool to require minimum capabilities
+6. -A (contravariant)           → "Input only, safe in the opposite direction"
+</code></pre>
+<p>Everything starts from “invariant = no compatibility assumed.”
+You open it up only where you can show it’s safe. It’s a conversation with the compiler.</p>
+<p>But knowing the mechanics is only half the story. The next question is:
+<em>in practice, how often do you actually want invariant, and when should you reach for <code>+</code> or <code>-</code>?</em></p>
+<blockquote>
+<p><strong>Take a breath.</strong> The hard conceptual work is done. Sections 2-9 through 2-11
+show how variance plays out in real code — these are shorter and more concrete.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-2-variance-in-practice"><a class="header" href="#step-2-variance-in-practice">Step 2: Variance in Practice</a></h1>
+<h2 id="2-9-covariance-in-practice--most-types-are-producers"><a class="header" href="#2-9-covariance-in-practice--most-types-are-producers">2-9. Covariance in Practice — Most Types Are Producers</a></h2>
+<p>In real code, the majority of your custom types are <strong>producers</strong>: they hold data and you read from them.
+This is why covariance shows up so often.</p>
+<pre><code class="language-scala">// step2h.scala
+
+// An event hierarchy — very common in event-driven systems
+sealed trait OrderEvent
+case class OrderPlaced(orderId: String, timestamp: Long) extends OrderEvent
+case class PaymentReceived(orderId: String, timestamp: Long, amount: Double) extends OrderEvent
+case class ItemShipped(orderId: String, timestamp: Long, trackingId: String) extends OrderEvent
+
+// An event stream. Should EventStream[PaymentReceived] be usable as EventStream[OrderEvent]?
+// YES — if you're only reading events out, a stream of payments IS a stream of order events.
+
+// Invariant version — causes friction
+class EventStream[A](val events: List[A]):
+  def latest: Option[A] = events.headOption
+
+// Covariant version — works naturally
+class EventStreamCov[+A](val events: List[A]):
+  def latest: Option[A] = events.headOption
+
+@main def step2h(): Unit =
+  val payments = EventStreamCov(List(
+    PaymentReceived("ord1", 1000L, 99.99),
+    PaymentReceived("ord2", 2000L, 49.50),
+  ))
+
+  // This just works. A stream of payments IS a stream of order events.
+  val events: EventStreamCov[OrderEvent] = payments
+  println(events.latest)
+
+  // With the invariant version, you'd have to write:
+  val paymentsInv = EventStream(List(PaymentReceived("ord1", 1000L, 99.99)))
+  // val eventsInv: EventStream[OrderEvent] = paymentsInv  // REJECTED
+  // You'd be forced to create a new EventStream[OrderEvent] by copying.
+</code></pre>
+<p>This pattern appears everywhere:</p>
+<ul>
+<li><code>Option[+A]</code> — <code>Some[Book]</code> is usable as <code>Option[Product]</code></li>
+<li><code>List[+A]</code> — a list of specific items is a list of general items</li>
+<li><code>Future[+A]</code> — a future producing a <code>Book</code> is a future producing a <code>Product</code></li>
+<li><code>Either[+A, +B]</code> — results carry their types upward</li>
+</ul>
+<p>If your type only <strong>produces</strong> (returns, holds, emits) values of type <code>A</code>,
+it should almost certainly be covariant.</p>
+<h2 id="2-10-contravariance-in-practice--handlers-validators-serializers"><a class="header" href="#2-10-contravariance-in-practice--handlers-validators-serializers">2-10. Contravariance in Practice — Handlers, Validators, Serializers</a></h2>
+<p>Contravariance is less common but appears in a very specific pattern:
+types that <strong>consume</strong> or <strong>process</strong> values.</p>
+<pre><code class="language-scala">// step2i.scala
+
+class Product(val name: String, val price: Double)
+class Book(name: String, price: Double, val isbn: String) extends Product(name, price)
+
+// JSON serializer — consumes a value and produces a String
+trait JsonWriter[-A]:
+  def write(value: A): String
+
+class ProductWriter extends JsonWriter[Product]:
+  def write(value: Product): String = s"""{"name":"${value.name}","price":${value.price}}"""
+
+class BookWriter extends JsonWriter[Book]:
+  def write(value: Book): String = s"""{"name":"${value.name}","price":${value.price},"isbn":"${value.isbn}"}"""
+
+@main def step2i(): Unit =
+  val productWriter: JsonWriter[Product] = ProductWriter()
+
+  // A ProductWriter can write Books too — it handles anything that's a Product
+  val bookWriter: JsonWriter[Book] = productWriter  // Contravariance!
+  println(bookWriter.write(Book("Scala in Depth", 45.0, "978-1617295")))
+
+  // A BookWriter can NOT write arbitrary Products — it expects Book-specific fields
+  val specificWriter: JsonWriter[Book] = BookWriter()
+  // val generalWriter: JsonWriter[Product] = specificWriter  // REJECTED
+
+// The pattern: "if you can handle the general case, you can handle the specific case"
+</code></pre>
+<p>Other real-world contravariant types:</p>
+<ul>
+<li><code>Ordering[-A]</code> — an ordering for <code>Product</code> can sort <code>Book</code>s</li>
+<li><code>Function1[-A, +B]</code> — a function accepting <code>Product</code> can be called with <code>Book</code></li>
+<li>Validators, event handlers, comparators — anything that <strong>receives and processes</strong></li>
+</ul>
+<h2 id="2-11-so-is-invariant-actually-useful"><a class="header" href="#2-11-so-is-invariant-actually-useful">2-11. So Is Invariant Actually Useful?</a></h2>
+<p>Yes, but its role is narrower than you might think.</p>
+<p>Invariant is the right choice when your type <strong>both reads and writes</strong> — mutable containers,
+bidirectional channels, read-write references. But in well-designed Scala code,
+these are relatively rare because immutability is preferred.</p>
+<pre><code class="language-scala">// step2j.scala
+
+class Product(val name: String):
+  override def toString = s"Product($name)"
+
+// Invariant is correct here: a mutable cell reads AND writes
+class Cell[A](var value: A):
+  def get: A = value            // output position (+)
+  def set(a: A): Unit =         // input position (-)
+    value = a
+
+// A bidirectional codec: encodes AND decodes
+trait Codec[A]:
+  def encode(value: A): String  // A in input position (-)
+  def decode(raw: String): A    // A in output position (+)
+
+// Both positions → must be invariant. The compiler enforces this.
+// Try adding + or - and see what happens:
+// trait Codec[+A]:  // error on encode
+// trait Codec[-A]:  // error on decode
+
+@main def step2j(): Unit =
+  val cell = Cell[Product](Product("Keyboard"))
+  cell.set(Product("Mouse"))
+  println(cell.get)  // Product(Mouse)
+
+  // Cell[Book] is NOT Cell[Product] — and shouldn't be.
+  // If it were, you could put Electronics in a Book cell.
+</code></pre>
+<p><strong>The practical reality:</strong></p>
+<p>Most types you design in Scala fall into one of two camps:</p>
+<pre><code>Produces A (read-only data, results, events, streams)  → make it covariant [+A]
+Consumes A (handlers, writers, validators, orderings)   → make it contravariant [-A]
+</code></pre>
+<p>Invariant is what you get when you <strong>don’t annotate</strong> — and often that’s because
+you haven’t yet thought about whether your type is a producer or consumer.
+When you do think about it, you’ll find that one of <code>+</code> or <code>-</code> usually applies.</p>
+<p>The discipline of asking “does this type produce or consume <code>A</code>?” is itself
+a valuable design exercise. It forces you to clarify your type’s role,
+and the compiler verifies your answer.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-3-opaque-types--zero-cost-type-safety"><a class="header" href="#step-3-opaque-types--zero-cost-type-safety">Step 3: Opaque Types — Zero-Cost Type Safety</a></h1>
+<p>You’ve seen how type parameters prevent mixing types. But what about mixing <em>values</em>
+of the same underlying type — dollars and yen that are both <code>Double</code>? This is where
+Scala 3’s opaque types come in.</p>
+<h2 id="3-1-the-problem-type-aliases-lie"><a class="header" href="#3-1-the-problem-type-aliases-lie">3-1. The Problem: Type Aliases Lie</a></h2>
+<pre><code class="language-scala">// step3a.scala
+
+// Naive approach: type aliases
+type USD = Double
+type JPY = Double
+
+@main def step3a(): Unit =
+  val price: USD = 19.99
+  val yen: JPY = 2000.0
+
+  // This compiles!
+  val total: USD = price + yen  // USD + JPY = ??? Nonsensical math
+  println(s"Total: $total")      // 2019.99 ... what does this even mean?
+
+  // A type alias is just an alternate name, not a distinct type.
+  // To the compiler, USD and JPY are both just Double.
+</code></pre>
+<h2 id="3-2-opaque-types-fix-this"><a class="header" href="#3-2-opaque-types-fix-this">3-2. Opaque Types Fix This</a></h2>
+<pre><code class="language-scala">// step3b.scala
+
+object Currency:
+  // opaque type: outside this object, the Double representation is invisible
+  opaque type USD = Double
+  opaque type JPY = Double
+
+  // Constructors (only here is Double → USD conversion allowed)
+  def usd(amount: Double): USD = amount
+  def jpy(amount: Double): JPY = amount
+
+  // Only allow adding same currencies
+  extension (x: USD)
+    def +(y: USD): USD = x + y     // internally Double + Double
+    def show: String = f"$$$x%.2f"
+
+  extension (x: JPY)
+    def +(y: JPY): JPY = x + y
+    def show: String = f"¥$x%.0f"
+
+import Currency.*
+
+@main def step3b(): Unit =
+  val price = usd(19.99)
+  val shipping = usd(5.00)
+  val total = price + shipping   // OK: USD + USD
+  println(total.show)            // $24.99
+
+  val yen = jpy(2000)
+  val yenTotal = yen + jpy(500)  // OK: JPY + JPY
+  println(yenTotal.show)         // ¥2500
+
+  // USD + JPY → Compile error!
+  // val mistake = price + yen
+  // error: Found Currency.JPY, Required Currency.USD
+</code></pre>
+<p><strong>Try it:</strong></p>
+<pre><code>&gt; scala-cli run step3b.scala
+&gt; # Uncomment price + yen to see the error
+</code></pre>
+<p><strong>The key point:</strong>
+<code>opaque type USD = Double</code> means:</p>
+<ul>
+<li>At compile time: <code>USD</code> and <code>Double</code> are <strong>different types</strong>. Can’t mix them.</li>
+<li>At runtime: <code>USD</code> <strong>is just a <code>Double</code></strong>. No boxing. Zero overhead.</li>
+</ul>
+<p>A <code>case class USD(value: Double)</code> would allocate an object. Opaque types are truly zero-cost.
+This is the purest expression of “types are contracts with the compiler, not runtime entities.”</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-4-type-members--types-inside-types"><a class="header" href="#step-4-type-members--types-inside-types">Step 4: Type Members — Types Inside Types</a></h1>
+<p>Type parameters are great when the <em>caller</em> decides the type: <code>List[Int]</code>, <code>Box[String]</code>.
+But sometimes the <em>implementation</em> should decide — and the outside world shouldn’t even
+need to know. That’s what type members are for.</p>
+<p>Scala offers this second mechanism — <strong>type members</strong>, types declared <em>inside</em> a trait or class.
+This is unusual among mainstream languages and unlocks patterns that type parameters can’t express.</p>
+<h2 id="4-1-type-members-vs-type-parameters"><a class="header" href="#4-1-type-members-vs-type-parameters">4-1. Type Members vs Type Parameters</a></h2>
+<pre><code class="language-scala">// step4a.scala
+
+// With a type parameter: the type is visible from outside
+trait ContainerParam[A]:
+  def get: A
+
+// With a type member: the type is hidden inside
+trait ContainerMember:
+  type Element
+  def get: Element
+
+@main def step4a(): Unit =
+  // Type parameter: the caller decides the type
+  val intContainer: ContainerParam[Int] = new ContainerParam[Int]:
+    def get: Int = 42
+
+  // Type member: the implementation decides the type
+  val memberContainer: ContainerMember = new ContainerMember:
+    type Element = Int
+    def get: Int = 42
+
+  val a: Int = intContainer.get               // Caller knows it's Int
+  val b: memberContainer.Element = memberContainer.get  // Type depends on the *value*
+
+  println(s"a: $a, b: $b")
+</code></pre>
+<p>The key difference: with a type parameter, the type appears on the outside (<code>ContainerParam[Int]</code>).
+With a type member, the type is <strong>inside the object</strong> — you access it through the value itself.</p>
+<h2 id="4-2-path-dependent-types--types-that-belong-to-values"><a class="header" href="#4-2-path-dependent-types--types-that-belong-to-values">4-2. Path-Dependent Types — Types That Belong to Values</a></h2>
+<pre><code class="language-scala">// step4b.scala
+
+// A database connection where each database has its own Row type
+trait Database:
+  type Row
+  def query(sql: String): List[Row]
+  def process(row: Row): String
+
+// PostgreSQL returns tuples
+val postgres: Database = new Database:
+  type Row = (String, Int, Boolean)
+  def query(sql: String) = List(("Alice", 30, true), ("Bob", 25, false))
+  def process(row: Row) = s"${row._1} (age ${row._2})"
+
+// SQLite returns maps
+val sqlite: Database = new Database:
+  type Row = Map[String, String]
+  def query(sql: String) = List(Map("name" -&gt; "Alice", "age" -&gt; "30"))
+  def process(row: Row) = row.getOrElse("name", "unknown")
+
+@main def step4b(): Unit =
+  // This works: query and process use the same database's Row type
+  val rows = postgres.query("SELECT * FROM users")
+  rows.foreach(r =&gt; println(postgres.process(r)))
+
+  // This does NOT compile: mixing Row types from different databases
+  // val sqliteRows = sqlite.query("SELECT * FROM users")
+  // postgres.process(sqliteRows.head)
+  // error: Found sqlite.Row, Required postgres.Row
+</code></pre>
+<p><strong>Uncomment and read the error.</strong> The compiler says <code>sqlite.Row</code> is not <code>postgres.Row</code>.
+Even though both are type members called <code>Row</code>, they belong to different <em>values</em>.
+<code>postgres.Row</code> and <code>sqlite.Row</code> are path-dependent types — the path through the value matters.</p>
+<p><strong>This is something type parameters can’t do.</strong> With <code>Database[Row]</code>, nothing would prevent
+you from passing a PostgreSQL row to a SQLite processor. With type members, the compiler
+links the row type to the specific database <em>instance</em>.</p>
+<h2 id="4-3-abstract-type-members--deferring-type-decisions"><a class="header" href="#4-3-abstract-type-members--deferring-type-decisions">4-3. Abstract Type Members — Deferring Type Decisions</a></h2>
+<pre><code class="language-scala">// step4c.scala
+
+// A processing pipeline where each stage defines its own intermediate type
+trait Pipeline:
+  type Input
+  type Output
+  type Intermediate  // The implementation decides what this is
+
+  def parse(raw: Input): Intermediate
+  def transform(data: Intermediate): Output
+
+// A CSV-to-JSON pipeline
+class CsvToJson extends Pipeline:
+  type Input = String
+  type Output = String
+  type Intermediate = List[Map[String, String]]  // parsed CSV rows
+
+  def parse(raw: String): Intermediate =
+    raw.split("\n").toList.map: line =&gt;
+      val cols = line.split(",")
+      Map("name" -&gt; cols(0), "value" -&gt; cols(1))
+
+  def transform(data: Intermediate): Output =
+    data.map(row =&gt; s"""{"name":"${row("name")}","value":"${row("value")}"}""")
+      .mkString("[", ",", "]")
+
+@main def step4c(): Unit =
+  val pipeline = CsvToJson()
+  val csv = "Alice,100\nBob,200"
+  val intermediate = pipeline.parse(csv)
+  val json = pipeline.transform(intermediate)
+  println(json)
+
+  // The Intermediate type is specific to CsvToJson.
+  // Another Pipeline implementation could use a completely different Intermediate.
+  // Callers don't need to know or care what Intermediate is.
+</code></pre>
+<p>This pattern is powerful for <strong>information hiding</strong>. The <code>Pipeline</code> trait exposes
+<code>Input</code> and <code>Output</code> but the <code>Intermediate</code> type is an implementation detail.
+With type parameters, you’d need <code>Pipeline[Input, Output, Intermediate]</code> —
+leaking a type that callers shouldn’t have to know about.</p>
+<h2 id="4-4-when-to-use-type-members-vs-type-parameters"><a class="header" href="#4-4-when-to-use-type-members-vs-type-parameters">4-4. When to Use Type Members vs Type Parameters</a></h2>
+<pre><code class="language-scala">// step4d.scala
+
+// RULE OF THUMB:
+//
+// Type parameters  → when the caller specifies the type
+//                    List[Int], Option[String], Map[K, V]
+//                    "I want a list OF something specific"
+//
+// Type members     → when the implementation specifies the type
+//                    Database { type Row }, Pipeline { type Intermediate }
+//                    "The type is an internal detail of this thing"
+
+// Another way to think about it:
+
+// Type parameter = the type is an ARGUMENT (provided externally)
+trait Repository[Entity]:      // "Give me a repo for THIS entity type"
+  def find(id: String): Option[Entity]
+
+// Type member = the type is a PROPERTY (defined internally)
+trait Connection:               // "Each connection has ITS OWN cursor type"
+  type Cursor
+  def open(): Cursor
+  def read(c: Cursor): String
+
+// You can also mix both:
+trait Store[K]:                 // K is provided by caller
+  type V                        // V is determined by implementation
+  def get(key: K): Option[V]
+
+@main def step4d(): Unit =
+  println("Read the code and comments — this is a design guide, not a runnable demo")
+</code></pre>
+<h2 id="4-5-connection-to-opaque-types"><a class="header" href="#4-5-connection-to-opaque-types">4-5. Connection to Opaque Types</a></h2>
+<p>You’ve already used type members without realizing it.
+<code>opaque type USD = Double</code> inside an <code>object</code> is a type member whose underlying
+type is hidden from outside. The same information-hiding principle applies:
+the outside world sees <code>Currency.USD</code> but can’t see that it’s <code>Double</code>.</p>
+<p>Opaque types are essentially type members with compiler-enforced opacity.
+This is why they must be defined inside an <code>object</code> or <code>class</code> — they need
+an enclosing scope to define the boundary of visibility.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-5-givens-and-typeclasses--evidence-the-compiler-finds-for-you"><a class="header" href="#step-5-givens-and-typeclasses--evidence-the-compiler-finds-for-you">Step 5: Givens and Typeclasses — Evidence the Compiler Finds for You</a></h1>
+<h2 id="5-1-the-problem-how-do-you-represent-currency-conversion"><a class="header" href="#5-1-the-problem-how-do-you-represent-currency-conversion">5-1. The Problem: How Do You Represent Currency Conversion?</a></h2>
+<pre><code class="language-scala">// step5a.scala
+
+object Currency:
+  opaque type USD = Double
+  opaque type JPY = Double
+
+  def usd(amount: Double): USD = amount
+  def jpy(amount: Double): JPY = amount
+
+  extension (x: USD) def toDouble: Double = x
+  extension (x: JPY) def toDouble: Double = x
+
+// Express exchange rates as a relationship between types
+trait ExchangeRate[From, To]:
+  def convert(amount: Double): Double
+
+object ExchangeRate:
+  // "Evidence" that a USD → JPY conversion rate exists
+  given usdToJpy: ExchangeRate[Currency.USD, Currency.JPY] with
+    def convert(amount: Double): Double = amount * 150.0
+
+  // JPY → USD too
+  given jpyToUsd: ExchangeRate[Currency.JPY, Currency.USD] with
+    def convert(amount: Double): Double = amount / 150.0
+
+// This function *requires* evidence that a From → To rate exists
+def convert[From, To](amount: Double)(using rate: ExchangeRate[From, To]): Double =
+  rate.convert(amount)
+
+import Currency.*
+import ExchangeRate.given
+
+@main def step5a(): Unit =
+  val dollars = usd(100.0)
+  val yen = convert[Currency.USD, Currency.JPY](dollars.toDouble)
+  println(s"$$100 = ¥$yen")
+
+  // If no given instance exists for EUR → USD:
+  // opaque type EUR = Double
+  // convert[EUR, Currency.USD](50.0)
+  // error: no given instance of type ExchangeRate[EUR, USD] was found
+</code></pre>
+<p><strong>The insight:</strong> <code>using</code> declares “calling this function requires evidence of this type.”
+The compiler searches for evidence. If it can’t find any, compile error.
+<strong>A “missing exchange rate” runtime crash is structurally impossible.</strong></p>
+<h2 id="5-2-summon--asking-the-compiler-to-show-its-work"><a class="header" href="#5-2-summon--asking-the-compiler-to-show-its-work">5-2. <code>summon</code> — Asking the Compiler to Show Its Work</a></h2>
+<p>In Step 5-1, the compiler finds a <code>given</code> instance and passes it automatically.
+But sometimes you want to grab that evidence yourself. That’s what <code>summon</code> does.</p>
+<pre><code class="language-scala">// step5_summon.scala
+
+trait Describable[A]:
+  def describe: String
+
+object Describable:
+  given Describable[Int] with
+    def describe: String = "a 32-bit integer"
+
+  given Describable[String] with
+    def describe: String = "a sequence of characters"
+
+@main def step5_summon(): Unit =
+  // summon[X] says: "Compiler, find me a given instance of type X"
+  val intDesc = summon[Describable[Int]]
+  println(intDesc.describe)     // "a 32-bit integer"
+
+  val strDesc = summon[Describable[String]]
+  println(strDesc.describe)     // "a sequence of characters"
+
+  // No given Describable[Boolean] exists:
+  // val boolDesc = summon[Describable[Boolean]]
+  // error: no given instance of type Describable[Boolean] was found
+</code></pre>
+<p><code>summon[X]</code> is simple: it asks the compiler <em>“do you have evidence of type X?”</em>
+If yes, it returns that evidence. If no, compile error.</p>
+<p>Think of it this way:</p>
+<ul>
+<li><code>using</code> in a parameter list: the compiler passes evidence <strong>to you</strong> automatically</li>
+<li><code>summon[X]</code> in a function body: <strong>you</strong> ask the compiler for evidence explicitly</li>
+</ul>
+<p>Both are doing the same thing — retrieving a <code>given</code> instance — just from different directions.
+You’ll see <code>summon</code> used frequently from here on. It’s the basic verb of type-level inquiry.</p>
+<h2 id="5-3-context-bounds--a-more-concise-syntax"><a class="header" href="#5-3-context-bounds--a-more-concise-syntax">5-3. Context Bounds — A More Concise Syntax</a></h2>
+<pre><code class="language-scala">// step5b.scala
+
+// Define a "can be displayed" capability as a typeclass
+trait Show[A]:
+  def show(a: A): String
+
+object Show:
+  // How to display an Int
+  given Show[Int] with
+    def show(a: Int): String = a.toString
+
+  // How to display a String
+  given Show[String] with
+    def show(a: String): String = s"\"$a\""
+
+  // How to display a List[A] (only if A itself has Show)
+  given [A](using inner: Show[A]): Show[List[A]] with
+    def show(a: List[A]): String =
+      a.map(inner.show).mkString("[", ", ", "]")
+
+// Context bound: A: Show means "a given Show[A] must exist"
+def display[A: Show](a: A): String =
+  summon[Show[A]].show(a)
+
+@main def step5b(): Unit =
+  println(display(42))
+  println(display("hello"))
+  println(display(List(1, 2, 3)))
+  println(display(List(List(1, 2), List(3, 4))))
+
+  // No given Show[Boolean] exists:
+  // println(display(true))
+  // error: no given instance of type Show[Boolean] was found
+</code></pre>
+<p><strong>The structure:</strong></p>
+<ol>
+<li><code>trait Show[A]</code> — typeclass definition (“this capability exists”)</li>
+<li><code>given Show[Int]</code> — instance for a specific type (“Int has this capability”)</li>
+<li><code>[A: Show]</code> — context bound (“A must have this capability”)</li>
+</ol>
+<p>The crucial property: you can add capabilities <strong>after the fact</strong>.
+Define <code>Show[Int]</code> without touching <code>Int</code>’s source code. That’s ad hoc polymorphism.</p>
+<blockquote>
+<p><strong>You made it through Part 1.</strong> You now have the full everyday type system toolkit:
+type parameters, variance, bounds, opaque types, type members, and typeclasses.
+Most production Scala code lives entirely within these concepts.
+Everything from here builds on what you already know.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="part-2-type-level-programming"><a class="header" href="#part-2-type-level-programming">Part 2: Type-Level Programming</a></h1>
+<p>In Part 1, types described <em>what things are</em>. In Part 2, types <em>compute</em>.
+Every technique here earns its place by solving a problem that Part 1’s tools can’t.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-6-match-types--when-the-return-type-depends-on-the-input-type"><a class="header" href="#step-6-match-types--when-the-return-type-depends-on-the-input-type">Step 6: Match Types — When the Return Type Depends on the Input Type</a></h1>
+<p>Everything so far uses types to describe what things <em>are</em>. But what if the return type
+of a function should <em>change</em> depending on what you pass in? A function that unwraps
+<code>Option[Int]</code> to <code>Int</code> but unwraps <code>List[String]</code> to <code>String</code>?</p>
+<p>Match types are type-level <code>if-else</code>. They’re useful when a function’s <strong>return type</strong>
+should change based on the <strong>input type</strong> — something that typeclasses and bounds can’t express.</p>
+<h2 id="6-1-the-problem-unwrapping-nested-types"><a class="header" href="#6-1-the-problem-unwrapping-nested-types">6-1. The Problem: Unwrapping Nested Types</a></h2>
+<pre><code class="language-scala">// step6a.scala
+
+// You're building a utility that "unwraps" container types.
+// Given Option[Int], you want Int. Given List[String], you want String.
+// Given a plain Int, you just want Int.
+// The RETURN TYPE changes based on the INPUT TYPE.
+
+// A typeclass can't do this — it can vary behavior, but not the output type.
+// A match type can:
+
+type Unwrap[X] = X match
+  case Option[t] =&gt; t
+  case List[t]   =&gt; t
+  case Either[_, t] =&gt; t
+  case X         =&gt; X         // fallback: return as-is
+
+// Now the compiler computes:
+//   Unwrap[Option[Int]]      = Int
+//   Unwrap[List[String]]     = String
+//   Unwrap[Either[Err, User]] = User
+//   Unwrap[Boolean]          = Boolean
+
+@main def step6a(): Unit =
+  val a: Unwrap[Option[Int]] = 42             // compiler knows this is Int
+  val b: Unwrap[List[String]] = "hello"       // compiler knows this is String
+  val c: Unwrap[Boolean] = true               // compiler knows this is Boolean
+
+  println(s"a: $a, b: $b, c: $c")
+</code></pre>
+<h2 id="6-2-practical-use-type-safe-api-response-handling"><a class="header" href="#6-2-practical-use-type-safe-api-response-handling">6-2. Practical Use: Type-Safe API Response Handling</a></h2>
+<pre><code class="language-scala">// step6b.scala
+
+// In an e-commerce system, different API endpoints return different types.
+// A match type lets you write one `fetch` function where the compiler
+// knows the return type based on the endpoint.
+
+sealed trait Endpoint
+case class ProductEndpoint(sku: String) extends Endpoint
+case class OrderEndpoint(orderId: String) extends Endpoint
+case class InventoryEndpoint(sku: String, warehouse: String) extends Endpoint
+
+case class ProductInfo(sku: String, name: String, price: Double)
+case class OrderStatus(orderId: String, status: String, total: Double)
+case class StockLevel(sku: String, warehouse: String, quantity: Int)
+
+// The return type is computed from the endpoint type
+type ResponseOf[E &lt;: Endpoint] = E match
+  case ProductEndpoint   =&gt; ProductInfo
+  case OrderEndpoint     =&gt; OrderStatus
+  case InventoryEndpoint =&gt; StockLevel
+
+// Simulated fetch — in real code this would call an HTTP client
+inline def fetch[E &lt;: Endpoint](endpoint: E): ResponseOf[E] = endpoint match
+  case _: ProductEndpoint   =&gt; ProductInfo("SKU-001", "Wireless Mouse", 29.99)
+  case _: OrderEndpoint     =&gt; OrderStatus("ORD-123", "shipped", 84.97)
+  case _: InventoryEndpoint =&gt; StockLevel("SKU-001", "US-WEST", 150)
+
+@main def step6b(): Unit =
+  // The compiler knows each return type — no casting, no pattern matching on the caller side
+  val product: ProductInfo = fetch(ProductEndpoint("SKU-001"))
+  val order: OrderStatus = fetch(OrderEndpoint("ORD-123"))
+  val stock: StockLevel = fetch(InventoryEndpoint("SKU-001", "US-WEST"))
+
+  println(s"Product: ${product.name}, $$${product.price}")
+  println(s"Order ${order.orderId}: ${order.status}")
+  println(s"Stock: ${stock.quantity} units in ${stock.warehouse}")
+
+  // If you try to assign the wrong type:
+  // val wrong: StockLevel = fetch(ProductEndpoint("SKU-001"))
+  // error: Found ProductInfo, Required StockLevel
+</code></pre>
+<p><strong>Why this matters:</strong> Without match types, you’d either return <code>Any</code> and cast (unsafe),
+or have separate <code>fetchCampaign</code>, <code>fetchMetrics</code>, <code>fetchBudget</code> functions (boilerplate).
+Match types give you one function with full type safety.</p>
+<h2 id="6-3-when-match-types-are-the-wrong-tool"><a class="header" href="#6-3-when-match-types-are-the-wrong-tool">6-3. When Match Types Are the Wrong Tool</a></h2>
+<p>Match types compute a <strong>different type</strong> from an input type.
+If the output type is always the same (e.g., always <code>String</code>), there’s nothing to compute —
+use a typeclass instead (<a href="#step-5-givens-and-typeclasses--evidence-the-compiler-finds-for-you">Step 5</a>).</p>
+<pre><code>Output type changes based on input type  → Match type
+Same output type, different behavior      → Typeclass
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-7-inline-and-compile-time-validation"><a class="header" href="#step-7-inline-and-compile-time-validation">Step 7: Inline and Compile-Time Validation</a></h1>
+<p>Runtime validation catches bad values when your program runs — an <code>IllegalArgumentException</code>
+at 3 AM in production. What if the compiler could catch them before it even compiles?</p>
+<p><code>inline</code> makes the compiler expand code at the call site. Combined with
+<code>scala.compiletime</code>, it lets you <strong>reject invalid code at compile time</strong>
+with custom error messages.</p>
+<h2 id="7-1-compiletimeerror--custom-compile-errors"><a class="header" href="#7-1-compiletimeerror--custom-compile-errors">7-1. compiletime.error — Custom Compile Errors</a></h2>
+<pre><code class="language-scala">// step7a.scala
+
+import scala.compiletime.error
+
+// A percentage must be between 0 and 100.
+// With runtime validation, you find out at runtime. With inline, at compile time.
+
+inline def percentage(inline value: Int): Int =
+  inline if value &lt; 0 || value &gt; 100 then
+    error("Percentage must be between 0 and 100")
+  else
+    value
+
+@main def step7a(): Unit =
+  val valid = percentage(85)     // OK
+  println(s"Valid: $valid")
+
+  // val invalid = percentage(150)
+  // error: Percentage must be between 0 and 100
+
+  // val negative = percentage(-5)
+  // error: Percentage must be between 0 and 100
+</code></pre>
+<p><strong>Uncomment and compile.</strong> The error message is yours, not the compiler’s.
+This is compile-time validation: bugs that would be <code>IllegalArgumentException</code> at
+runtime become compile errors.</p>
+<p>The key constraint: the value must be known at compile time (a literal or another inline value).
+For runtime values, you still need runtime validation.</p>
+<h2 id="7-2-practical-use-compile-time-validated-domain-types"><a class="header" href="#7-2-practical-use-compile-time-validated-domain-types">7-2. Practical Use: Compile-Time Validated Domain Types</a></h2>
+<p>Remember <code>Currency.USD</code> from <a href="#step-3-opaque-types--zero-cost-type-safety">Step 3</a>? Opaque types prevented mixing dollars and yen.
+Now imagine going further: ensuring the <em>amount</em> itself is valid before the code compiles.</p>
+<pre><code class="language-scala">// step7b.scala
+
+import scala.compiletime.error
+
+object Shop:
+  // Quantities must be positive
+  opaque type Quantity = Int
+
+  inline def quantity(inline n: Int): Quantity =
+    inline if n &lt;= 0 then
+      error("Quantity must be positive")
+    else n
+
+  extension (q: Quantity)
+    def value: Int = q
+    def *(price: Double): Double = q * price
+
+  // Discount percentages must be 0–100
+  opaque type DiscountPct = Int
+
+  inline def discount(inline pct: Int): DiscountPct =
+    inline if pct &lt; 0 || pct &gt; 100 then
+      error("Discount must be between 0 and 100")
+    else pct
+
+  extension (d: DiscountPct)
+    def applyTo(price: Double): Double = price * (1.0 - d / 100.0)
+
+import Shop.*
+
+@main def step7b(): Unit =
+  val qty = quantity(3)            // OK
+  val disc = discount(20)          // OK
+
+  val subtotal = qty * 29.99
+  val total = disc.applyTo(subtotal)
+  println(f"$qty%d × $$29.99 = $$$subtotal%.2f, after $disc%%  off: $$$total%.2f")
+
+  // val bad = quantity(0)          // error: Quantity must be positive
+  // val badDisc = discount(150)    // error: Discount must be between 0 and 100
+</code></pre>
+<p>This combines opaque types (<a href="#step-3-opaque-types--zero-cost-type-safety">Step 3</a>) with inline validation:
+the type system ensures <code>Quantity</code> and <code>DiscountPct</code> can’t be confused with plain <code>Int</code>,
+and <code>inline</code> ensures only valid values can be created.</p>
+<h2 id="7-3-constvalue--reading-types-as-values"><a class="header" href="#7-3-constvalue--reading-types-as-values">7-3. constValue — Reading Types as Values</a></h2>
+<pre><code class="language-scala">// step7c.scala
+
+import scala.compiletime.constValue
+
+// constValue lets you read a singleton type as a runtime value.
+// This bridges the gap between type-level and value-level.
+
+// constValue[A] extracts the singleton value from A (e.g., 42 from type 42).
+// The match cases check the type of that extracted value.
+inline def describe[A]: String =
+  inline constValue[A] match
+    case _: Int    =&gt; "integer"
+    case _: String =&gt; "string"
+    case _: Boolean =&gt; "boolean"
+
+@main def step7c(): Unit =
+  // Singleton types: the type IS the value
+  val x: 42 = 42              // x has type 42, not Int
+  val y: "hello" = "hello"    // y has type "hello", not String
+
+  // constValue extracts the value from the type
+  val n: Int = constValue[42]        // 42
+  val s: String = constValue["hello"] // "hello"
+  println(s"n: $n, s: $s")
+</code></pre>
+<p>Singleton types and <code>constValue</code> are how Scala 3 connects compile-time computation
+to runtime values. Libraries like circe and tapir use these techniques to generate
+codecs and API documentation from type information alone.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-8--evidence--proving-type-equality"><a class="header" href="#step-8--evidence--proving-type-equality">Step 8: =:= Evidence — Proving Type Equality</a></h1>
+<p>In generic code, the compiler sometimes can’t tell whether two type parameters
+are the same type. You can give it proof — and unlock methods that only make sense
+when certain type relationships hold.</p>
+<h2 id="8-1-evidence-that-two-types-are-the-same"><a class="header" href="#8-1-evidence-that-two-types-are-the-same">8-1. Evidence That Two Types Are the Same</a></h2>
+<p><code>summon</code> asks the compiler for evidence that a given instance exists.
+<code>=:=</code> takes this further: it’s evidence that <strong>two types are equal</strong>.</p>
+<pre><code class="language-scala">// step8a.scala
+
+@main def step8a(): Unit =
+  // =:= is evidence that two types are equal
+  val evidence: Int =:= Int = summon[Int =:= Int]  // OK
+
+  // No evidence that String =:= Int
+  // val bad = summon[String =:= Int]
+  // error: Cannot prove that String =:= Int.
+
+  // The evidence object can convert values between the two types
+  def convert[A, B](a: A)(using ev: A =:= B): B = ev(a)
+
+  val x: Int = 42
+  val y: Int = convert[Int, Int](x)  // OK: Int =:= Int can be proven
+  println(y)
+
+  // val z: String = convert[Int, String](x)  // Compile error!
+</code></pre>
+<p>If your reaction is “why would I ever need to <em>prove</em> types are equal?” — that’s fair.
+In most application code, you wouldn’t. But in generic code (libraries, frameworks,
+reusable abstractions), the compiler sometimes genuinely doesn’t know whether two
+type parameters refer to the same type. That’s where <code>=:=</code> earns its keep.</p>
+<h2 id="8-2-practical-use-conditional-methods-on-generic-types"><a class="header" href="#8-2-practical-use-conditional-methods-on-generic-types">8-2. Practical Use: Conditional Methods on Generic Types</a></h2>
+<p>The real power of <code>=:=</code> appears when you want a method that <strong>only exists
+under certain type conditions</strong>:</p>
+<pre><code class="language-scala">// step8b.scala
+
+// A generic pipeline stage that transforms From → To
+class Stage[From, To](val transform: From =&gt; To):
+  // Chain two stages: Stage[A, B] andThen Stage[B, C] = Stage[A, C]
+  def andThen[Next](next: Stage[To, Next]): Stage[From, Next] =
+    Stage(from =&gt; next.transform(transform(from)))
+
+  // "run" only makes sense when input and output are the same type
+  // (a stage that can be applied repeatedly)
+  def runLoop(value: From, times: Int)(using ev: From =:= To): From =
+    var current = value
+    for _ &lt;- 1 to times do
+      current = ev.flip(transform(current)) // To → From via evidence
+    current
+
+@main def step8b(): Unit =
+  // Stage[Int, Int] — doubles a number
+  val doubler = Stage[Int, Int](_ * 2)
+  println(doubler.runLoop(1, 5))  // 1 → 2 → 4 → 8 → 16 → 32
+
+  // Stage[String, String] — adds exclamation
+  val exclaim = Stage[String, String](_ + "!")
+  println(exclaim.runLoop("hello", 3))  // hello! → hello!! → hello!!!
+
+  // Stage[String, Int] — can't loop, types don't match
+  val counter = Stage[String, Int](_.length)
+  // counter.runLoop("hi", 3)
+  // error: Cannot prove that String =:= Int.
+  // Makes sense: you can't feed an Int back into something expecting String
+</code></pre>
+<p>Without <code>=:=</code>, you’d have two options: either make <code>runLoop</code> available on all stages
+(and crash at runtime when types don’t match), or create a separate <code>LoopableStage</code> class
+(duplicating code). <code>=:=</code> lets you keep one class with a method that the compiler
+only allows when it’s safe.</p>
+<h2 id="8-3-connecting-it-back-types-as-proof"><a class="header" href="#8-3-connecting-it-back-types-as-proof">8-3. Connecting It Back: Types as Proof</a></h2>
+<p>Notice the progression through this tutorial:</p>
+<pre><code>Part 1 — The Type System:
+Step 1:  [A]                  "There exists a type A"
+Step 2:  [A &lt;: Shippable]     "A has at least these capabilities"
+Step 4:  type Row             "This type belongs to this specific instance"
+Step 5:  using Show[A]        "Evidence exists that A can be shown"
+
+Part 2 — Type-Level Programming:
+Step 6:  ResponseOf[E]        "The output type is computed from the input type"
+Step 7:  inline + error       "Invalid values are rejected at compile time"
+Step 8:  using A =:= B        "A and B are proven to be the same type"
+</code></pre>
+<p>Each step gives the compiler a <strong>stronger statement</strong> about types.
+Part 1 describes what types <em>are</em>. Part 2 makes types <em>compute and validate</em>.
+The compiler checks your claims at every level.</p>
+<blockquote>
+<p><strong>That’s the complete progression</strong> — from basic type parameters to type equality proofs.
+The <a href="#interlude-exploring-type-design-with-a-compiler-conversation">Interlude</a> below puts it all together in a practical design exercise.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="interlude-exploring-type-design-with-a-compiler-conversation"><a class="header" href="#interlude-exploring-type-design-with-a-compiler-conversation">Interlude: Exploring Type Design with a Compiler Conversation</a></h1>
+<p>The previous steps taught specific type-level features one at a time. But in practice,
+the hard part isn’t knowing what <code>+A</code> or <code>&lt;:</code> means — it’s knowing <strong>which tool to reach for</strong>
+when you’re designing something new.</p>
+<p>This is where pairing the Scala compiler with an AI coding assistant becomes genuinely useful.
+Not as a crutch, but as a way to <strong>iterate faster through design alternatives</strong>.</p>
+<p>Here’s a real scenario: you’re building an order summary system and need a function
+that formats different product types for invoices. You know several approaches exist,
+but which one fits best?</p>
+<h2 id="the-problem"><a class="header" href="#the-problem">The Problem</a></h2>
+<pre><code class="language-scala">// explore.scala
+
+// Different product types have different invoice details
+case class PhysicalItem(name: String, price: Double, weight: Double, shippingCost: Double)
+case class DigitalItem(name: String, price: Double, downloadUrl: String)
+case class Subscription(name: String, price: Double, billingCycle: String, nextBillingDate: String)
+
+// You want a single `invoiceLine` function that handles all of them.
+// But how should you parameterize it?
+</code></pre>
+<h2 id="attempt-1-upper-bound"><a class="header" href="#attempt-1-upper-bound">Attempt 1: Upper Bound</a></h2>
+<p>Your first instinct might be a shared trait:</p>
+<pre><code class="language-scala">// explore1.scala
+
+trait HasPrice:
+  def price: Double
+
+case class PhysicalItem(name: String, price: Double, weight: Double) extends HasPrice
+case class DigitalItem(name: String, price: Double, downloadUrl: String) extends HasPrice
+
+def invoiceLine[A &lt;: HasPrice](item: A): String =
+  s"Item: $$${item.price}"
+  // ...but how do I access weight or downloadUrl? I only know about price.
+
+@main def explore1(): Unit =
+  println(invoiceLine(PhysicalItem("Keyboard", 79.99, 0.5)))
+</code></pre>
+<p><strong>Compile and observe:</strong> It works, but <code>invoiceLine</code> can only use <code>price</code>.
+The bound gives you access to the <em>shared</em> interface, nothing more.</p>
+<pre><code>&gt; scala-cli compile explore1.scala
+&gt; # It compiles, but the function is too generic to be useful.
+</code></pre>
+<p><em>If you’re working with an AI assistant, this is a good moment to share the code and ask:</em>
+<em>“This compiles but I can’t access type-specific fields. What are my options?”</em></p>
+<h2 id="attempt-2-typeclass"><a class="header" href="#attempt-2-typeclass">Attempt 2: Typeclass</a></h2>
+<p>The AI (or your own experience) might suggest a typeclass:</p>
+<pre><code class="language-scala">// explore2.scala
+
+case class PhysicalItem(name: String, price: Double, weight: Double, shippingCost: Double)
+case class DigitalItem(name: String, price: Double, downloadUrl: String)
+case class Subscription(name: String, price: Double, billingCycle: String, nextBillingDate: String)
+
+// Define the capability: "can produce an invoice line"
+trait InvoiceLine[A]:
+  def format(item: A): String
+
+object InvoiceLine:
+  given InvoiceLine[PhysicalItem] with
+    def format(item: PhysicalItem): String =
+      s"${item.name} | $$${item.price} + $$${item.shippingCost} shipping (${item.weight}kg)"
+
+  given InvoiceLine[DigitalItem] with
+    def format(item: DigitalItem): String =
+      s"${item.name} | $$${item.price} (download: ${item.downloadUrl})"
+
+  given InvoiceLine[Subscription] with
+    def format(item: Subscription): String =
+      s"${item.name} | $$${item.price}/${item.billingCycle} (next: ${item.nextBillingDate})"
+
+def invoiceLine[A: InvoiceLine](item: A): String =
+  summon[InvoiceLine[A]].format(item)
+
+@main def explore2(): Unit =
+  println(invoiceLine(PhysicalItem("Keyboard", 79.99, 0.5, 5.99)))
+  println(invoiceLine(DigitalItem("E-book", 14.99, "https://example.com/dl/123")))
+  println(invoiceLine(Subscription("Cloud Storage", 9.99, "month", "2024-03-01")))
+
+  // New type without InvoiceLine? Compile error.
+  // case class GiftCard(name: String, value: Double)
+  // invoiceLine(GiftCard("Amazon", 50.0))
+</code></pre>
+<p>This works well. Each type gets its own formatting logic. New types can be added without
+modifying existing code. The compiler ensures every type passed to <code>invoiceLine</code> has an
+<code>InvoiceLine</code> instance.</p>
+<h2 id="attempt-3-match-type-spoiler--wrong-tool"><a class="header" href="#attempt-3-match-type-spoiler--wrong-tool">Attempt 3: Match Type (Spoiler — Wrong Tool)</a></h2>
+<p>What if you tried a match type instead?</p>
+<pre><code class="language-scala">// explore3.scala
+
+case class PhysicalItem(name: String, price: Double, weight: Double)
+case class DigitalItem(name: String, price: Double, downloadUrl: String)
+
+type InvoiceString[A] = A match
+  case PhysicalItem =&gt; String
+  case DigitalItem  =&gt; String
+
+// The return type is always String regardless of input...
+// Match type adds nothing here. It's the wrong tool for this job.
+</code></pre>
+<p><strong>Compile and think about it.</strong> A match type computes a <em>different output type</em> based on input type.
+When the output is always the same type (<code>String</code>), there’s no type-level computation to do.</p>
+<p><em>This is exactly the kind of dead end that’s worth hitting.</em> It teaches you when NOT to use a tool.</p>
+<h2 id="the-decision-framework"><a class="header" href="#the-decision-framework">The Decision Framework</a></h2>
+<p>After exploring these attempts, here’s the pattern:</p>
+<pre><code>"I need access to shared fields"
+  → Upper bound (A &lt;: Trait)
+
+"I need different behavior per type, output type is the same"
+  → Typeclass (given/using)
+
+"I need the output TYPE to change based on input type"
+  → Match type
+
+"I need to reject invalid values at compile time"
+  → inline + compiletime.error
+
+"I need a method that only exists when types satisfy a condition"
+  → =:= or &lt;:&lt; evidence
+
+"I need a type that's an internal detail, not visible to callers"
+  → Type member
+
+"I need to prevent mixing values from different instances"
+  → Path-dependent type (type member)
+</code></pre>
+<p>This framework doesn’t come from reading documentation. It comes from
+<strong>trying the wrong tool, reading the compiler’s response, and understanding why it didn’t fit.</strong></p>
+<p>An AI assistant accelerates this loop: you share compiler output, describe your intent,
+and iterate through alternatives in minutes instead of hours. But the understanding
+comes from you reading the compiler’s feedback at each step — the AI just helps you
+navigate faster.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="summary"><a class="header" href="#summary">Summary</a></h1>
+<pre><code>Part 1: The Type System
+  Step 0: Life without types       → Runtime errors lurking everywhere
+  Step 1: Type parameters          → Contracts with the compiler
+  Step 2: Variance &amp; Bounds        → Invariant by default; covariant for producers,
+                                     contravariant for consumers; bounds to bridge them
+  Step 3: Opaque Types             → Zero-cost type distinctions
+  Step 4: Type Members             → Types inside types; path-dependent safety
+  Step 5: Givens / Typeclasses     → Evidence the compiler finds automatically
+
+Part 2: Type-Level Programming
+  Step 6: Match Types              → Output type computed from input type
+  Step 7: Inline / compiletime     → Compile-time validation with custom errors
+  Step 8: =:= Evidence             → Proving type equality; conditional capabilities
+
+Interlude                          → Choosing the right tool through compiler conversation
+</code></pre>
+<p>The thread running through every step:</p>
+<p><strong>“The more you tell the compiler, the more the compiler can protect you.”</strong></p>
+<p>Type parameters are not incantations.
+They are a language for communicating your intent to the compiler,
+and the basis on which the compiler verifies your code.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="learning-guide"><a class="header" href="#learning-guide">Learning Guide</a></h1>
+<p>Recommended <code>scala-cli</code> commands when working through this tutorial:</p>
+<pre><code class="language-bash"># 1. Compile and read errors
+scala-cli compile step2d.scala
+
+# 2. See type inference results
+scala-cli compile step2e.scala -- -Xprint:typer
+
+# 3. Get detailed error explanations
+scala-cli compile step2d.scala -- -explain
+</code></pre>
+<p>Deliberately breaking compilation and reading the error messages is the core of this learning process.
+Error messages are letters from the compiler.</p>
+<h2 id="using-ai-assistants"><a class="header" href="#using-ai-assistants">Using AI Assistants</a></h2>
+<p>As shown in the <a href="#interlude-exploring-type-design-with-a-compiler-conversation">Interlude</a>, AI coding assistants (Claude Code, Cursor, etc.)
+are particularly useful for <strong>type design exploration</strong> — the phase where you don’t yet know
+which type-level tool to reach for. The workflow:</p>
+<ol>
+<li>Write your initial attempt</li>
+<li>Compile — read the error (or notice the limitation)</li>
+<li>Share the code + compiler output with the AI: <em>“This doesn’t express what I want. What are my options?”</em></li>
+<li>Try the suggested alternative — compile again</li>
+<li>Repeat until the types express your intent</li>
+</ol>
+<p>The compiler tells you <em>what’s wrong</em>. The AI helps you see <em>what else you could try</em>.
+The understanding comes from you connecting the two.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="where-to-go-next"><a class="header" href="#where-to-go-next">Where to Go Next</a></h1>
+<p>This tutorial covered the foundations. Here’s what builds on them:</p>
+<p><strong>Immediate next steps</strong> (you have the tools now):</p>
+<ul>
+<li><strong>Type lambdas</strong> (<code>[X] =&gt;&gt; F[X, Int]</code>) — partially applying type constructors, needed for working with higher-kinded types</li>
+<li><strong>Recursive match types</strong> — type-level computation that isn’t just a lookup table but an actual algorithm (e.g., computing tuple element types, type-level arithmetic)</li>
+<li><strong>Mirrors and type class derivation</strong> — automatically generating typeclass instances (JSON codecs, Show, Eq) for case classes and enums, eliminating the boilerplate from <a href="#step-5-givens-and-typeclasses--evidence-the-compiler-finds-for-you">Step 5</a></li>
+</ul>
+<p><strong>Deeper explorations:</strong></p>
+<ul>
+<li><strong>Phantom types</strong> — type parameters that exist only at compile time and carry zero runtime data (extending the opaque type pattern from <a href="#step-3-opaque-types--zero-cost-type-safety">Step 3</a>)</li>
+<li><strong>Dependent function types</strong> (<code>(x: Foo) =&gt; x.Bar</code>) — Scala 3’s dependent functions extend path-dependent types (<a href="#step-4-type-members--types-inside-types">Step 4</a>) into first-class function signatures</li>
+<li><strong>Refined types</strong> (via libraries like iron) — attaching compile-time constraints to types, extending the inline validation from <a href="#step-7-inline-and-compile-time-validation">Step 7</a> into the type system itself (e.g., <code>Quantity</code> that is always positive, without the <code>inline</code> limitation)</li>
+</ul>
+<p><strong>Recommended reading:</strong></p>
+<ul>
+<li><em>Programming in Scala, 5th Edition</em> (Odersky et al.) — Chapters 18–23 cover the same terrain with more depth; Chapter 20 on abstract members complements <a href="#step-4-type-members--types-inside-types">Step 4</a></li>
+<li>The Scala 3 Reference at <a href="https://docs.scala-lang.org">docs.scala-lang.org</a> — especially the sections on match types and type lambdas</li>
+<li>Scala 3 compiler source code — the ultimate reference for how type-level features actually work</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
