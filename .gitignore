@@ -4,10 +4,7 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -47,9 +44,6 @@ build/
 .bsp/
 .scala-build/
 *.class
-
-### IntelliJ IDEA (additional) ###
-.idea/vcs.xml
 
 ### mdBook ###
 # docs/ is the mdBook build output for GitHub Pages — do not ignore
