@@ -1,27 +1,30 @@
 // step2i.scala
 
-class Product(val name: String, val price: Double)
-class Book(name: String, price: Double, val isbn: String) extends Product(name, price)
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item
+class DVD(val name: String, val price: Double) extends Item
 
 // JSON serializer — consumes a value and produces a String
 trait JsonWriter[-A]:
   def write(value: A): String
 
-class ProductWriter extends JsonWriter[Product]:
-  def write(value: Product): String = s"""{"name":"${value.name}","price":${value.price}}"""
+class ItemWriter extends JsonWriter[Item]:
+  def write(value: Item): String = s"""{"name":"${value.name}","price":${value.price}}"""
 
 class BookWriter extends JsonWriter[Book]:
   def write(value: Book): String = s"""{"name":"${value.name}","price":${value.price},"isbn":"${value.isbn}"}"""
 
 @main def step2i(): Unit =
-  val productWriter: JsonWriter[Product] = ProductWriter()
+  val itemWriter: JsonWriter[Item] = ItemWriter()
 
-  // A ProductWriter can write Books too — it handles anything that's a Product
-  val bookWriter: JsonWriter[Book] = productWriter  // Contravariance!
+  // An ItemWriter can write Books too — it handles anything that's an Item
+  val bookWriter: JsonWriter[Book] = itemWriter  // Contravariance!
   println(bookWriter.write(Book("Scala in Depth", 45.0, "978-1617295")))
+  // prints: {"name":"Scala in Depth","price":45.0} — no isbn, same as PriceFormatter
 
-  // A BookWriter can NOT write arbitrary Products — it expects Book-specific fields
+  // A BookWriter can NOT write arbitrary Items — it expects Book-specific fields
   val specificWriter: JsonWriter[Book] = BookWriter()
-  // val generalWriter: JsonWriter[Product] = specificWriter  // REJECTED
-
-// The pattern: "if you can handle the general case, you can handle the specific case"
+  // val generalWriter: JsonWriter[Item] = specificWriter  // REJECTED
+  // What would specificWriter.write(DVD("The Matrix", 19.99)) do with isbn?

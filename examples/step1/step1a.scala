@@ -1,4 +1,4 @@
-// step1.scala
+// step1a.scala
 
 // A box that holds anything (no type parameter)
 class AnyBox(val value: Any)

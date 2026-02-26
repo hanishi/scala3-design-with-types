@@ -1,19 +1,20 @@
 // step2c.scala
 
-class Product(val name: String):
-  override def toString = s"Product($name)"
-class Book(name: String) extends Product(name):
-  override def toString = s"Book($name)"
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
 
-// A read-only box. The + declares it covariant.
-class ReadBox[+A](val value: A)
+// Same Box, but now with +A — covariant.
+class Box[+A](val value: A)
 
 @main def step2c(): Unit =
-  val bookBox: ReadBox[Book] = ReadBox(Book("Scala in Depth"))
+  val bookBox: Box[Book] = Box(Book("Scala in Depth", 45.0))
 
-  // With +A, this compiles!
-  val productBox: ReadBox[Product] = bookBox
-  println(productBox.value)  // Book(Scala in Depth)
-
-  // ReadBox only has a val (read-only).
-  // Reading a Book as a Product is always safe.
+  // In 2-1, Box[A] rejected this. The + is what makes the difference.
+  // Book is an Item, so Box[Book] can now be used as Box[Item].
+  val itemBox: Box[Item] = bookBox
+  println(itemBox.value)  // Book(Scala in Depth, $45.0)

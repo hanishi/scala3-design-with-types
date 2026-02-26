@@ -1,33 +1,56 @@
-// step2h.scala
+// step2h.scala — Covariance in the standard library
 
-// An event hierarchy — very common in event-driven systems
-sealed trait OrderEvent
-case class OrderPlaced(orderId: String, timestamp: Long) extends OrderEvent
-case class PaymentReceived(orderId: String, timestamp: Long, amount: Double) extends OrderEvent
-case class ItemShipped(orderId: String, timestamp: Long, trackingId: String) extends OrderEvent
-
-// An event stream. Should EventStream[PaymentReceived] be usable as EventStream[OrderEvent]?
-// YES — if you're only reading events out, a stream of payments IS a stream of order events.
-
-// Invariant version — causes friction
-class EventStream[A](val events: List[A]):
-  def latest: Option[A] = events.headOption
-
-// Covariant version — works naturally
-class EventStreamCov[+A](val events: List[A]):
-  def latest: Option[A] = events.headOption
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name)"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name)"
 
 @main def step2h(): Unit =
-  val payments = EventStreamCov(List(
-    PaymentReceived("ord1", 1000L, 99.99),
-    PaymentReceived("ord2", 2000L, 49.50),
-  ))
+  val book = Book("Scala in Depth", 45.0, "978-1617295")
+  val dvd = DVD("The Matrix", 19.99)
 
-  // This just works. A stream of payments IS a stream of order events.
-  val events: EventStreamCov[OrderEvent] = payments
-  println(events.latest)
+  // --- Option[+A] ---
+  // Some[Book] is usable as Option[Item] — a Book result IS an Item result
+  val maybeBook: Option[Book] = Some(book)
+  val maybeItem: Option[Item] = maybeBook  // covariance
+  println(maybeItem)  // Some(Book(Scala in Depth))
 
-  // With the invariant version, you'd have to write:
-  val paymentsInv = EventStream(List(PaymentReceived("ord1", 1000L, 99.99)))
-  // val eventsInv: EventStream[OrderEvent] = paymentsInv  // REJECTED
-  // You'd be forced to create a new EventStream[OrderEvent] by copying.
+  // getOrElse uses [B >: A] — the lower bound escape hatch for covariance
+  val item: Item = maybeBook.getOrElse(dvd)  // Option[Book] → fallback DVD → Item
+  println(item)
+
+  // --- List[+A] ---
+  // List[Book] is usable as List[Item]
+  val books: List[Book] = List(book)
+  val items: List[Item] = books  // covariance
+  println(items)
+
+  // :+ uses [B >: A] — adding a DVD widens to List[Item]
+  val mixed: List[Item] = books :+ dvd
+  println(mixed)  // List(Book(Scala in Depth), DVD(The Matrix))
+
+  // --- Nothing ---
+  // Nothing is Scala's bottom type — a subtype of every other type.
+  // No value of type Nothing can ever exist, but the compiler uses it as a
+  // placeholder: "this side has no type yet." Combined with covariance,
+  // Nothing <: anything, so it fits wherever a type is expected.
+
+  // --- Either[+A, +B] ---
+  // Either is covariant in BOTH type parameters
+  // Right(book) is Right[Nothing, Book] — Nothing is the Left type.
+  // Covariance on +A: Nothing <: String, so Either[Nothing, Book] <: Either[String, Book]
+  val result: Either[String, Book] = Right(book)
+  val wider: Either[String, Item] = result  // covariance on +B: Book <: Item
+  println(wider)
+
+  // Same idea with Left: Left("not found") is Left[String, Nothing]
+  // Covariance on +B: Nothing <: Book, so Either[String, Nothing] <: Either[String, Book]
+  val failed: Either[String, Book] = Left("not found")
+  println(failed)
+
+  // orElse uses [B1 >: B] — recovery widens the Right type
+  val recovered: Either[String, Item] = failed.orElse(Right(dvd))
+  println(recovered)  // Right(DVD(The Matrix))

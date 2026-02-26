@@ -1,21 +1,30 @@
 // step2d.scala
 
-class Product(val name: String)
-class Book(name: String) extends Product(name)
-class Electronics(name: String) extends Product(name)
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
 
-// Try +A with a var → the compiler catches the mismatch
-// class MutBox[+A](var value: A)
-// error: covariant type A occurs in contravariant position
-//        in type A of parameter value_=
+// Uncomment and compile each block one at a time:
 
-// OK, only a val. But add a setter method?
+// 1. Try +A with a var — var lets you write a new value in, violating +A.
+// class Box[+A](var value: A)
+// [error] covariant type A occurs in invariant position in type A of variable value
+// [error]  class Box[+A](var value: A)
+// [error]                   ^^^^^^^^^^^^
+
+// 2. OK, only a val. But what about checking what's inside?
 class Box[+A](val value: A):
-  // def set(a: A): Box[A] = Box(a)
-  // error: covariant type A occurs in contravariant position
-  //        in type A of parameter a
-
-  override def toString = s"Box($value)"
+  def contains(item: A): Boolean = value == item
+  // [error] covariant type A occurs in contravariant position in type A of parameter item
+  // [error]   def contains(item: A): Boolean = value == item
+  // [error]                ^^^^^^
+  //
+  // With just [A] (invariant), contains works fine.
+  // It's the + that prevents passing A in.
 
 @main def step2d(): Unit =
   println("Uncomment each block and read the error messages")

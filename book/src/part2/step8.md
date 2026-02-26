@@ -10,24 +10,7 @@ when certain type relationships hold.
 `=:=` takes this further: it's evidence that **two types are equal**.
 
 ```scala
-// step8a.scala
-
-@main def step8a(): Unit =
-  // =:= is evidence that two types are equal
-  val evidence: Int =:= Int = summon[Int =:= Int]  // OK
-
-  // No evidence that String =:= Int
-  // val bad = summon[String =:= Int]
-  // error: Cannot prove that String =:= Int.
-
-  // The evidence object can convert values between the two types
-  def convert[A, B](a: A)(using ev: A =:= B): B = ev(a)
-
-  val x: Int = 42
-  val y: Int = convert[Int, Int](x)  // OK: Int =:= Int can be proven
-  println(y)
-
-  // val z: String = convert[Int, String](x)  // Compile error!
+{{#include ../../../examples/step8/step8a.scala}}
 ```
 
 If your reaction is "why would I ever need to *prove* types are equal?" — that's fair.
@@ -41,36 +24,7 @@ The real power of `=:=` appears when you want a method that **only exists
 under certain type conditions**:
 
 ```scala
-// step8b.scala
-
-// A generic pipeline stage that transforms From → To
-class Stage[From, To](val transform: From => To):
-  // Chain two stages: Stage[A, B] andThen Stage[B, C] = Stage[A, C]
-  def andThen[Next](next: Stage[To, Next]): Stage[From, Next] =
-    Stage(from => next.transform(transform(from)))
-
-  // "run" only makes sense when input and output are the same type
-  // (a stage that can be applied repeatedly)
-  def runLoop(value: From, times: Int)(using ev: From =:= To): From =
-    var current = value
-    for _ <- 1 to times do
-      current = ev.flip(transform(current)) // To → From via evidence
-    current
-
-@main def step8b(): Unit =
-  // Stage[Int, Int] — doubles a number
-  val doubler = Stage[Int, Int](_ * 2)
-  println(doubler.runLoop(1, 5))  // 1 → 2 → 4 → 8 → 16 → 32
-
-  // Stage[String, String] — adds exclamation
-  val exclaim = Stage[String, String](_ + "!")
-  println(exclaim.runLoop("hello", 3))  // hello! → hello!! → hello!!!
-
-  // Stage[String, Int] — can't loop, types don't match
-  val counter = Stage[String, Int](_.length)
-  // counter.runLoop("hi", 3)
-  // error: Cannot prove that String =:= Int.
-  // Makes sense: you can't feed an Int back into something expecting String
+{{#include ../../../examples/step8/step8b.scala}}
 ```
 
 Without `=:=`, you'd have two options: either make `runLoop` available on all stages
@@ -99,5 +53,5 @@ Each step gives the compiler a **stronger statement** about types.
 Part 1 describes what types *are*. Part 2 makes types *compute and validate*.
 The compiler checks your claims at every level.
 
-> **That's the complete progression** — from basic type parameters to type equality proofs.
-> The [Interlude](../interlude.md) below puts it all together in a practical design exercise.
+> Next, [Step 9](./step9.md) adds one more dimension: **combining types** with union and
+> intersection types — expressing "either/or" and "both/and" at the type level.

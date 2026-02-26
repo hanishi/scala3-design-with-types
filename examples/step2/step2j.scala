@@ -1,7 +1,10 @@
 // step2j.scala
 
-class Product(val name: String):
-  override def toString = s"Product($name)"
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name)"
 
 // Invariant is correct here: a mutable cell reads AND writes
 class Cell[A](var value: A):
@@ -20,9 +23,9 @@ trait Codec[A]:
 // trait Codec[-A]:  // error on decode
 
 @main def step2j(): Unit =
-  val cell = Cell[Product](Product("Keyboard"))
-  cell.set(Product("Mouse"))
-  println(cell.get)  // Product(Mouse)
+  val cell = Cell[Item](Book("Scala", 45.0, "978-1"))
+  cell.set(Book("FP", 35.0, "978-2"))
+  println(cell.get)  // Book(FP)
 
-  // Cell[Book] is NOT Cell[Product] — and shouldn't be.
-  // If it were, you could put Electronics in a Book cell.
+  // Cell[Book] is NOT Cell[Item] — and shouldn't be.
+  // If it were, you could put a DVD in a Book cell.

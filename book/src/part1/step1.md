@@ -3,33 +3,12 @@
 ## 1-1. Build Your Own Box
 
 ```scala
-// step1.scala
-
-// A box that holds anything (no type parameter)
-class AnyBox(val value: Any)
-
-// A box with a type parameter
-class Box[A](val value: A)
-
-@main def step1(): Unit =
-  // AnyBox: easy to put things in
-  val anyBox = AnyBox(42)
-  // val n: Int = anyBox.value  // Compile error! Any is not Int
-  val n: Int = anyBox.value.asInstanceOf[Int]  // Dangerous cast
-
-  // Box[A]: the type is preserved
-  val intBox = Box(42)       // Inferred as Box[Int]
-  val m: Int = intBox.value  // Comes out as Int — no cast needed
-
-  // Wrong type? Compile error.
-  // val s: String = intBox.value  // error: Found Int, Required String
-
-  println(s"AnyBox: $n, Box[Int]: $m")
+{{#include ../../../examples/step1/step1a.scala}}
 ```
 
 **Try it:**
 ```
-> scala-cli run step1.scala
+> scala-cli run step1a.scala
 ```
 
 Then uncomment `val s: String = intBox.value`.
@@ -41,30 +20,20 @@ When you take the value out, it's guaranteed to be `Int`.
 ## 1-2. Type Parameters in Functions — Contracts Propagate
 
 ```scala
-// step1b.scala
-
-def first[A](xs: List[A]): A = xs.head
-
-@main def step1b(): Unit =
-  val names = List("Scala", "Rust", "Go")
-  val top: String = first(names)  // Compiler resolves A = String
-  println(top)
-
-  val nums = List(1, 2, 3)
-  val one: Int = first(nums)      // Compiler resolves A = Int
-  println(one)
-
-  // What about this?
-  val mixed = List(1, "two", 3.0)
-  val what = first(mixed)         // What is A here?
-  println(what.getClass)
+{{#include ../../../examples/step1/step1b.scala}}
 ```
 
 **Inspect the types:**
-```
-> scala-cli run step1b.scala
-> # To see the inferred type:
-> scala-cli compile step1b.scala -- -Xprint:typer 2>&1 | grep "mixed"
+```sh
+scala-cli run step1b.scala
+
+# To see the inferred type (clean first to bypass compilation cache):
+scala-cli clean step1b.scala && scala-cli compile step1b.scala -O -Xprint:typer 2>&1 | grep "mixed"
 ```
 
 `mixed` is inferred as `List[Int | String | Double]` — a union type. This is a Scala 3 thing.
+
+Notice that you never wrote `List[Int | String | Double]` — the compiler **inferred** it.
+Throughout this book, we rely on the compiler's ability to figure out type parameters
+from context. How type inference works internally is a topic of its own; here we just
+trust that it does, and focus on what the types *mean*.
