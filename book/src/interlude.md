@@ -14,15 +14,7 @@ but which one fits best?
 ## The Problem
 
 ```scala
-// explore.scala
-
-// Different product types have different invoice details
-case class PhysicalItem(name: String, price: Double, weight: Double, shippingCost: Double)
-case class DigitalItem(name: String, price: Double, downloadUrl: String)
-case class Subscription(name: String, price: Double, billingCycle: String, nextBillingDate: String)
-
-// You want a single `invoiceLine` function that handles all of them.
-// But how should you parameterize it?
+{{#include ../../examples/interlude/explore.scala}}
 ```
 
 ## Attempt 1: Upper Bound
@@ -30,20 +22,7 @@ case class Subscription(name: String, price: Double, billingCycle: String, nextB
 Your first instinct might be a shared trait:
 
 ```scala
-// explore1.scala
-
-trait HasPrice:
-  def price: Double
-
-case class PhysicalItem(name: String, price: Double, weight: Double) extends HasPrice
-case class DigitalItem(name: String, price: Double, downloadUrl: String) extends HasPrice
-
-def invoiceLine[A <: HasPrice](item: A): String =
-  s"Item: $$${item.price}"
-  // ...but how do I access weight or downloadUrl? I only know about price.
-
-@main def explore1(): Unit =
-  println(invoiceLine(PhysicalItem("Keyboard", 79.99, 0.5)))
+{{#include ../../examples/interlude/explore1.scala}}
 ```
 
 **Compile and observe:** It works, but `invoiceLine` can only use `price`.
@@ -62,40 +41,7 @@ The bound gives you access to the *shared* interface, nothing more.
 The AI (or your own experience) might suggest a typeclass:
 
 ```scala
-// explore2.scala
-
-case class PhysicalItem(name: String, price: Double, weight: Double, shippingCost: Double)
-case class DigitalItem(name: String, price: Double, downloadUrl: String)
-case class Subscription(name: String, price: Double, billingCycle: String, nextBillingDate: String)
-
-// Define the capability: "can produce an invoice line"
-trait InvoiceLine[A]:
-  def format(item: A): String
-
-object InvoiceLine:
-  given InvoiceLine[PhysicalItem] with
-    def format(item: PhysicalItem): String =
-      s"${item.name} | $$${item.price} + $$${item.shippingCost} shipping (${item.weight}kg)"
-
-  given InvoiceLine[DigitalItem] with
-    def format(item: DigitalItem): String =
-      s"${item.name} | $$${item.price} (download: ${item.downloadUrl})"
-
-  given InvoiceLine[Subscription] with
-    def format(item: Subscription): String =
-      s"${item.name} | $$${item.price}/${item.billingCycle} (next: ${item.nextBillingDate})"
-
-def invoiceLine[A: InvoiceLine](item: A): String =
-  summon[InvoiceLine[A]].format(item)
-
-@main def explore2(): Unit =
-  println(invoiceLine(PhysicalItem("Keyboard", 79.99, 0.5, 5.99)))
-  println(invoiceLine(DigitalItem("E-book", 14.99, "https://example.com/dl/123")))
-  println(invoiceLine(Subscription("Cloud Storage", 9.99, "month", "2024-03-01")))
-
-  // New type without InvoiceLine? Compile error.
-  // case class GiftCard(name: String, value: Double)
-  // invoiceLine(GiftCard("Amazon", 50.0))
+{{#include ../../examples/interlude/explore2.scala}}
 ```
 
 This works well. Each type gets its own formatting logic. New types can be added without
@@ -107,17 +53,7 @@ modifying existing code. The compiler ensures every type passed to `invoiceLine`
 What if you tried a match type instead?
 
 ```scala
-// explore3.scala
-
-case class PhysicalItem(name: String, price: Double, weight: Double)
-case class DigitalItem(name: String, price: Double, downloadUrl: String)
-
-type InvoiceString[A] = A match
-  case PhysicalItem => String
-  case DigitalItem  => String
-
-// The return type is always String regardless of input...
-// Match type adds nothing here. It's the wrong tool for this job.
+{{#include ../../examples/interlude/explore3.scala}}
 ```
 
 **Compile and think about it.** A match type computes a *different output type* based on input type.

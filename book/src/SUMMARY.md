@@ -12,6 +12,8 @@
   - [Step 1: Type Parameters Are Contracts](./part1/step1.md)
   - [Step 2: Variance and Bounds](./part1/step2.md)
   - [Step 2: Variance in Practice](./part1/step2-practice.md)
+
+<!--
   - [Step 3: Opaque Types](./part1/step3.md)
   - [Step 4: Type Members](./part1/step4.md)
   - [Step 5: Givens and Typeclasses](./part1/step5.md)
@@ -32,3 +34,4 @@
 [Summary](./recap.md)
 [Learning Guide](./learning-guide.md)
 [Where to Go Next](./next-steps.md)
+-->

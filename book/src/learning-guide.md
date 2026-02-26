@@ -7,10 +7,10 @@ Recommended `scala-cli` commands when working through this tutorial:
 scala-cli compile step2d.scala
 
 # 2. See type inference results
-scala-cli compile step2e.scala -- -Xprint:typer
+scala-cli compile step2e.scala -O -Xprint:typer
 
 # 3. Get detailed error explanations
-scala-cli compile step2d.scala -- -explain
+scala-cli compile step2d.scala -O -explain
 ```
 
 Deliberately breaking compilation and reading the error messages is the core of this learning process.

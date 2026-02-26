@@ -346,21 +346,46 @@ But it *does* come up when you compose contravariant types. Here's a simplified
 inspired by [ZIO](https://zio.dev/), a popular Scala library for building concurrent
 and asynchronous programs. 
 
-ZIO's actual type is `ZIO[-R, +E, +A]` (environment,
-error, value) — we drop the error channel here to focus on variance. Think of
-`Effect[-R, +A]` as a computation that needs an environment `R` to run and
-produces a value `A`. The environment is *consumed* (`-R`) and the value is
-*produced* (`+A`) — the same variance shape as `Function1[-A, +B]`, which makes
-sense since `Effect` is essentially a wrapper around `R => A`:
+ZIO's actual type is `ZIO[-R, +E, +A]` (environment, error, value) — we drop
+the error channel here to focus on variance.
+
+`Effect[-R, +A]` is a computation that needs an environment `R` to run and
+produces a value `A`. Internally it wraps a function `R => A`:
+
+```scala
+class Effect[-R, +A](val run: R => A)
+```
+
+Look at the variance annotations. `+A` is in the output — `run` *returns* it.
+`-R` is in the input — `run` *receives* it. In fact, `R => A` is `Function1[R, A]`,
+and `R` sits in the `-A` slot of `Function1`. That's a contravariant position,
+so `R` must be declared `-R` for the class to compile.
+
+This is the same variance shape as `Function1[-A, +B]` — which makes sense,
+since `Effect` is essentially a wrapper around `R => A`.
+
+The example below defines two traits — `Database` and `Logger` — and a class
+`AppEnv` that extends both:
+
+```
+Database          Logger
+    ↑                ↑
+    └── AppEnv ──────┘
+```
+
+`AppEnv <: Database` and `AppEnv <: Logger`. An effect that needs only a
+`Database` can run where an `AppEnv` is available — `AppEnv` has at least
+everything the effect needs. That's contravariance in action:
 
 ```scala
 {{#include ../../../examples/step2/step2g2.scala}}
 ```
 
-Compare `flatMap` on both types. In `List[+A]`, the `A` comes from the class's `+A`
-— and it lands in the right position without any bound. In `Effect[-R, +A]`, the `R`
-comes from the class's `-R` — but the extra nesting of `Effect[R, B]` inside
-`Function1` changes where `R` lands, and a bound becomes necessary.
+Compare `flatMap` in `List[+A]` and `Effect[-R, +A]`. In `List`, the `A` comes
+from the class's `+A` — and it lands in the right position without any bound.
+In `Effect`, the `R` comes from the class's `-R` — but the extra nesting of
+`Effect[R, B]` inside `Function1` changes where `R` lands, and a bound becomes
+necessary.
 
 To trace this, we need to understand how the compiler decides. It checks whether
 each type parameter lands in an **input** or **output** position:
@@ -408,25 +433,45 @@ def flatMap[R1 <: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B]
 ```
 
 `R1 <: R` means `R1` is `R` or a subtype of `R` — it has at least everything `R` has.
+
 Variance rules (`+` and `-`) only apply to the class's own type parameters.
 `R1` is a type parameter on the *method*, so it's not subject to variance checking —
 the compiler just checks that `R1 <: R` holds at the call site.
 
-And `R1 <: R` isn't just a trick to satisfy the variance checker — it's what makes
-the implementation work. Look at the body:
+`R1 <: R` also makes the implementation work — not just the type checker.
+
+Let's break `Effect(r => f(run(r)).run(r))` into named steps — and write
+`Function1` explicitly instead of `=>` — so we can see both how the
+implementation works and where each type parameter lands:
 
 ```scala
-Effect(r => f(run(r)).run(r))
+//                                       i.e. R => A
+class Effect[-R, +A](val run: Function1[R, A]):
+//                                     i.e. A => Effect[R1, B]
+  def flatMap[R1 <: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B] =
+    Effect { r =>              // r: R1
+      val a = run(r)           // run this effect — OK because R1 <: R
+      val effect2 = f(a)       // build the next effect
+      effect2.run(r)           // run it with the same environment
+    }
 ```
 
-`r` has type `R1`. The outer effect's `run` expects `R`. Since `R1 <: R`, passing
-`r` where `R` is expected works — `R1` has everything `R` needs. The same `r`
-feeds both effects.
+`A` — the value produced by `run` — gets passed to `f`. Look at
+`f: Function1[A, Effect[R1, B]]`: `A` sits in the `-A` slot of `Function1`.
+The class's `+A` ends up in a contravariant position inside a contravariant
+position — `(-) × (-) = (+)` — so the compiler is satisfied.
 
-This is the same pattern as `[B >: A]` for covariance, but in the opposite direction:
-lower bounds widen covariant types, upper bounds narrow contravariant types.
+The same `r` feeds both effects — that's why `R1 <: R` matters at the
+implementation level, not just for the variance checker.
+
+Because `R` is contravariant, an effect that needs a `Database` (`R`) can run
+where an `AppEnv` (`R1`) is available — `AppEnv <: Database`, so it has at least
+everything the effect needs. That's why `fetchUser.run(AppEnv())` works:
+`fetchUser` only needs a `Database`, and `AppEnv` is one.
 
 ## 2-8. Quick Reference
+
+That was a lot of moving parts. Here's everything from this chapter in one place:
 
 ```
 Invariant (default)   → No compatibility assumed

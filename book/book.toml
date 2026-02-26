@@ -7,6 +7,7 @@ src = "src"
 
 [build]
 build-dir = "../docs"
+extra-watch-dirs = ["../examples"]
 
 [output.html]
 default-theme = "light"
