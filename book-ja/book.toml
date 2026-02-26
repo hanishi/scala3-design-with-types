@@ -6,7 +6,7 @@ language = "ja"
 src = "src"
 
 [build]
-build-dir = "../docs-ja"
+build-dir = "../docs/ja"
 extra-watch-dirs = ["../examples"]
 
 [output.html]
