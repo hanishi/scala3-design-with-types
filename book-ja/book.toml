@@ -1,0 +1,18 @@
+[book]
+title = "型で設計する"
+description = "Scala 3 実践ガイド ― 基礎から型レベルプログラミングまで"
+authors = ["hanishi"]
+language = "ja"
+src = "src"
+
+[build]
+build-dir = "../docs-ja"
+extra-watch-dirs = ["../examples"]
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+no-section-label = false
+
+[output.html.search]
+enable = true
