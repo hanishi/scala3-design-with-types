@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>セットアップ - 型で設計する</title>
+        <title>はじめに - 型で設計する</title>
 
 
         <!-- Custom HTML head -->
@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-37455b0d.js";
+            window.path_to_searchindex_js = "searchindex-b69d4701.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-b88b2e60.js"></script>
@@ -174,40 +174,43 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="セットアップ"><a class="header" href="#セットアップ">セットアップ</a></h1>
-<pre><code class="language-bash"># scala-cli をインストール（まだの場合）
-curl -sSLf https://scala-cli.virtuslab.org/get | sh
-
-# 確認
-scala-cli version
-# Scala 3.x が必要です
-</code></pre>
-<h2 id="サンプルファイルの使い方"><a class="header" href="#サンプルファイルの使い方">サンプルファイルの使い方</a></h2>
-<p>本書のすべてのコード例は <code>examples/</code> ディレクトリにそのまま実行できるファイルとして用意されています。リポジトリをクローンして、任意の例を実行してください：</p>
-<pre><code class="language-bash">git clone https://github.com/hanishi/scala3-design-with-types.git
-cd scala3-design-with-types
-
-# 特定の例を実行
-scala-cli run examples/step0/step0.scala
-
-# またはステップのディレクトリに移動して
-cd examples/step2
-scala-cli run step2c.scala
-</code></pre>
-<p>各ファイルは自己完結しています ― 読んでいるステップに対応するファイルを選んで実行するだけです。</p>
+                        <h1 id="型で設計する--scala-3-実践ガイド基礎から型レベルプログラミングまで"><a class="header" href="#型で設計する--scala-3-実践ガイド基礎から型レベルプログラミングまで">型で設計する ― Scala 3 実践ガイド：基礎から型レベルプログラミングまで</a></h1>
+<p><a href="../introduction.html">English version</a></p>
 <blockquote>
-<p><strong>注意:</strong> 必ず1ファイルずつ実行してください ― ディレクトリ全体をコンパイルしない（例：<code>scala-cli compile examples/step2/</code>）でください。各ステップのファイルは、進行を示すために同じクラス（<code>Product</code>、<code>Book</code>、<code>Box</code> など）を異なるシグネチャで意図的に再定義しています。まとめてコンパイルすると重複定義エラーになります。</p>
+<p>このチュートリアルは <code>scala-cli</code> を使いながら、
+ステップごとにコンパイラと対話して進める構成になっています。
+各ステップで最も大切なこと：<strong>まずコンパイル、エラーを読み、それから理解する。</strong></p>
 </blockquote>
+<h2 id="対象読者"><a class="header" href="#対象読者">対象読者</a></h2>
+<p>型パラメータ ― <code>List[Int]</code>、<code>Option[String]</code>、<code>Map[K, V]</code> ― は日常的に使っているでしょう。
+でも <code>[+A]</code>、<code>[B &gt;: A]</code>、<code>match</code> 型、<code>=:=</code> となると別の言語に見えるかもしれません。
+「上級者向け」と言われて飛ばしてきた。それはまったく自然なことです。</p>
+<p>このチュートリアルでは、それらは「上級」ではなく、
+解決する問題を見れば自然に理解できると主張します。
+概念はまっすぐ積み重なり、どれもあなたがすでに経験した具体的な問題に対応しています。</p>
+<h2 id="なぜこれが重要なのか"><a class="header" href="#なぜこれが重要なのか">なぜこれが重要なのか</a></h2>
+<p>根本的な問題はこうです：JVM ではジェネリクスは**消去（erasure）**されます。
+実行時には <code>List[Int]</code> も <code>List[String]</code> もただの <code>List</code> です。
+JVM はコレクションがどの型を保持しているか知りません。</p>
+<p>つまり、<strong>コンパイル時が型エラーを捕まえる唯一のチャンス</strong>です。
+このチュートリアルで扱うすべて ― 変位、不透明型、型クラス、マッチ型 ―
+は、消去が情報を捨てる<em>前に</em>コンパイラにより多くの情報を与え、
+より多くのミスを検出するためのものです。</p>
+<h2 id="構成"><a class="header" href="#構成">構成</a></h2>
+<p><strong>Part 1: 型システム</strong>（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱います
+― 型パラメータ、変位、境界、不透明型、型メンバー、型クラス。
+ほとんどのプロダクションコードで必要な知識です。</p>
+<p><strong>Part 2: 型レベルプログラミング</strong>（Step 6〜8）では、<em>計算する</em>型を扱います ―
+マッチ型、コンパイル時検証、型の等価性の証明。
+これらのテクニックはライブラリ設計やドメインモデリングで登場し、
+型システムだけでは捕捉できないバグの種類全体をコンパイラが検出できるようになります。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
-                            </a>
 
-                            <a rel="next prefetch" href="part1/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="setup.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -217,11 +220,8 @@ scala-cli run step2c.scala
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
-                    </a>
 
-                    <a rel="next prefetch" href="part1/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="setup.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
@@ -234,22 +234,6 @@ scala-cli run step2c.scala
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
         <script>
