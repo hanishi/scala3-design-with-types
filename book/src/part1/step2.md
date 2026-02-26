@@ -143,8 +143,7 @@ val recovered: Either[String, Item] = result.orElse(Right(DVD("The Matrix", 19.9
 In each case, the pattern is the same: `[B >: A]` lets the type widen to accommodate
 a value that doesn't fit `A` exactly. The compiler picks the narrowest type that works —
 `Item`, not `Any`. This is called the **LUB** (Least Upper Bound).
-In [Step 9](../part2/step9.md), we'll see what happens when there *is* no named common
-supertype — Scala 3 uses union types instead.
+When there *is* no named common supertype, Scala 3 uses union types instead.
 
 You won't write `[B >: A]` in everyday application code — but those foundational APIs
 genuinely depend on it. Without lower bounds, covariant containers simply couldn't

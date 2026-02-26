@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-db37cde3.js";
+            window.path_to_searchindex_js = "../searchindex-965f2ec9.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-afb68cc0.js"></script>
+        <script src="../toc-9571e420.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -175,89 +175,116 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="step-2-variance-in-practice"><a class="header" href="#step-2-variance-in-practice">Step 2: Variance in Practice</a></h1>
-<h2 id="2-9-covariance-in-practice--most-types-are-producers"><a class="header" href="#2-9-covariance-in-practice--most-types-are-producers">2-9. Covariance in Practice — Most Types Are Producers</a></h2>
-<p>In real code, the majority of your custom types are <strong>producers</strong>: they hold data and you read from them.
-This is why covariance shows up so often.</p>
-<pre><code class="language-scala">// step2h.scala
+<h2 id="2-9-covariance-in-practice--you-already-use-it"><a class="header" href="#2-9-covariance-in-practice--you-already-use-it">2-9. Covariance in Practice — You Already Use It</a></h2>
+<p>You don’t need custom types to see covariance — it’s in the standard library types
+you use every day. Each one also shows the <code>[B &gt;: A]</code> lower bound escape hatch
+from section 2-5:</p>
+<pre><code class="language-scala">// step2h.scala — Covariance in the standard library
 
-// An event hierarchy — very common in event-driven systems
-sealed trait OrderEvent
-case class OrderPlaced(orderId: String, timestamp: Long) extends OrderEvent
-case class PaymentReceived(orderId: String, timestamp: Long, amount: Double) extends OrderEvent
-case class ItemShipped(orderId: String, timestamp: Long, trackingId: String) extends OrderEvent
-
-// An event stream. Should EventStream[PaymentReceived] be usable as EventStream[OrderEvent]?
-// YES — if you're only reading events out, a stream of payments IS a stream of order events.
-
-// Invariant version — causes friction
-class EventStream[A](val events: List[A]):
-  def latest: Option[A] = events.headOption
-
-// Covariant version — works naturally
-class EventStreamCov[+A](val events: List[A]):
-  def latest: Option[A] = events.headOption
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name)"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name)"
 
 @main def step2h(): Unit =
-  val payments = EventStreamCov(List(
-    PaymentReceived("ord1", 1000L, 99.99),
-    PaymentReceived("ord2", 2000L, 49.50),
-  ))
+  val book = Book("Scala in Depth", 45.0, "978-1617295")
+  val dvd = DVD("The Matrix", 19.99)
 
-  // This just works. A stream of payments IS a stream of order events.
-  val events: EventStreamCov[OrderEvent] = payments
-  println(events.latest)
+  // --- Option[+A] ---
+  // Some[Book] is usable as Option[Item] — a Book result IS an Item result
+  val maybeBook: Option[Book] = Some(book)
+  val maybeItem: Option[Item] = maybeBook  // covariance
+  println(maybeItem)  // Some(Book(Scala in Depth))
 
-  // With the invariant version, you'd have to write:
-  val paymentsInv = EventStream(List(PaymentReceived("ord1", 1000L, 99.99)))
-  // val eventsInv: EventStream[OrderEvent] = paymentsInv  // REJECTED
-  // You'd be forced to create a new EventStream[OrderEvent] by copying.
+  // getOrElse uses [B &gt;: A] — the lower bound escape hatch for covariance
+  val item: Item = maybeBook.getOrElse(dvd)  // Option[Book] → fallback DVD → Item
+  println(item)
+
+  // --- List[+A] ---
+  // List[Book] is usable as List[Item]
+  val books: List[Book] = List(book)
+  val items: List[Item] = books  // covariance
+  println(items)
+
+  // :+ uses [B &gt;: A] — adding a DVD widens to List[Item]
+  val mixed: List[Item] = books :+ dvd
+  println(mixed)  // List(Book(Scala in Depth), DVD(The Matrix))
+
+  // --- Nothing ---
+  // Nothing is Scala's bottom type — a subtype of every other type.
+  // No value of type Nothing can ever exist, but the compiler uses it as a
+  // placeholder: "this side has no type yet." Combined with covariance,
+  // Nothing &lt;: anything, so it fits wherever a type is expected.
+
+  // --- Either[+A, +B] ---
+  // Either is covariant in BOTH type parameters
+  // Right(book) is Right[Nothing, Book] — Nothing is the Left type.
+  // Covariance on +A: Nothing &lt;: String, so Either[Nothing, Book] &lt;: Either[String, Book]
+  val result: Either[String, Book] = Right(book)
+  val wider: Either[String, Item] = result  // covariance on +B: Book &lt;: Item
+  println(wider)
+
+  // Same idea with Left: Left("not found") is Left[String, Nothing]
+  // Covariance on +B: Nothing &lt;: Book, so Either[String, Nothing] &lt;: Either[String, Book]
+  val failed: Either[String, Book] = Left("not found")
+  println(failed)
+
+  // orElse uses [B1 &gt;: B] — recovery widens the Right type
+  val recovered: Either[String, Item] = failed.orElse(Right(dvd))
+  println(recovered)  // Right(DVD(The Matrix))
 </code></pre>
-<p>This pattern appears everywhere:</p>
-<ul>
-<li><code>Option[+A]</code> — <code>Some[Book]</code> is usable as <code>Option[Product]</code></li>
-<li><code>List[+A]</code> — a list of specific items is a list of general items</li>
-<li><code>Future[+A]</code> — a future producing a <code>Book</code> is a future producing a <code>Product</code></li>
-<li><code>Either[+A, +B]</code> — results carry their types upward</li>
-</ul>
-<p>If your type only <strong>produces</strong> (returns, holds, emits) values of type <code>A</code>,
-it should almost certainly be covariant.</p>
+<p>The code introduces <code>Nothing</code> — Scala’s <strong>bottom type</strong>. It’s a subtype of every type,
+and no value of type <code>Nothing</code> can ever exist. The compiler uses it as a placeholder
+when one side of a type is unspecified: <code>Right(book)</code> is <code>Right[Nothing, Book]</code>,
+<code>Left("error")</code> is <code>Left[String, Nothing]</code>, <code>List()</code> is <code>List[Nothing]</code>, and <code>None</code>
+is <code>Option[Nothing]</code>. Covariance makes this work — since <code>Nothing &lt;: A</code> for any <code>A</code>,
+these always fit wherever a type is expected.</p>
+<p>You already saw this in section 2-5: <code>Cart()</code> is <code>Cart[Nothing]</code>. Adding a <code>Book</code>
+widens it to <code>Cart[Book]</code> via the <code>[B &gt;: A]</code> lower bound.</p>
+<p>The pattern is the same in every case: the type <strong>produces</strong> (returns, holds, emits)
+values of <code>A</code>, so <code>+A</code> is natural. And when you need to add or combine values of
+a different subtype, <code>[B &gt;: A]</code> widens the type safely.</p>
 <h2 id="2-10-contravariance-in-practice--handlers-validators-serializers"><a class="header" href="#2-10-contravariance-in-practice--handlers-validators-serializers">2-10. Contravariance in Practice — Handlers, Validators, Serializers</a></h2>
 <p>Contravariance is less common but appears in a very specific pattern:
 types that <strong>consume</strong> or <strong>process</strong> values.</p>
 <pre><code class="language-scala">// step2i.scala
 
-class Product(val name: String, val price: Double)
-class Book(name: String, price: Double, val isbn: String) extends Product(name, price)
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item
+class DVD(val name: String, val price: Double) extends Item
 
 // JSON serializer — consumes a value and produces a String
 trait JsonWriter[-A]:
   def write(value: A): String
 
-class ProductWriter extends JsonWriter[Product]:
-  def write(value: Product): String = s"""{"name":"${value.name}","price":${value.price}}"""
+class ItemWriter extends JsonWriter[Item]:
+  def write(value: Item): String = s"""{"name":"${value.name}","price":${value.price}}"""
 
 class BookWriter extends JsonWriter[Book]:
   def write(value: Book): String = s"""{"name":"${value.name}","price":${value.price},"isbn":"${value.isbn}"}"""
 
 @main def step2i(): Unit =
-  val productWriter: JsonWriter[Product] = ProductWriter()
+  val itemWriter: JsonWriter[Item] = ItemWriter()
 
-  // A ProductWriter can write Books too — it handles anything that's a Product
-  val bookWriter: JsonWriter[Book] = productWriter  // Contravariance!
+  // An ItemWriter can write Books too — it handles anything that's an Item
+  val bookWriter: JsonWriter[Book] = itemWriter  // Contravariance!
   println(bookWriter.write(Book("Scala in Depth", 45.0, "978-1617295")))
+  // prints: {"name":"Scala in Depth","price":45.0} — no isbn, same as PriceFormatter
 
-  // A BookWriter can NOT write arbitrary Products — it expects Book-specific fields
+  // A BookWriter can NOT write arbitrary Items — it expects Book-specific fields
   val specificWriter: JsonWriter[Book] = BookWriter()
-  // val generalWriter: JsonWriter[Product] = specificWriter  // REJECTED
-
-// The pattern: "if you can handle the general case, you can handle the specific case"
+  // val generalWriter: JsonWriter[Item] = specificWriter  // REJECTED
+  // What would specificWriter.write(DVD("The Matrix", 19.99)) do with isbn?
 </code></pre>
-<p>Other real-world contravariant types:</p>
-<ul>
-<li><code>Ordering[-A]</code> — an ordering for <code>Product</code> can sort <code>Book</code>s</li>
-<li><code>Function1[-A, +B]</code> — a function accepting <code>Product</code> can be called with <code>Book</code></li>
-<li>Validators, event handlers, comparators — anything that <strong>receives and processes</strong></li>
-</ul>
+<p>You already saw this pattern in section 2-7: <code>Function1[-A, +B]</code> is contravariant
+in its input, which is why <code>books.filter(cheap)</code> works when <code>cheap</code> is <code>Item =&gt; Boolean</code>.
+The <code>JsonWriter</code> here is the same idea — if it can serialize any <code>Item</code>, it can
+serialize a <code>Book</code>.</p>
 <h2 id="2-11-so-is-invariant-actually-useful"><a class="header" href="#2-11-so-is-invariant-actually-useful">2-11. So Is Invariant Actually Useful?</a></h2>
 <p>Yes, but its role is narrower than you might think.</p>
 <p>Invariant is the right choice when your type <strong>both reads and writes</strong> — mutable containers,
@@ -265,8 +292,11 @@ bidirectional channels, read-write references. But in well-designed Scala code,
 these are relatively rare because immutability is preferred.</p>
 <pre><code class="language-scala">// step2j.scala
 
-class Product(val name: String):
-  override def toString = s"Product($name)"
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name)"
 
 // Invariant is correct here: a mutable cell reads AND writes
 class Cell[A](var value: A):
@@ -285,12 +315,12 @@ trait Codec[A]:
 // trait Codec[-A]:  // error on decode
 
 @main def step2j(): Unit =
-  val cell = Cell[Product](Product("Keyboard"))
-  cell.set(Product("Mouse"))
-  println(cell.get)  // Product(Mouse)
+  val cell = Cell[Item](Book("Scala", 45.0, "978-1"))
+  cell.set(Book("FP", 35.0, "978-2"))
+  println(cell.get)  // Book(FP)
 
-  // Cell[Book] is NOT Cell[Product] — and shouldn't be.
-  // If it were, you could put Electronics in a Book cell.
+  // Cell[Book] is NOT Cell[Item] — and shouldn't be.
+  // If it were, you could put a DVD in a Book cell.
 </code></pre>
 <p><strong>The practical reality:</strong></p>
 <p>Most types you design in Scala fall into one of two camps:</p>
@@ -308,13 +338,10 @@ and the compiler verifies your answer.</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../part1/step2-bounds.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../part1/step2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../part1/step3.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -322,13 +349,10 @@ and the compiler verifies your answer.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../part1/step2-bounds.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../part1/step2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../part1/step3.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
-                    </a>
             </nav>
 
         </div>
@@ -339,22 +363,6 @@ and the compiler verifies your answer.</p>
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
         <script>
