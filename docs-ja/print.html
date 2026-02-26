@@ -1,0 +1,1292 @@
+<!DOCTYPE HTML>
+<html lang="ja" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>型で設計する</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Scala 3 実践ガイド ― 基礎から型レベルプログラミングまで">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-37455b0d.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-b88b2e60.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">型で設計する</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="型で設計する--scala-3-実践ガイド基礎から型レベルプログラミングまで"><a class="header" href="#型で設計する--scala-3-実践ガイド基礎から型レベルプログラミングまで">型で設計する ― Scala 3 実践ガイド：基礎から型レベルプログラミングまで</a></h1>
+<blockquote>
+<p>このチュートリアルは <code>scala-cli</code> を使いながら、
+ステップごとにコンパイラと対話して進める構成になっています。
+各ステップで最も大切なこと：<strong>まずコンパイル、エラーを読み、それから理解する。</strong></p>
+</blockquote>
+<h2 id="対象読者"><a class="header" href="#対象読者">対象読者</a></h2>
+<p>型パラメータ ― <code>List[Int]</code>、<code>Option[String]</code>、<code>Map[K, V]</code> ― は日常的に使っているでしょう。
+でも <code>[+A]</code>、<code>[B &gt;: A]</code>、<code>match</code> 型、<code>=:=</code> となると別の言語に見えるかもしれません。
+「上級者向け」と言われて飛ばしてきた。それはまったく自然なことです。</p>
+<p>このチュートリアルでは、それらは「上級」ではなく、
+解決する問題を見れば自然に理解できると主張します。
+概念はまっすぐ積み重なり、どれもあなたがすでに経験した具体的な問題に対応しています。</p>
+<h2 id="なぜこれが重要なのか"><a class="header" href="#なぜこれが重要なのか">なぜこれが重要なのか</a></h2>
+<p>根本的な問題はこうです：JVM ではジェネリクスは**消去（erasure）**されます。
+実行時には <code>List[Int]</code> も <code>List[String]</code> もただの <code>List</code> です。
+JVM はコレクションがどの型を保持しているか知りません。</p>
+<p>つまり、<strong>コンパイル時が型エラーを捕まえる唯一のチャンス</strong>です。
+このチュートリアルで扱うすべて ― 変位、不透明型、型クラス、マッチ型 ―
+は、消去が情報を捨てる<em>前に</em>コンパイラにより多くの情報を与え、
+より多くのミスを検出するためのものです。</p>
+<h2 id="構成"><a class="header" href="#構成">構成</a></h2>
+<p><strong>Part 1: 型システム</strong>（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱います
+― 型パラメータ、変位、境界、不透明型、型メンバー、型クラス。
+ほとんどのプロダクションコードで必要な知識です。</p>
+<p><strong>Part 2: 型レベルプログラミング</strong>（Step 6〜8）では、<em>計算する</em>型を扱います ―
+マッチ型、コンパイル時検証、型の等価性の証明。
+これらのテクニックはライブラリ設計やドメインモデリングで登場し、
+型システムだけでは捕捉できないバグの種類全体をコンパイラが検出できるようになります。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="セットアップ"><a class="header" href="#セットアップ">セットアップ</a></h1>
+<pre><code class="language-bash"># scala-cli をインストール（まだの場合）
+curl -sSLf https://scala-cli.virtuslab.org/get | sh
+
+# 確認
+scala-cli version
+# Scala 3.x が必要です
+</code></pre>
+<h2 id="サンプルファイルの使い方"><a class="header" href="#サンプルファイルの使い方">サンプルファイルの使い方</a></h2>
+<p>本書のすべてのコード例は <code>examples/</code> ディレクトリにそのまま実行できるファイルとして用意されています。リポジトリをクローンして、任意の例を実行してください：</p>
+<pre><code class="language-bash">git clone https://github.com/hanishi/scala3-design-with-types.git
+cd scala3-design-with-types
+
+# 特定の例を実行
+scala-cli run examples/step0/step0.scala
+
+# またはステップのディレクトリに移動して
+cd examples/step2
+scala-cli run step2c.scala
+</code></pre>
+<p>各ファイルは自己完結しています ― 読んでいるステップに対応するファイルを選んで実行するだけです。</p>
+<blockquote>
+<p><strong>注意:</strong> 必ず1ファイルずつ実行してください ― ディレクトリ全体をコンパイルしない（例：<code>scala-cli compile examples/step2/</code>）でください。各ステップのファイルは、進行を示すために同じクラス（<code>Product</code>、<code>Book</code>、<code>Box</code> など）を異なるシグネチャで意図的に再定義しています。まとめてコンパイルすると重複定義エラーになります。</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="part-1-型システム"><a class="header" href="#part-1-型システム">Part 1: 型システム</a></h1>
+<p>Part 1（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱います ― 型パラメータ、変位、境界、不透明型、型メンバー、型クラス。ほとんどのプロダクションコードで必要な知識です。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-0-型のない世界"><a class="header" href="#step-0-型のない世界">Step 0: 型のない世界</a></h1>
+<p>型情報が失われると何が起きるか、体感してみましょう。</p>
+<h2 id="0-1-何でも入るリスト"><a class="header" href="#0-1-何でも入るリスト">0-1. 何でも入るリスト</a></h2>
+<pre><code class="language-scala">// step0.scala
+@main def step0(): Unit =
+  // In Scala, you can't omit type parameters.
+  // But you can use Any to make a list that holds everything.
+  val xs: List[Any] = List(100, "hello", true, 3.14)
+
+  // What do you get when you pull something out?
+  val first: Any = xs.head  // It's 100... but the type is Any
+
+  // Try to do arithmetic — compile error
+  // val doubled = first * 2
+  // [error] value * is not a member of Any
+  // [error]    val doubled = first * 2
+  // [error]                  ^^^^^^^
+
+  println(first)            // prints 100
+  println(first.getClass)   // class java.lang.Integer
+</code></pre>
+<p><strong>試してみよう：</strong></p>
+<pre><code>&gt; scala-cli run step0.scala
+</code></pre>
+<p><code>first * 2</code> のコメントを外してコンパイルしてください。エラーを読みましょう。
+コンパイラは <code>Any</code> に <code>*</code> メソッドがないと言います。</p>
+<p><strong>ポイント：</strong> 実行時には値は 100 <em>です</em>が、コンパイラはそれを知りません。
+型情報が失われた瞬間、コンパイラはあなたを守れなくなります。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-1-型パラメータは契約である"><a class="header" href="#step-1-型パラメータは契約である">Step 1: 型パラメータは契約である</a></h1>
+<h2 id="1-1-自分だけの-box-を作る"><a class="header" href="#1-1-自分だけの-box-を作る">1-1. 自分だけの Box を作る</a></h2>
+<pre><code class="language-scala">// step1a.scala
+
+// A box that holds anything (no type parameter)
+class AnyBox(val value: Any)
+
+// A box with a type parameter
+class Box[A](val value: A)
+
+@main def step1(): Unit =
+  // AnyBox: easy to put things in
+  val anyBox = AnyBox(42)
+  // val n: Int = anyBox.value  // Compile error! Any is not Int
+  val n: Int = anyBox.value.asInstanceOf[Int]  // Dangerous cast
+
+  // Box[A]: the type is preserved
+  val intBox = Box(42)       // Inferred as Box[Int]
+  val m: Int = intBox.value  // Comes out as Int — no cast needed
+
+  // Wrong type? Compile error.
+  // val s: String = intBox.value  // error: Found Int, Required String
+
+  println(s"AnyBox: $n, Box[Int]: $m")
+</code></pre>
+<p><strong>試してみよう：</strong></p>
+<pre><code>&gt; scala-cli run step1a.scala
+</code></pre>
+<p>次に <code>val s: String = intBox.value</code> のコメントを外してみてください。</p>
+<p><strong>ポイント：</strong> <code>Box[A]</code> の <code>A</code> は中に入れたものを「覚えている」のではありません。
+コンパイラは構築時に <code>A = Int</code> と<strong>確定</strong>します。これが契約です。
+値を取り出すとき、それは <code>Int</code> であることが保証されます。</p>
+<h2 id="1-2-関数の型パラメータ--契約は伝播する"><a class="header" href="#1-2-関数の型パラメータ--契約は伝播する">1-2. 関数の型パラメータ ― 契約は伝播する</a></h2>
+<pre><code class="language-scala">// step1b.scala
+
+def first[A](xs: List[A]): A = xs.head
+
+@main def step1b(): Unit =
+  val names = List("Scala", "Rust", "Go")
+  val top: String = first(names)  // Compiler resolves A = String
+  println(top)
+
+  val nums = List(1, 2, 3)
+  val one: Int = first(nums)      // Compiler resolves A = Int
+  println(one)
+
+  // What about this?
+  val mixed = List(1, "two", 3.0)
+  val what = first(mixed)         // What is A here?
+  println(what.getClass)
+</code></pre>
+<p><strong>型を確認してみよう：</strong></p>
+<pre><code class="language-sh">scala-cli run step1b.scala
+
+# 推論された型を見る（コンパイルキャッシュを回避するため先にクリーン）：
+scala-cli clean step1b.scala &amp;&amp; scala-cli compile step1b.scala -O -Xprint:typer 2&gt;&amp;1 | grep "mixed"
+</code></pre>
+<p><code>mixed</code> は <code>List[Int | String | Double]</code> と推論されます ― これはユニオン型で、Scala 3 の機能です。</p>
+<p><code>List[Int | String | Double]</code> とは一度も書いていないことに注目してください ― コンパイラが<strong>推論</strong>したのです。
+本書を通じて、コンパイラが文脈から型パラメータを導き出す能力に頼ります。
+型推論が内部的にどう動くかはそれ自体が一つのテーマですが、ここでは単にそれが機能すると信頼し、
+型が<em>何を意味するか</em>に集中します。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-2-変位と境界"><a class="header" href="#step-2-変位と境界">Step 2: 変位と境界</a></h1>
+<p>変位は暗記するルールの集まりではありません。
+「なぜこれはコンパイルできないのか？」とコンパイラに問いかけることで体験するものです。
+出発点は<strong>不変（invariant）</strong>（互換性なし）。これがデフォルトであることに意味があります。</p>
+<h2 id="2-1-不変--デフォルトの壁"><a class="header" href="#2-1-不変--デフォルトの壁">2-1. 不変 ― デフォルトの壁</a></h2>
+<pre><code class="language-scala">// step2a.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
+
+// Define our own Box. The type parameter is [A] — invariant.
+class Box[A](val value: A)
+
+@main def step2a(): Unit =
+  val bookBox: Box[Book] = Box(Book("Scala in Depth", 45.0))
+
+  // Book is a subtype of Item. So is Box[Book] a subtype of Box[Item]?
+  // val itemBox: Box[Item] = bookBox
+  // [error] Found:    (bookBox : Box[Book])
+  // [error] Required: Box[Item]
+  // [error]    val itemBox: Box[Item] = bookBox
+  // [error]                                   ^^^^^^^
+
+  println("Box[Book] is NOT Box[Item]")
+</code></pre>
+<p><strong>コメントを外してコンパイルしてください。</strong></p>
+<p>コンパイラは <code>Box[Book]</code> と <code>Box[Item]</code> を<strong>まったく別の型</strong>として扱います。
+<code>Book &lt;: Item</code> だからといって <code>Box[Book] &lt;: Box[Item]</code> とはなりません。</p>
+<blockquote>
+<p><strong>記法について：</strong> <code>&lt;:</code> は「〜のサブタイプ」、<code>&gt;:</code> は「〜のスーパータイプ」を意味します。
+<code>Book &lt;: Item</code> は「Book は Item のサブタイプ」、つまり <code>Book extends Item</code> です。
+これらの記号はこの章を通じて、文章中でも Scala コード（型境界）でも使われます。</p>
+</blockquote>
+<p>コンパイラのデフォルト：<em>「安全だと証明してくれたら許可する。」</em></p>
+<h2 id="2-2-なぜ不変がデフォルトなのか--壊して理解する"><a class="header" href="#2-2-なぜ不変がデフォルトなのか--壊して理解する">2-2. なぜ不変がデフォルトなのか ― 壊して理解する</a></h2>
+<pre><code class="language-scala">// step2b.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
+
+// What if Box[Book] could be used as Box[Item]?
+// Note: var means the value can be reassigned — this box is mutable (read AND write).
+class Box[A](var value: A)
+
+@main def step2b(): Unit =
+  val bookBox: Box[Book] = Box(Book("Scala in Depth", 45.0))
+
+  // Try uncommenting the next line and compile:
+  // val itemBox: Box[Item] = bookBox
+  // [error] Found:    (bookBox : Box[Book])
+  // [error] Required: Box[Item]
+  // [error]    val itemBox: Box[Item] = bookBox
+  // [error]                                      ^^^^^^^
+  //
+  // The compiler rejects this. But imagine if it didn't — what could go wrong?
+  // itemBox.value = DVD("The Matrix", 19.99)  // Item allows DVD...
+  // val book: Book = bookBox.value  // ...but now a DVD comes out as a Book!
+
+  println("The compiler prevents this — a mutable box must be invariant")
+</code></pre>
+<p>これは思考実験ですが、Java では<strong>実際に起きます</strong>：</p>
+<pre><code class="language-java">// Step2bJava.java — Java arrays are covariant, which leads to runtime errors
+
+class Item {
+    String name;
+    Item(String name) { this.name = name; }
+}
+
+class Book extends Item {
+    Book(String name) { super(name); }
+}
+
+class DVD extends Item {
+    DVD(String name) { super(name); }
+}
+
+public class Step2bJava {
+    public static void main(String[] args) {
+        Book[] books = { new Book("Scala") };
+        Item[] products = books;        // Java arrays are covariant — this compiles!
+        products[0] = new DVD("Keyboard");  // ArrayStoreException at runtime!
+    }
+}
+</code></pre>
+<p><strong>試してみよう</strong>（<code>javac</code> と <code>java</code> が必要）：</p>
+<pre><code class="language-sh">javac Step2bJava.java &amp;&amp; java Step2bJava
+</code></pre>
+<p>警告なしでコンパイルされますが、実行時に <code>ArrayStoreException</code> でクラッシュします。</p>
+<p>Scala の不変デフォルトは、<strong>このクラスのバグをコンパイル時に排除する</strong>という設計判断です。</p>
+<h2 id="2-3-共変にする--a-の意味"><a class="header" href="#2-3-共変にする--a-の意味">2-3. 共変にする ― <code>+A</code> の意味</a></h2>
+<pre><code class="language-scala">// step2c.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
+
+// Same Box, but now with +A — covariant.
+class Box[+A](val value: A)
+
+@main def step2c(): Unit =
+  val bookBox: Box[Book] = Box(Book("Scala in Depth", 45.0))
+
+  // In 2-1, Box[A] rejected this. The + is what makes the difference.
+  // Book is an Item, so Box[Book] can now be used as Box[Item].
+  val itemBox: Box[Item] = bookBox
+  println(itemBox.value)  // Book(Scala in Depth, $45.0)
+</code></pre>
+<p><code>+A</code> を付けると、サブタイプ関係がコンテナを通じて持ち上がります：
+<code>Book &lt;: Item</code> ならば <code>Box[Book] &lt;: Box[Item]</code>。</p>
+<p>この <code>Box</code> は値を保持するだけです。中身を検査したり変更したりもしたい場合はどうでしょう？</p>
+<h2 id="2-4-コンパイラのチェックを試す"><a class="header" href="#2-4-コンパイラのチェックを試す">2-4. コンパイラのチェックを試す</a></h2>
+<p><strong>ブロックを一つずつコメント解除してください。</strong></p>
+<pre><code class="language-scala">// step2d.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
+
+// Uncomment and compile each block one at a time:
+
+// 1. Try +A with a var — var lets you write a new value in, violating +A.
+// class Box[+A](var value: A)
+// [error] covariant type A occurs in invariant position in type A of variable value
+// [error]  class Box[+A](var value: A)
+// [error]                   ^^^^^^^^^^^^
+
+// 2. OK, only a val. But what about checking what's inside?
+class Box[+A](val value: A):
+  def contains(item: A): Boolean = value == item
+  // [error] covariant type A occurs in contravariant position in type A of parameter item
+  // [error]   def contains(item: A): Boolean = value == item
+  // [error]                ^^^^^^
+  //
+  // With just [A] (invariant), contains works fine.
+  // It's the + that prevents passing A in.
+
+@main def step2d(): Unit =
+  println("Uncomment each block and read the error messages")
+</code></pre>
+<p>不変の <code>Box[A]</code> では、<code>var value: A</code> も <code>contains(item: A)</code> も安全です。
+<code>Box[Book]</code> は <code>Box[Item]</code> ではないからです。
+サブタイプ関係で型が広がることがないので、互換性のない値が入り込む余地がありません。</p>
+<p><code>Box[+A]</code> を宣言すると、Scala は <code>Box[Book]</code> を <code>Box[Item]</code> として見ることを許可します。
+その広い視点から見ると：</p>
+<ul>
+<li><code>var value: A</code> は、実際には <code>Box[Book]</code> であるところに <code>DVD</code> を代入できてしまう</li>
+<li><code>contains(DVD(...))</code> が有効に見える ― <code>DVD</code> は <code>Item</code> だから</li>
+</ul>
+<p>しかし、基盤となるオブジェクトは <code>Box[Book]</code> のままです。型安全性を保つために、Scala は両方を拒否します：</p>
+<ul>
+<li><code>var value: A</code> → <em>「不変位置（invariant position）」</em> ― <code>var</code> は読み書き両方</li>
+<li><code>contains(item: A)</code> → <em>「反変位置（contravariant position）」</em> ― パラメータは値を消費する</li>
+</ul>
+<p>共変型パラメータ（<code>+A</code>）は<strong>出力</strong>位置にのみ現れることができます：</p>
+<ul>
+<li><code>val value: A</code></li>
+<li>メソッドの戻り値型</li>
+</ul>
+<blockquote>
+<p><strong>なぜ <code>contains</code> は無害に見えるのに拒否されるのか？</strong> Scala は変位ルールを構造的に強制します ―
+メソッドの実装は分析しません。
+<code>contains</code> はこの場合は無害でしょうが、<code>var value: A</code> のような他のメンバーは不健全です。
+ルールは統一的です：共変型パラメータ（<code>+A</code>）は入力位置に現れることができません。</p>
+</blockquote>
+<p>では、共変を維持しつつ有用な入力を諦めずに済む方法は？
+そこで<strong>型境界</strong>の出番です。</p>
+<h2 id="2-5-下限境界--変位制約からの脱出"><a class="header" href="#2-5-下限境界--変位制約からの脱出">2-5. 下限境界 ― 変位制約からの脱出</a></h2>
+<p>2-4 で、<code>+A</code> は <code>A</code> を入力位置で拒否することを見ました。</p>
+<p><code>B &gt;: A</code> は「<code>B</code> は <code>A</code> のスーパータイプ」― <code>B</code> は <code>A</code> またはその上の型でなければなりません。
+これによって次のことが可能になります：<code>A</code> を直接受け取る（<code>+A</code> が禁止する）のではなく、
+メソッドはコンパイラに「カートの中身と追加するものの両方に十分広い型 <code>B</code>」を見つけさせます。
+カートの型は同じか広がるだけで、狭まることはありません。</p>
+<pre><code class="language-scala">// step2e.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
+
+// An immutable shopping cart. +A makes it covariant.
+class Cart[+A](private val items: List[A] = Nil):
+  // def add(item: A) won't compile with +A. Try it!
+  // def add[B &gt;: A](item: B) compiles — B must be A or wider,
+  // so the cart can only stay the same or widen, never narrow:
+  //   add(Book)        to Cart[Book] → still a cart of Books    → Cart[Book]
+  //   add(DVD)         to Cart[Book] → no longer just Books     → Cart[Item]
+  def add[B &gt;: A](item: B): Cart[B] = Cart(item :: items)
+
+  // A is whatever this cart holds — Book for Cart[Book], Item for Cart[Item].
+  def total(f: A =&gt; Double): Double = items.map(f).sum
+
+  override def toString = s"Cart(${items.mkString(", ")})"
+
+@main def step2e(): Unit =
+  // Cart() is Cart[Nothing] — an empty cart with no type yet.
+  // add(Book(...)) widens Nothing to Book → Cart[Book].
+  val bookCart: Cart[Book] = Cart().add(Book("Scala in Depth", 45.0))
+  println(bookCart)                     // Cart(Book(Scala in Depth, $45.0))
+
+  // Add another Book → stays Cart[Book]
+  val bookCart2: Cart[Book] = bookCart.add(Book("FP in Scala", 35.0))
+  println(bookCart2)                    // Cart(Book(FP in Scala, $35.0), Book(Scala in Depth, $45.0))
+
+  // Add DVD → widens to Cart[Item] (common parent of Book and DVD)
+  val mixedCart: Cart[Item] = bookCart.add(DVD("The Matrix", 19.99))
+  println(mixedCart)                    // Cart(DVD(The Matrix, $19.99), Book(Scala in Depth, $45.0))
+
+  // The type widened: mixedCart is Cart[Item], not Cart[Book].
+  // A is now Item, so total's signature became:
+  //   total(f: Item =&gt; Double)
+  // Item has price, so _.price just works:
+  val subtotal = mixedCart.total(_.price)
+  val discounted = mixedCart.total(_.price * 0.95)
+  println(f"Subtotal:     $$$subtotal%.2f")       // Subtotal:     $64.99
+  println(f"With 5%% off: $$$discounted%.2f")     // With 5% off: $61.74
+</code></pre>
+<p>これはまさに <code>List[+A]</code> の <code>prepended</code> がやっていることです：</p>
+<pre><code class="language-scala">// List の簡略化された定義
+sealed abstract class List[+A]:
+  def prepended[B &gt;: A](elem: B): List[B]
+</code></pre>
+<p><code>List[Book]</code> に <code>DVD</code> を prepend すると <code>List[Item]</code> になります。型は嘘をつきません。</p>
+<h3 id="下限境界はどこで使われるか"><a class="header" href="#下限境界はどこで使われるか">下限境界はどこで使われるか？</a></h3>
+<p>「下限境界は基本的に同じような場面で使われるのか？」と思うかもしれません。</p>
+<p>はい ― いくつかの役割に集中しています：</p>
+<p><strong>コンテナの拡大</strong> ― 共変コレクションへの挿入：</p>
+<pre><code class="language-scala">val books: List[Book] = List(Book("Scala", 45.0))
+val items: List[Item] = books :+ DVD("The Matrix", 19.99)
+// List[Book] が List[Item] に拡大
+</code></pre>
+<p><strong>フォールバック値</strong> ― <code>Option.getOrElse[B &gt;: A](default: =&gt; B): B</code>：</p>
+<pre><code class="language-scala">val maybeBook: Option[Book] = None
+val item: Item = maybeBook.getOrElse(DVD("The Matrix", 19.99))
+// Option[Book] → Book がない → DVD にフォールバック → 結果は Item
+</code></pre>
+<p><strong>結合/マージ</strong> ― <code>Either</code> の <code>orElse</code> は <code>Right</code> 型を拡大する：</p>
+<pre><code class="language-scala">val result: Either[String, Book] = Left("not found")
+val recovered: Either[String, Item] = result.orElse(Right(DVD("The Matrix", 19.99)))
+// Either[String, Book] → DVD で復旧 → Either[String, Item]
+</code></pre>
+<p>いずれの場合もパターンは同じです：<code>[B &gt;: A]</code> は <code>A</code> にぴったり合わない値を受け入れるために型を拡大します。コンパイラは機能する最も狭い型を選びます ―
+<code>Any</code> ではなく <code>Item</code>。これを<strong>LUB</strong>（Least Upper Bound、最小上界）と呼びます。
+名前のついた共通のスーパータイプが<em>ない</em>場合、Scala 3 はユニオン型を使います。</p>
+<p>日常のアプリケーションコードで <code>[B &gt;: A]</code> を書くことはないでしょう ― しかし基盤となる API は
+本当にこれに依存しています。下限境界がなければ、共変コンテナは「追加」メソッドを持てません。</p>
+<p>一つ覚えておくこと：拡大は呼び出し側により精度の低い型を返すことを意味します。
+<code>[B &gt;: A]</code> は拡大が本当に必要なときに使いましょう。予防策としてではなく。</p>
+<h2 id="2-6-上限境界--最低限の振る舞いを要求する"><a class="header" href="#2-6-上限境界--最低限の振る舞いを要求する">2-6. 上限境界 ― 最低限の振る舞いを要求する</a></h2>
+<p>下限境界が<strong>拡大</strong>するなら、上限境界は<strong>制限</strong>します。</p>
+<pre><code class="language-scala">// step2f.scala
+
+trait Item:
+  def name: String
+  def price: Double
+
+trait Shippable extends Item:
+  def weight: Double
+  def shippingCost: Double = weight * 0.5
+
+case class Book(name: String, price: Double, weight: Double) extends Shippable
+case class DVD(name: String, price: Double, weight: Double) extends Shippable
+case class DigitalGiftCertificate(name: String, price: Double) extends Item  // Not shippable
+
+// Only Shippable items can be sorted by shipping cost
+def sortByShipping[A &lt;: Shippable](items: List[A]): List[A] =
+  items.sortBy(_.shippingCost)
+
+// Combining covariance with an upper bound:
+// +A means Shipment[Book] &lt;: Shipment[Shippable]
+// &lt;: Shippable means every item is guaranteed to have shippingCost
+class Shipment[+A &lt;: Shippable](private val items: List[A]):
+  def totalShippingCost: Double = items.map(_.shippingCost).sum
+  def sortByShipping: List[A] = items.sortBy(_.shippingCost)
+  // +A forbids A in input position, so we use [B &gt;: A] — same escape hatch as List's :+
+  def add[B &gt;: A &lt;: Shippable](item: B): Shipment[B] = Shipment(items :+ item)
+
+@main def step2f(): Unit =
+  // Mix of Book and DVD → List[Shippable], A = Shippable
+  val items = List(
+    Book("Scala in Depth", 45.0, 0.8),
+    DVD("The Matrix", 19.99, 0.2),
+  )
+  sortByShipping(items).foreach(p =&gt; println(s"${p.name}: shipping=${p.shippingCost}"))
+
+  // Try sorting DigitalGiftCertificate?
+  //val cards = List(DigitalGiftCertificate("Amazon $50", 50.0))
+  //sortByShipping(cards)
+  // [error]   sortByShipping(cards)
+  // [error]                  ^^^^^
+
+  // Upper bound + covariance on a class
+  val shipment = Shipment(List(Book("Scala in Depth", 45.0, 0.8)))
+  println(s"Total shipping: ${shipment.totalShippingCost}")
+
+  // add uses [B &gt;: A &lt;: Shippable] — widens from Shipment[Book] to Shipment[Shippable]
+  val wider = shipment.add(DVD("The Matrix", 19.99, 0.2))
+  println(s"Total shipping after add: ${wider.totalShippingCost}")
+
+  // Try adding a DigitalGiftCertificate to a Shipment?
+  //val shipmentFails = Shipment(List(DigitalGiftCertificate("Netflix", 20.00)))
+  // [error]   val shipmentFails = Shipment(List(DigitalGiftCertificate("Netflix", 20.00)))
+  // [error]                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+</code></pre>
+<h3 id="上限境界はどこで使われるか"><a class="header" href="#上限境界はどこで使われるか">上限境界はどこで使われるか？</a></h3>
+<p>下限境界と同様に、いくつかの役割に集中しています：</p>
+<p><strong>特定の振る舞いを要求</strong> ― 特定のメソッドを持つ型のみ受け入れる：</p>
+<pre><code class="language-scala">def sortByShipping[A &lt;: Shippable](items: List[A]): List[A] =
+  items.sortBy(_.shippingCost)
+// Shippable なアイテムのみ動作 — DigitalGiftCertificate はコンパイル時に拒否
+</code></pre>
+<p><code>[A &lt;: Shippable]</code> はコンパイラに「<code>Shippable</code> を拡張する型のみ受け入れよ」と伝えます。
+関数内部では <code>_.shippingCost</code> を呼べます。コンパイラはすべての <code>A</code> が
+そのメソッドを持つことを<em>知っている</em>からです。<code>DigitalGiftCertificate</code> は <code>Item</code> を拡張しますが
+<code>Shippable</code> は拡張しません ― だからコンパイラはコードが実行される前に拒否します。</p>
+<p><strong>クラスの型パラメータを制約</strong> ― コンテナが適切な型のみ保持することを保証：</p>
+<pre><code class="language-scala">class Shipment[+A &lt;: Shippable](items: List[A]):
+  def totalShippingCost: Double = items.map(_.shippingCost).sum
+  def add[B &gt;: A &lt;: Shippable](item: B): Shipment[B] = Shipment(items :+ item)
+// Shipment[DigitalGiftCertificate] は作れない — Shippable ではない
+</code></pre>
+<p><code>+</code> は 2-4 で見た共変と同じです ― 境界と一緒に機能します。<code>&lt;: Shippable</code> は許可される型を制限し、<code>+</code> は
+<code>Shipment[Book] &lt;: Shipment[Shippable]</code> を可能にします。</p>
+<p><code>add</code> メソッドは <code>[B &gt;: A &lt;: Shippable]</code> を使います ― 2-5 で見た <code>[B &gt;: A]</code> 脱出口に
+<code>&lt;: Shippable</code> を組み合わせてクラスの境界内に留まります。
+<code>Shipment[Book]</code> に <code>DVD</code> を追加すると <code>Shipment[Shippable]</code> に拡大します。</p>
+<blockquote>
+<p><strong>なぜ二つの境界が必要なのか？</strong></p>
+<p><code>B</code> がクラスから <code>&lt;: Shippable</code> 境界を継承すると期待するかもしれません ―
+結局 <code>A</code> はすでに制約されています。しかし <code>B</code> はメソッドで導入された
+独自の型パラメータです。あなたが伝えたことしか知りません。</p>
+<p>そして <code>B &gt;: A</code> は階層を<em>上に</em>向かいます。Scala ではすべての型の上に <code>AnyRef</code> と
+<code>Any</code> があるので、上限がなければ <code>B</code> はどこまでも拡大できます：
+<code>Book → Shippable → Item → AnyRef → Any</code>。<code>&lt;: Shippable</code> は
+「ここで止まれ」と言います。これがなければ <code>Shipment[B]</code> はコンパイルできません ―
+<code>Shipment</code> は型パラメータが <code>&lt;: Shippable</code> であることを要求します。</p>
+</blockquote>
+<p><strong>型情報の保持</strong> ― 計算を通じて具体的なサブタイプを維持する：</p>
+<pre><code class="language-scala">def cheapest[A &lt;: Item](items: List[A]): A =
+  items.minBy(_.price)
+
+val books: List[Book] = List(Book("Scala", 45.0), Book("FP", 35.0))
+val b: Book = cheapest(books)  // Book を返す、Item ではなく
+
+val dvds: List[DVD] = List(DVD("The Matrix", 19.99), DVD("Inception", 24.99))
+val d: DVD = cheapest(dvds)  // DVD を返す、Item ではなく
+
+val cards: List[DigitalGiftCertificate] = List(DigitalGiftCertificate("$50", 50.0))
+val c: DigitalGiftCertificate = cheapest(cards)  // DigitalGiftCertificate を返す、Item ではなく
+</code></pre>
+<p>境界がなければ <code>def cheapest(items: List[Item]): Item</code> と書くしかなく、リストが <code>Book</code> や <code>DVD</code> を含んでいても
+すべての呼び出しが <code>Item</code> を返します。振る舞いは保持できますが、具体的な戻り値型を失います。</p>
+<p><code>def cheapest[A](items: List[A]): A</code> とも書けません。<code>minBy(_.price)</code> は
+各要素が <code>.price</code> メンバーを持つことを要求するからです。境界がなければ、
+コンパイラには <code>A</code> がそれを持つと信じる理由がありません。</p>
+<p>上限境界は両方を実現します：<code>Item</code> の API へのアクセスと、正確な要素型の返却
+（<code>Book</code> を入れれば <code>Book</code> が出る、<code>DVD</code> を入れれば <code>DVD</code> が出る）。言い換えれば、<code>&lt;: Item</code> は
+呼び出し側を制限するためではなく、どの操作が有効かをコンパイラに伝えつつ
+結果型を最大限に具体的に保つためのものです。</p>
+<p><strong>標準ライブラリ</strong> ― <code>WeakReference[+T &lt;: AnyRef]</code> は参照型のみ受け入れます：</p>
+<pre><code class="language-scala">import scala.ref.WeakReference
+val ref = WeakReference(List(1, 2, 3))  // OK: List は AnyRef
+// WeakReference(42) — 動きません: Int は AnyRef ではない
+</code></pre>
+<p>通常の参照（<code>val x = ...</code>）はオブジェクトを生かし続けます ― 誰かが指している限り
+ガベージコレクタは回収しません。<code>WeakReference</code> は違います：GC による回収を
+妨げずに参照を保持します。メモリが逼迫すると GC はオブジェクトを回収でき、
+弱参照は静かに空になります。</p>
+<p>最も一般的な用途はキャッシュです。計算結果を再利用のために保持したいが、
+メモリ不足のコストは払いたくない：</p>
+<pre><code class="language-scala">import scala.ref.WeakReference
+
+class Cache[T &lt;: AnyRef](compute: () =&gt; T):
+  private var ref: WeakReference[T] = WeakReference(null)
+
+  def get(): T = ref.get match
+    case Some(value) =&gt; value        // まだメモリにある、再利用
+    case None =&gt;                     // GC が回収した、再計算
+      val value = compute()
+      ref = WeakReference(value)
+      value
+
+val users = Cache(() =&gt; List("alice", "bob", "charlie"))
+users.get()  // 初回は計算、GC が回収していなければ再利用
+</code></pre>
+<p>これはヒープ割り当てオブジェクト（<code>AnyRef</code>）でのみ意味があります。<code>Int</code> や <code>Double</code> のような
+値型はスタックに直接格納されるか、オブジェクトにインライン化されます ― GC が追跡や
+回収するヒープオブジェクトがありません。上限境界 <code>T &lt;: AnyRef</code> はこの JVM の現実を
+型レベルでエンコードします：ヒープ上に存在しないものへの弱参照は文字通り<em>作れません</em>。</p>
+<p>これが高度に感じても心配不要です ― この例は安全にスキップして後で戻ってきてください。
+上限境界の巧妙な使い方であり、続きの前提条件ではありません。</p>
+<p>下限境界は<em>拡大</em>します ― より広い型を受け入れます。上限境界は<em>制限</em>します ―
+必要な振る舞いを持たない型を拒否します。</p>
+<blockquote>
+<p><strong>出力側の全ツールキットが揃いました：</strong> 安全な拡大のための共変（<code>+A</code>）、
+共変を壊さずにメソッドを追加するための下限境界（<code>&gt;:</code>）、
+特定の振る舞いを要求するための上限境界（<code>&lt;:</code>）。次は入力側です。</p>
+</blockquote>
+<h2 id="2-7-反変--消費者の互換性"><a class="header" href="#2-7-反変--消費者の互換性">2-7. 反変 ― 消費者の互換性</a></h2>
+<p>最後に <code>-A</code>。共変は<strong>出力</strong>側 ― プロデューサーの話でした。
+反変は<strong>入力</strong>側 ― コンシューマーの話です。</p>
+<pre><code class="language-scala">// step2g.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name)"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name)"
+
+// PriceFormatter[-A]: the - declares it contravariant.
+// format CONSUMES an A — it takes it in and reads from it.
+trait PriceFormatter[-A]:
+  def format(item: A): String
+
+// Can format ANY Item — only reads name and price
+class ItemFormatter extends PriceFormatter[Item]:
+  def format(item: Item): String = s"${item.name}: $$${item.price}"
+
+// Can only format Books — reads isbn, which only Book has
+class BookFormatter extends PriceFormatter[Book]:
+  def format(item: Book): String = s"${item.name} (ISBN: ${item.isbn}): $$${item.price}"
+
+@main def step2g(): Unit =
+  val book = Book("Scala in Depth", 45.0, "978-1617295")
+
+  // ItemFormatter consumes a Book by reading name and price.
+  // It doesn't know about isbn — but that's fine, it never asks for it.
+  // Safe: Book has everything Item has.
+  val formatterForBook: PriceFormatter[Book] = ItemFormatter()
+  println(formatterForBook.format(book))
+  // prints: Scala in Depth: $45.0 — isbn is there, but the formatter never reads it
+
+  // BookFormatter consumes a Book by reading name, price, AND isbn.
+  val bookFormatter: PriceFormatter[Book] = BookFormatter()
+  println(bookFormatter.format(book))
+  // prints: Scala in Depth (ISBN: 978-1617295): $45.0
+
+  // Now imagine the reverse: using BookFormatter as PriceFormatter[Item].
+  // val formatterForItem: PriceFormatter[Item] = bookFormatter  // Compile error!
+  //
+  // If this compiled, you could write:
+  //   formatterForItem.format(DVD("The Matrix", 19.99))
+  //
+  // BookFormatter.format reads item.isbn — but DVD has no isbn.
+  // The compiler catches this: a Book consumer can't safely consume all Items.
+</code></pre>
+<p>多くのチュートリアルは反変を
+<code>val bookFmt: Formatter[Book] = itemFormatter</code> のような明示的な代入で説明します ―
+上の例のように。サブタイプ関係が見えますが、こんなコードはめったに書きません。
+あなたが反変を<em>使っている</em> ― 気づかずに ― のは、スーパータイプの関数を渡す
+<code>.filter</code>、<code>.map</code>、<code>.sortBy</code> の呼び出しすべてです。</p>
+<p><code>Function1[-A, +B]</code> ― <code>A =&gt; B</code> のデシュガー形式 ― は
+標準ライブラリで最も一般的な反変型です。</p>
+<p><code>A</code> は<strong>入力位置</strong>にあります ―
+関数はそれを<em>受け取り</em>ます ― だから反変（<code>-A</code>）です。</p>
+<p><code>B</code> は<strong>出力位置</strong>にあります ―
+関数はそれを<em>返し</em>ます ― だから共変（<code>+B</code>）です。</p>
+<p>だから <code>Item =&gt; Boolean</code> は <code>Book =&gt; Boolean</code> が期待される場所で使えます：</p>
+<pre><code class="language-scala">// step2g1.scala — Contravariance in Function1
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name, $$${price})"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $$${price})"
+
+@main def step2g1(): Unit =
+  val books = List(Book("Scala", 45.0, "978-1"), Book("FP", 35.0, "978-2"))
+  // These functions accept any Item.
+  // Item =&gt; Boolean is shorthand for Function1[Item, Boolean]  (-A = Item, +B = Boolean)
+  val cheap: Item =&gt; Boolean = _.price &lt; 40.0
+  val priceOf: Item =&gt; Double = _.price
+  // List[Book].filter signature:  filter(p: Book =&gt; Boolean): List[Book]
+  // Desugar the arrow:            filter(p: Function1[Book, Boolean]): List[Book]
+  //
+  // You pass cheap, which is Function1[Item, Boolean] — not Function1[Book, Boolean].
+  // Why does this compile? Function1[-A, +B] is contravariant in A:
+  //   Function1[Item, Boolean] &lt;: Function1[Book, Boolean]
+  // An Item function only reads name and price — a Book has both, so it's safe.
+  println(books.filter(cheap))       // List(Book(FP, $35.0))
+  println(books.sortBy(priceOf))     // List(Book(FP, $35.0), Book(Scala, $45.0))
+
+  // The payoff: write once against Item, reuse with any subtype collection
+  val dvds = List(DVD("The Matrix", 19.99), DVD("Inception", 24.99))
+  val items: List[Item] = books ++ dvds
+
+  println(dvds.filter(cheap))        // List(DVD(The Matrix, $19.99), DVD(Inception, $24.99))
+  println(items.sortBy(priceOf))     // all four, sorted by price
+
+  // The reverse doesn't work: a Book-only function can't handle DVDs
+  val isbnOf: Book =&gt; String = _.isbn
+  // dvds.map(isbnOf)   // Compile error! DVD has no isbn
+  // items.map(isbnOf)  // Compile error! Item has no isbn
+</code></pre>
+<p>パターン：型が <code>A</code> を<strong>消費する</strong>（入力として受け取る）なら、<code>-A</code> の候補です。
+<code>A</code> を<strong>生産する</strong>（出力として返す）なら、<code>+A</code> の候補です。</p>
+<p>なぜ方向が逆転するのか？ <code>val cheap: Item =&gt; Boolean = _.price &lt; 40.0</code> を見てください。
+<code>Item</code> のすべてのサブタイプ ― <code>Book</code>、<code>DVD</code>、<code>DigitalGiftCertificate</code> ― は <code>.price</code> を持ちます。
+だから <code>Item</code> のプロパティだけを使う関数は、どれに対しても自然に動作します。
+一度書けば <code>List[Book]</code>、<code>List[DVD]</code>、<code>List[Item]</code> で再利用できます。</p>
+<p>反変が実践で意味すること：<strong>より広い型のコンシューマーは、
+より狭い型のコンシューマーの安全な代替品です。</strong></p>
+<p>最初の例の <code>PriceFormatter</code> は同じアイデアを明示的にしたものです。
+<code>ItemFormatter</code> は <code>name</code> と <code>price</code> だけを使います ― すべての <code>Item</code> が持つものです。だから
+<code>Book</code> でも <code>DVD</code> でも何でも扱えます。<code>BookFormatter</code> は <code>isbn</code> を使います ―
+<code>Book</code> だけが持つものです。<code>DVD</code> を渡すと壊れます。だから逆転：
+<code>Book &lt;: Item</code>、しかし <code>PriceFormatter[Item] &lt;: PriceFormatter[Book]</code>。</p>
+<h3 id="反変の場合の境界は"><a class="header" href="#反変の場合の境界は">反変の場合の境界は？</a></h3>
+<p>共変では、<code>+A</code> は入力位置（メソッドパラメータ ― メソッドが値を<em>受け取る</em>場所）で <code>A</code> を禁止します。
+下限境界（<code>[B &gt;: A]</code>）が脱出口でした（2-5 参照）。</p>
+<p>対称的に、<code>-A</code> は出力位置（戻り値型 ― メソッドが値を<em>生産する</em>場所）で <code>A</code> を禁止します。
+上限境界（<code>[B &lt;: A]</code>）が脱出口になります。</p>
+<p><code>PriceFormatter[-A]</code> や <code>Function1[-A, +B]</code> のような単純なコンシューマーでは、
+これは問題になりません ― <code>String</code> や <code>Boolean</code> を返し、<code>A</code> は返さないからです。</p>
+<p>しかし、反変型を合成するときには問題になります。ここに <a href="https://zio.dev/">ZIO</a>
+（並行・非同期プログラム構築のための人気 Scala ライブラリ）に着想を得た簡略版を示します。</p>
+<p>ZIO の実際の型は <code>ZIO[-R, +E, +A]</code>（環境、エラー、値）です ― ここでは変位に集中するためエラーチャネルを省きます。</p>
+<p><code>Effect[-R, +A]</code> は環境 <code>R</code> を必要として実行し、値 <code>A</code> を生産する計算です。
+内部的には関数 <code>R =&gt; A</code> をラップしています：</p>
+<pre><code class="language-scala">class Effect[-R, +A](val run: R =&gt; A)
+</code></pre>
+<p>変位アノテーションを見てください。<code>+A</code> は出力にあります ― <code>run</code> はそれを<em>返し</em>ます。
+<code>-R</code> は入力にあります ― <code>run</code> はそれを<em>受け取り</em>ます。実際、<code>R =&gt; A</code> は <code>Function1[R, A]</code> であり、
+<code>R</code> は <code>Function1</code> の <code>-A</code> スロットにあります。これは反変位置なので、
+クラスをコンパイルするには <code>R</code> を <code>-R</code> と宣言する必要があります。</p>
+<p>これは <code>Function1[-A, +B]</code> と同じ変位の形です ― <code>Effect</code> は本質的に <code>R =&gt; A</code> のラッパーなので当然です。</p>
+<p>以下の例では二つのトレイト ― <code>Database</code> と <code>Logger</code> ― と
+両方を拡張するクラス <code>AppEnv</code> を定義します：</p>
+<pre><code>Database          Logger
+    ↑                ↑
+    └── AppEnv ──────┘
+</code></pre>
+<p><code>AppEnv &lt;: Database</code> かつ <code>AppEnv &lt;: Logger</code>。<code>Database</code> だけを必要とするエフェクトは
+<code>AppEnv</code> が利用可能な場所で実行できます ― <code>AppEnv</code> はエフェクトが必要とするものをすべて持っています。
+これが反変の実際の動作です：</p>
+<pre><code class="language-scala">// step2g2.scala — Variance in action: a simplified ZIO-like effect
+
+// An effect that requires an environment R and produces a value A.
+// This is the core idea behind ZIO[-R, +E, +A] (simplified: no error channel).
+class Effect[-R, +A](val run: R =&gt; A): 
+  def map[B](f: A =&gt; B): Effect[R, B] =
+    Effect(r =&gt; f(run(r)))
+
+  // Intuitively, using the R from the class, the signature would be:
+  //   def flatMap[B](f: A =&gt; Effect[R, B]): Effect[R, B]
+  // But the class's -R ends up in a covariant position, so the compiler rejects it.
+  // (See the chapter text for the full position trace.)
+  // Fix: introduce R1, a fresh method parameter not subject to variance checking,
+  // and define it as R's subtype — so R1 provides at least the same environment as R.
+  def flatMap[R1 &lt;: R, B](f: A =&gt; Effect[R1, B]): Effect[R1, B] =
+    Effect(r =&gt; f(run(r)).run(r))
+
+// --- Setup: a small service hierarchy ---
+
+trait Database:
+  def lookup(id: Int): String
+
+trait Logger:
+  def log(msg: String): Unit
+
+class AppEnv extends Database, Logger:
+  def lookup(id: Int): String = s"user-$id"
+  def log(msg: String): Unit = println(s"  LOG: $msg")
+
+// --- Effects with different environment requirements ---
+
+// Needs only a Database
+val fetchUser: Effect[Database, String] = Effect { db =&gt;
+  db.lookup(1)
+}
+
+// Needs only a Logger
+val logMsg: String =&gt; Effect[Logger, Unit] = msg =&gt; Effect { logger =&gt;
+  logger.log(msg)
+}
+
+@main def step2g2(): Unit =
+  val env = AppEnv()
+
+  // fetchUser needs Database, logMsg needs Logger
+  // the for-comprehension combines them — the result needs both
+  val program: Effect[Database &amp; Logger, Unit] =
+    for
+      user &lt;- fetchUser
+      _    &lt;- logMsg(s"fetched $user")
+    yield ()
+
+  // AppEnv extends Database, Logger — it satisfies both
+  program.run(env)  // LOG: fetched user-1
+
+  // A plain Database isn't enough — program also needs a Logger
+  // val db: Database = new Database { def lookup(id: Int) = s"user-$id" }
+  // program.run(db)  // Compile error — db is not a Logger
+</code></pre>
+<p><code>List[+A]</code> と <code>Effect[-R, +A]</code> の <code>flatMap</code> を比較しましょう。<code>List</code> では <code>A</code> は
+クラスの <code>+A</code> から来ます ― そして境界なしで正しい位置に収まります。
+<code>Effect</code> では <code>R</code> はクラスの <code>-R</code> から来ます ― しかし <code>Function1</code> 内部の
+<code>Effect[R, B]</code> の追加のネストが <code>R</code> の着地位置を変え、境界が必要になります。</p>
+<p>これをたどるには、コンパイラの判定方法を理解する必要があります。各型パラメータが
+<strong>入力</strong>位置か<strong>出力</strong>位置に着地するかをチェックします：</p>
+<ul>
+<li>メソッドパラメータは<strong>入力</strong> ― メソッドはそれを<em>受け取る</em> → 位置は <code>(-)</code></li>
+<li>戻り値型は<strong>出力</strong> ― メソッドはそれを<em>生産する</em> → 位置は <code>(+)</code></li>
+<li><code>Effect[-R, +A]</code> では：<code>+A</code> は <code>(+)</code> 位置に、<code>-R</code> は <code>(-)</code> 位置に収まる必要がある。</li>
+</ul>
+<p>型がネストされると、位置は算術の符号のように掛け合わされます：</p>
+<pre><code>(+) × (+) = (+)     出力の中の出力 → そのまま出力
+(+) × (-) = (-)     入力の中の出力 → 入力に反転
+(-) × (-) = (+)     入力の中の入力 → 出力に戻る
+</code></pre>
+<p><strong><code>List[+A]</code> の flatMap ― 境界不要：</strong></p>
+<p>デシュガー：<code>flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]</code></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>ステップ</th><th>A はどこ？</th><th>位置</th></tr>
+</thead>
+<tbody>
+<tr><td><code>f</code> はメソッドパラメータ</td><td>開始</td><td><code>(-)</code></td></tr>
+<tr><td><code>A</code> は <code>Function1</code> の <code>-A</code> スロット</td><td><code>(-) × (-)</code></td><td><code>(+)</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>結果：<code>A</code> は <code>(+)</code> に着地。<code>+A</code> と宣言した。<strong>OK。</strong></p>
+<p><strong><code>Effect[-R, +A]</code> の flatMap ― 境界なしで試したら？</strong></p>
+<p>デシュガー（境界なし）：<code>flatMap[B](f: Function1[A, Effect[R, B]]): Effect[R, B]</code></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>ステップ</th><th>R はどこ？</th><th>位置</th></tr>
+</thead>
+<tbody>
+<tr><td><code>f</code> はメソッドパラメータ</td><td>開始</td><td><code>(-)</code></td></tr>
+<tr><td><code>Effect[R, B]</code> は <code>Function1</code> の <code>+B</code> スロット</td><td><code>(-) × (+)</code></td><td><code>(-)</code></td></tr>
+<tr><td><code>R</code> は <code>Effect</code> の <code>-R</code> スロット</td><td><code>(-) × (-)</code></td><td><code>(+)</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>結果：<code>R</code> は <code>(+)</code> に着地。<code>-R</code> と宣言した。<strong>拒否。</strong></p>
+<p>修正：</p>
+<pre><code class="language-scala">// 読みやすさのため =&gt; をデシュガー
+def flatMap[R1 &lt;: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B]
+</code></pre>
+<p><code>R1 &lt;: R</code> は <code>R1</code> が <code>R</code> またはそのサブタイプであることを意味します ― <code>R</code> が持つものをすべて持っています。</p>
+<p>変位ルール（<code>+</code> と <code>-</code>）はクラス自身の型パラメータにのみ適用されます。
+<code>R1</code> は<em>メソッド</em>の型パラメータなので、変位チェックの対象外です ―
+コンパイラは呼び出し側で <code>R1 &lt;: R</code> が成立するかだけをチェックします。</p>
+<p><code>R1 &lt;: R</code> は型チェッカーだけでなく、実装も動作させます。</p>
+<p><code>Effect(r =&gt; f(run(r)).run(r))</code> を名前付きステップに分解し ―
+<code>=&gt;</code> の代わりに <code>Function1</code> を明示的に書いて ― 実装の動作と各型パラメータの着地位置の両方を見てみましょう：</p>
+<pre><code class="language-scala">//                                       つまり R =&gt; A
+class Effect[-R, +A](val run: Function1[R, A]):
+//                                     つまり A =&gt; Effect[R1, B]
+  def flatMap[R1 &lt;: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B] =
+    Effect { r =&gt;              // r: R1
+      val a = run(r)           // このエフェクトを実行 — R1 &lt;: R なので OK
+      val effect2 = f(a)       // 次のエフェクトを構築
+      effect2.run(r)           // 同じ環境で実行
+    }
+</code></pre>
+<p><code>A</code> ― <code>run</code> が生産した値 ― は <code>f</code> に渡されます。
+<code>f: Function1[A, Effect[R1, B]]</code> を見てください：<code>A</code> は <code>Function1</code> の <code>-A</code> スロットにあります。
+クラスの <code>+A</code> は反変位置の中の反変位置に収まります
+― <code>(-) × (-) = (+)</code> ― コンパイラは満足します。</p>
+<p>同じ <code>r</code> が両方のエフェクトに供給されます ― だから <code>R1 &lt;: R</code> は
+変位チェッカーだけでなく実装レベルでも重要なのです。</p>
+<p><code>R</code> は反変なので、<code>Database</code>（<code>R</code>）だけを必要とするエフェクトは
+<code>AppEnv</code>（<code>R1</code>）が利用可能な場所で実行できます ― <code>AppEnv &lt;: Database</code> なので、
+エフェクトが必要とするものをすべて持っています。だから <code>fetchUser.run(AppEnv())</code> が動作します：
+<code>fetchUser</code> は <code>Database</code> だけを必要とし、<code>AppEnv</code> はそれを満たします。</p>
+<h2 id="2-8-クイックリファレンス"><a class="header" href="#2-8-クイックリファレンス">2-8. クイックリファレンス</a></h2>
+<p>たくさんの要素が出てきました。この章のすべてをまとめます：</p>
+<pre><code>不変（デフォルト）     → 互換性を仮定しない
++A（共変）            → 出力側 — 安全に拡大
+-A（反変）            → 入力側 — 逆方向で安全
+&gt;:（下限境界）         → 共変型の脱出口（拡大）
+&lt;:（上限境界）         → 反変型の脱出口（制限）
+</code></pre>
+<p>しかし仕組みを知るのは話の半分です。次の問いは：
+<em>実際にどのくらい不変が欲しくて、いつ <code>+</code> や <code>-</code> を使うべきなのか？</em></p>
+<blockquote>
+<p><strong>一息つきましょう。</strong> 難しい概念的な作業は終わりました。セクション 2-9 から 2-11 は
+変位が実際のコードでどう働くかを示します ― より短く、より具体的です。</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="step-2-変位の実践"><a class="header" href="#step-2-変位の実践">Step 2: 変位の実践</a></h1>
+<h2 id="2-9-共変の実践--すでに使っている"><a class="header" href="#2-9-共変の実践--すでに使っている">2-9. 共変の実践 ― すでに使っている</a></h2>
+<p>共変を見るためにカスタム型は必要ありません ― 毎日使う標準ライブラリの型に入っています。
+どれも 2-5 で見た <code>[B &gt;: A]</code> 下限境界の脱出口を示しています：</p>
+<pre><code class="language-scala">// step2h.scala — Covariance in the standard library
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name)"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name)"
+
+@main def step2h(): Unit =
+  val book = Book("Scala in Depth", 45.0, "978-1617295")
+  val dvd = DVD("The Matrix", 19.99)
+
+  // --- Option[+A] ---
+  // Some[Book] is usable as Option[Item] — a Book result IS an Item result
+  val maybeBook: Option[Book] = Some(book)
+  val maybeItem: Option[Item] = maybeBook  // covariance
+  println(maybeItem)  // Some(Book(Scala in Depth))
+
+  // getOrElse uses [B &gt;: A] — the lower bound escape hatch for covariance
+  val item: Item = maybeBook.getOrElse(dvd)  // Option[Book] → fallback DVD → Item
+  println(item)
+
+  // --- List[+A] ---
+  // List[Book] is usable as List[Item]
+  val books: List[Book] = List(book)
+  val items: List[Item] = books  // covariance
+  println(items)
+
+  // :+ uses [B &gt;: A] — adding a DVD widens to List[Item]
+  val mixed: List[Item] = books :+ dvd
+  println(mixed)  // List(Book(Scala in Depth), DVD(The Matrix))
+
+  // --- Nothing ---
+  // Nothing is Scala's bottom type — a subtype of every other type.
+  // No value of type Nothing can ever exist, but the compiler uses it as a
+  // placeholder: "this side has no type yet." Combined with covariance,
+  // Nothing &lt;: anything, so it fits wherever a type is expected.
+
+  // --- Either[+A, +B] ---
+  // Either is covariant in BOTH type parameters
+  // Right(book) is Right[Nothing, Book] — Nothing is the Left type.
+  // Covariance on +A: Nothing &lt;: String, so Either[Nothing, Book] &lt;: Either[String, Book]
+  val result: Either[String, Book] = Right(book)
+  val wider: Either[String, Item] = result  // covariance on +B: Book &lt;: Item
+  println(wider)
+
+  // Same idea with Left: Left("not found") is Left[String, Nothing]
+  // Covariance on +B: Nothing &lt;: Book, so Either[String, Nothing] &lt;: Either[String, Book]
+  val failed: Either[String, Book] = Left("not found")
+  println(failed)
+
+  // orElse uses [B1 &gt;: B] — recovery widens the Right type
+  val recovered: Either[String, Item] = failed.orElse(Right(dvd))
+  println(recovered)  // Right(DVD(The Matrix))
+</code></pre>
+<p>このコードは <code>Nothing</code> ― Scala の<strong>ボトム型</strong>を紹介します。すべての型のサブタイプであり、
+<code>Nothing</code> 型の値は決して存在できません。</p>
+<p>コンパイラは型の片側が未指定のときにプレースホルダーとして使います：</p>
+<ul>
+<li><code>Right(book)</code> は <code>Right[Nothing, Book]</code> ― Left 型はまだない</li>
+<li><code>Left("error")</code> は <code>Left[String, Nothing]</code> ― Right 型はまだない</li>
+<li><code>List()</code> は <code>List[Nothing]</code> ― 空、要素型はまだない</li>
+<li><code>None</code> は <code>Option[Nothing]</code> ― 値がない、型もまだない</li>
+</ul>
+<p>共変がこれを機能させます。任意の <code>A</code> に対して <code>Nothing &lt;: A</code> なので、
+型が期待される場所にいつでも適合します。2-5 ですでに見ました：<code>Cart()</code> は
+<code>Cart[Nothing]</code> です。<code>Book</code> を追加すると <code>[B &gt;: A]</code> によって <code>Cart[Book]</code> に拡大します。</p>
+<p>パターンはすべて同じです：型は <code>A</code> の値を<strong>生産</strong>（返す、保持する、発行する）するので、
+<code>+A</code> が自然です。異なるサブタイプの値を追加・結合する必要があるときは、
+<code>[B &gt;: A]</code> が安全に型を拡大します。</p>
+<h2 id="2-10-反変の実践--ハンドラバリデータシリアライザ"><a class="header" href="#2-10-反変の実践--ハンドラバリデータシリアライザ">2-10. 反変の実践 ― ハンドラ、バリデータ、シリアライザ</a></h2>
+<p>反変はより稀ですが、非常に特定のパターンで現れます：
+値を<strong>消費</strong>または<strong>処理</strong>する型です。</p>
+<pre><code class="language-scala">// step2i.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name, $price, $isbn)"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $price)"
+
+// JSON serializer — consumes a value and produces a String
+trait JsonWriter[-A]:
+  def write(value: A): String
+
+class ItemWriter extends JsonWriter[Item]:
+  def write(value: Item): String =
+    s"""{"name":"${value.name}","price":${value.price}}"""
+
+class BookWriter extends JsonWriter[Book]:
+  def write(value: Book): String =
+    s"""{"name":"${value.name}","price":${value.price},""" +
+    s""""isbn":"${value.isbn}"}"""
+
+// Validator — consumes a value and returns pass/fail
+trait Validator[-A]:
+  def validate(value: A): Boolean
+
+class PriceValidator extends Validator[Item]:
+  def validate(value: Item): Boolean = value.price &gt; 0
+
+def serialize[A](value: A, writer: JsonWriter[A]): String =
+  writer.write(value)
+
+@main def step2i(): Unit =
+  val itemWriter = ItemWriter()
+  val book = Book("Scala in Depth", 45.0, "978-1617295")
+
+  // serialize expects JsonWriter[Book] — ItemWriter handles any Item, so it qualifies
+  println(serialize(book, itemWriter))
+  // {"name":"Scala in Depth","price":45.0} — no isbn, but it works
+
+  // A BookWriter knows about Book-specific fields
+  val bookWriter = BookWriter()
+  println(serialize(book, bookWriter))
+  // {"name":"Scala in Depth","price":45.0,"isbn":"978-1617295"}
+
+  // The reverse doesn't work: a BookWriter can't handle arbitrary Items
+  // serialize(DVD("The Matrix", 19.99), bookWriter)  // Compile error
+  // What would bookWriter do with a DVD's isbn?
+
+  // Same pattern with Validator: PriceValidator validates any Item,
+  // so it works on Books too
+  val books = List(Book("Scala", 45.0, "978-1"), Book("Free", 0.0, "978-2"))
+  val valid = books.filter(PriceValidator().validate)
+  println(valid)  // List(Book(Scala, 45.0, 978-1))
+</code></pre>
+<p>2-7 ですでにこのパターンを見ました：<code>Function1[-A, +B]</code> は入力に対して反変であり、
+<code>cheap</code> が <code>Item =&gt; Boolean</code> のとき <code>books.filter(cheap)</code> が動作する理由です。</p>
+<p>ここの <code>JsonWriter</code> は同じアイデアです。<code>serialize</code> は <code>JsonWriter[Book]</code> を期待し、
+<code>ItemWriter</code>（<code>JsonWriter[Item]</code>）が適格です ― 任意の <code>Item</code> をシリアライズできるなら、
+<code>Book</code> もシリアライズできます。<code>Validator</code> も同じパターンです：
+任意の <code>Item</code> を検証する <code>PriceValidator</code> は <code>books.filter</code> でも機能します。</p>
+<h2 id="2-11-では不変は本当に役立つのか"><a class="header" href="#2-11-では不変は本当に役立つのか">2-11. では不変は本当に役立つのか？</a></h2>
+<p>はい、ただし役割はあなたが思うより狭いです。</p>
+<p>不変は型が<strong>読み書き両方する</strong>ときに正しい選択です ― 可変コンテナ、
+双方向チャネル、読み書き参照。しかし良く設計された Scala コードでは、
+不変性が好まれるため比較的稀です。</p>
+<pre><code class="language-scala">// step2j.scala
+
+trait Item:
+  def name: String
+  def price: Double
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name)"
+
+// Invariant is correct here: a mutable cell reads AND writes
+class Cell[A](var value: A):
+  def get: A = value            // output position (+)
+  def set(a: A): Unit =         // input position (-)
+    value = a
+
+// A bidirectional codec: encodes AND decodes
+trait Codec[A]:
+  def encode(value: A): String  // A in input position (-)
+  def decode(raw: String): A    // A in output position (+)
+
+// Both positions → must be invariant. The compiler enforces this.
+// Try adding + or - and see what happens:
+// trait Codec[+A]:  // error on encode
+// trait Codec[-A]:  // error on decode
+
+@main def step2j(): Unit =
+  val cell = Cell[Item](Book("Scala", 45.0, "978-1"))
+  cell.set(Book("FP", 35.0, "978-2"))
+  println(cell.get)  // Book(FP)
+
+  // Cell[Book] is NOT Cell[Item] — and shouldn't be.
+  // If it were, you could put a DVD in a Book cell.
+</code></pre>
+<p><strong>実際のところ：</strong></p>
+<p>Scala で設計する型のほとんどは二つの陣営のどちらかに入ります：</p>
+<pre><code>A を生産する（読み取り専用データ、結果、イベント、ストリーム） → 共変にする [+A]
+A を消費する（ハンドラ、ライター、バリデータ、順序付け）       → 反変にする [-A]
+</code></pre>
+<p>不変は<strong>アノテーションしない</strong>ときに得られるものです ― そしてそれは多くの場合、
+自分の型がプロデューサーなのかコンシューマーなのかまだ考えていないからです。
+考えてみると、<code>+</code> か <code>-</code> のどちらかが大抵当てはまることに気づくでしょう。</p>
+<p>「この型は <code>A</code> を生産するのか消費するのか？」と問う規律自体が
+貴重な設計エクササイズです。型の役割を明確にすることを強制し、
+コンパイラがその答えを検証してくれます。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
