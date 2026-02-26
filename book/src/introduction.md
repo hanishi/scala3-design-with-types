@@ -1,6 +1,6 @@
 # Design with Types — Practical Scala 3 from Basics to Type-Level Programming
 
-[日本語版はこちら](../ja/introduction.html)
+[日本語版はこちら](ja/introduction.html)
 
 > This tutorial is designed to be worked through with `scala-cli`,
 > having a conversation with the compiler at every step.
