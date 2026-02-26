@@ -46,6 +46,10 @@ build/
 ### Scala ###
 .bsp/
 .scala-build/
+*.class
+
+### IntelliJ IDEA (additional) ###
+.idea/vcs.xml
 
 ### mdBook ###
 # docs/ is the mdBook build output for GitHub Pages — do not ignore
