@@ -10,15 +10,19 @@ from section 2-5:
 {{#include ../../../examples/step2/step2h.scala}}
 ```
 
-The code introduces `Nothing` — Scala's **bottom type**. It's a subtype of every type,
-and no value of type `Nothing` can ever exist. The compiler uses it as a placeholder
-when one side of a type is unspecified: `Right(book)` is `Right[Nothing, Book]`,
-`Left("error")` is `Left[String, Nothing]`, `List()` is `List[Nothing]`, and `None`
-is `Option[Nothing]`. Covariance makes this work — since `Nothing <: A` for any `A`,
-these always fit wherever a type is expected.
+The code introduces `Nothing` — Scala's **bottom type**. It's a subtype of every
+type, and no value of type `Nothing` can ever exist.
 
-You already saw this in section 2-5: `Cart()` is `Cart[Nothing]`. Adding a `Book`
-widens it to `Cart[Book]` via the `[B >: A]` lower bound.
+The compiler uses it as a placeholder when one side of a type is unspecified:
+
+- `Right(book)` is `Right[Nothing, Book]` — no Left type yet
+- `Left("error")` is `Left[String, Nothing]` — no Right type yet
+- `List()` is `List[Nothing]` — empty, no element type yet
+- `None` is `Option[Nothing]` — no value, no type yet
+
+Covariance makes this work. Since `Nothing <: A` for any `A`, these always fit
+wherever a type is expected. You already saw this in section 2-5: `Cart()` is
+`Cart[Nothing]`. Adding a `Book` widens it to `Cart[Book]` via `[B >: A]`.
 
 The pattern is the same in every case: the type **produces** (returns, holds, emits)
 values of `A`, so `+A` is natural. And when you need to add or combine values of
@@ -35,8 +39,11 @@ types that **consume** or **process** values.
 
 You already saw this pattern in section 2-7: `Function1[-A, +B]` is contravariant
 in its input, which is why `books.filter(cheap)` works when `cheap` is `Item => Boolean`.
-The `JsonWriter` here is the same idea — if it can serialize any `Item`, it can
-serialize a `Book`.
+
+The `JsonWriter` here is the same idea. `serialize` expects a `JsonWriter[Book]`,
+and `ItemWriter` (a `JsonWriter[Item]`) qualifies — if it can serialize any `Item`,
+it can serialize a `Book`. The `Validator` follows the same pattern: a
+`PriceValidator` that validates any `Item` works in `books.filter` too.
 
 ## 2-11. So Is Invariant Actually Useful?
 

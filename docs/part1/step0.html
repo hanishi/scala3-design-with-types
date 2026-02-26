@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-965f2ec9.js";
+            window.path_to_searchindex_js = "../searchindex-ca27be99.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-9571e420.js"></script>
@@ -188,7 +188,9 @@
 
   // Try to do arithmetic — compile error
   // val doubled = first * 2
-  // error: value * is not a member of Any
+  // [error] value * is not a member of Any
+  // [error]    val doubled = first * 2
+  // [error]                  ^^^^^^^
 
   println(first)            // prints 100
   println(first.getClass)   // class java.lang.Integer

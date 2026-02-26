@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-965f2ec9.js";
+            window.path_to_searchindex_js = "../searchindex-ca27be99.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-9571e420.js"></script>
@@ -439,7 +439,8 @@ val recovered: Either[String, Item] = result.orElse(Right(DVD("The Matrix", 19.9
 <p>In each case, the pattern is the same: <code>[B &gt;: A]</code> lets the type widen to accommodate
 a value that doesn’t fit <code>A</code> exactly. The compiler picks the narrowest type that works —
 <code>Item</code>, not <code>Any</code>. This is called the <strong>LUB</strong> (Least Upper Bound).
-When there <em>is</em> no named common supertype, Scala 3 uses union types instead.</p>
+In <a href="../part2/step9.html">Step 9</a>, we’ll see what happens when there <em>is</em> no named common
+supertype — Scala 3 uses union types instead.</p>
 <p>You won’t write <code>[B &gt;: A]</code> in everyday application code — but those foundational APIs
 genuinely depend on it. Without lower bounds, covariant containers simply couldn’t
 have “add” methods.</p>
@@ -722,12 +723,27 @@ comes up — they return <code>String</code> or <code>Boolean</code>, not <code>
 <p>But it <em>does</em> come up when you compose contravariant types. Here’s a simplified
 inspired by <a href="https://zio.dev/">ZIO</a>, a popular Scala library for building concurrent
 and asynchronous programs.</p>
-<p>ZIO’s actual type is <code>ZIO[-R, +E, +A]</code> (environment,
-error, value) — we drop the error channel here to focus on variance. Think of
-<code>Effect[-R, +A]</code> as a computation that needs an environment <code>R</code> to run and
-produces a value <code>A</code>. The environment is <em>consumed</em> (<code>-R</code>) and the value is
-<em>produced</em> (<code>+A</code>) — the same variance shape as <code>Function1[-A, +B]</code>, which makes
-sense since <code>Effect</code> is essentially a wrapper around <code>R =&gt; A</code>:</p>
+<p>ZIO’s actual type is <code>ZIO[-R, +E, +A]</code> (environment, error, value) — we drop
+the error channel here to focus on variance.</p>
+<p><code>Effect[-R, +A]</code> is a computation that needs an environment <code>R</code> to run and
+produces a value <code>A</code>. Internally it wraps a function <code>R =&gt; A</code>:</p>
+<pre><code class="language-scala">class Effect[-R, +A](val run: R =&gt; A)
+</code></pre>
+<p>Look at the variance annotations. <code>+A</code> is in the output — <code>run</code> <em>returns</em> it.
+<code>-R</code> is in the input — <code>run</code> <em>receives</em> it. In fact, <code>R =&gt; A</code> is <code>Function1[R, A]</code>,
+and <code>R</code> sits in the <code>-A</code> slot of <code>Function1</code>. That’s a contravariant position,
+so <code>R</code> must be declared <code>-R</code> for the class to compile.</p>
+<p>This is the same variance shape as <code>Function1[-A, +B]</code> — which makes sense,
+since <code>Effect</code> is essentially a wrapper around <code>R =&gt; A</code>.</p>
+<p>The example below defines two traits — <code>Database</code> and <code>Logger</code> — and a class
+<code>AppEnv</code> that extends both:</p>
+<pre><code>Database          Logger
+    ↑                ↑
+    └── AppEnv ──────┘
+</code></pre>
+<p><code>AppEnv &lt;: Database</code> and <code>AppEnv &lt;: Logger</code>. An effect that needs only a
+<code>Database</code> can run where an <code>AppEnv</code> is available — <code>AppEnv</code> has at least
+everything the effect needs. That’s contravariance in action:</p>
 <pre><code class="language-scala">// step2g2.scala — Variance in action: a simplified ZIO-like effect
 
 // An effect that requires an environment R and produces a value A.
@@ -772,26 +788,26 @@ val logMsg: String =&gt; Effect[Logger, Unit] = msg =&gt; Effect { logger =&gt;
 @main def step2g2(): Unit =
   val env = AppEnv()
 
-  // Compose effects with flatMap — just like ZIO's for-comprehension
+  // fetchUser needs Database, logMsg needs Logger
+  // the for-comprehension combines them — the result needs both
   val program: Effect[Database &amp; Logger, Unit] =
-    fetchUser.flatMap(user =&gt; logMsg(s"fetched $user"))
+    for
+      user &lt;- fetchUser
+      _    &lt;- logMsg(s"fetched $user")
+    yield ()
 
+  // AppEnv extends Database, Logger — it satisfies both
   program.run(env)  // LOG: fetched user-1
 
-  // An effect that needs only Database can run where AppEnv is available.
-  // AppEnv &lt;: Database, so Effect[Database, String] &lt;: Effect[AppEnv, String]
-  // (contravariance flips the direction on R)
-  val effect: Effect[AppEnv, String] = fetchUser  // OK!
-  println(effect.run(env))
-
-  // The reverse doesn't work: an effect needing AppEnv can't run with just a Database.
-  // val bad: Effect[Database, String] = program  // Compile error!
-  // What would program do without a Logger?
+  // A plain Database isn't enough — program also needs a Logger
+  // val db: Database = new Database { def lookup(id: Int) = s"user-$id" }
+  // program.run(db)  // Compile error — db is not a Logger
 </code></pre>
-<p>Compare <code>flatMap</code> on both types. In <code>List[+A]</code>, the <code>A</code> comes from the class’s <code>+A</code>
-— and it lands in the right position without any bound. In <code>Effect[-R, +A]</code>, the <code>R</code>
-comes from the class’s <code>-R</code> — but the extra nesting of <code>Effect[R, B]</code> inside
-<code>Function1</code> changes where <code>R</code> lands, and a bound becomes necessary.</p>
+<p>Compare <code>flatMap</code> in <code>List[+A]</code> and <code>Effect[-R, +A]</code>. In <code>List</code>, the <code>A</code> comes
+from the class’s <code>+A</code> — and it lands in the right position without any bound.
+In <code>Effect</code>, the <code>R</code> comes from the class’s <code>-R</code> — but the extra nesting of
+<code>Effect[R, B]</code> inside <code>Function1</code> changes where <code>R</code> lands, and a bound becomes
+necessary.</p>
 <p>To trace this, we need to understand how the compiler decides. It checks whether
 each type parameter lands in an <strong>input</strong> or <strong>output</strong> position:</p>
 <ul>
@@ -837,20 +853,36 @@ each type parameter lands in an <strong>input</strong> or <strong>output</strong
 <pre><code class="language-scala">// Desugared =&gt; for readability
 def flatMap[R1 &lt;: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B]
 </code></pre>
-<p><code>R1 &lt;: R</code> means <code>R1</code> is <code>R</code> or a subtype of <code>R</code> — it has at least everything <code>R</code> has.
-Variance rules (<code>+</code> and <code>-</code>) only apply to the class’s own type parameters.
+<p><code>R1 &lt;: R</code> means <code>R1</code> is <code>R</code> or a subtype of <code>R</code> — it has at least everything <code>R</code> has.</p>
+<p>Variance rules (<code>+</code> and <code>-</code>) only apply to the class’s own type parameters.
 <code>R1</code> is a type parameter on the <em>method</em>, so it’s not subject to variance checking —
 the compiler just checks that <code>R1 &lt;: R</code> holds at the call site.</p>
-<p>And <code>R1 &lt;: R</code> isn’t just a trick to satisfy the variance checker — it’s what makes
-the implementation work. Look at the body:</p>
-<pre><code class="language-scala">Effect(r =&gt; f(run(r)).run(r))
+<p><code>R1 &lt;: R</code> also makes the implementation work — not just the type checker.</p>
+<p>Let’s break <code>Effect(r =&gt; f(run(r)).run(r))</code> into named steps — and write
+<code>Function1</code> explicitly instead of <code>=&gt;</code> — so we can see both how the
+implementation works and where each type parameter lands:</p>
+<pre><code class="language-scala">//                                       i.e. R =&gt; A
+class Effect[-R, +A](val run: Function1[R, A]):
+//                                     i.e. A =&gt; Effect[R1, B]
+  def flatMap[R1 &lt;: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B] =
+    Effect { r =&gt;              // r: R1
+      val a = run(r)           // run this effect — OK because R1 &lt;: R
+      val effect2 = f(a)       // build the next effect
+      effect2.run(r)           // run it with the same environment
+    }
 </code></pre>
-<p><code>r</code> has type <code>R1</code>. The outer effect’s <code>run</code> expects <code>R</code>. Since <code>R1 &lt;: R</code>, passing
-<code>r</code> where <code>R</code> is expected works — <code>R1</code> has everything <code>R</code> needs. The same <code>r</code>
-feeds both effects.</p>
-<p>This is the same pattern as <code>[B &gt;: A]</code> for covariance, but in the opposite direction:
-lower bounds widen covariant types, upper bounds narrow contravariant types.</p>
+<p><code>A</code> — the value produced by <code>run</code> — gets passed to <code>f</code>. Look at
+<code>f: Function1[A, Effect[R1, B]]</code>: <code>A</code> sits in the <code>-A</code> slot of <code>Function1</code>.
+The class’s <code>+A</code> ends up in a contravariant position inside a contravariant
+position — <code>(-) × (-) = (+)</code> — so the compiler is satisfied.</p>
+<p>The same <code>r</code> feeds both effects — that’s why <code>R1 &lt;: R</code> matters at the
+implementation level, not just for the variance checker.</p>
+<p>Because <code>R</code> is contravariant, an effect that needs a <code>Database</code> (<code>R</code>) can run
+where an <code>AppEnv</code> (<code>R1</code>) is available — <code>AppEnv &lt;: Database</code>, so it has at least
+everything the effect needs. That’s why <code>fetchUser.run(AppEnv())</code> works:
+<code>fetchUser</code> only needs a <code>Database</code>, and <code>AppEnv</code> is one.</p>
 <h2 id="2-8-quick-reference"><a class="header" href="#2-8-quick-reference">2-8. Quick Reference</a></h2>
+<p>That was a lot of moving parts. Here’s everything from this chapter in one place:</p>
 <pre><code>Invariant (default)   → No compatibility assumed
 +A (covariant)        → Output side — safe to widen
 -A (contravariant)    → Input side — safe in the opposite direction

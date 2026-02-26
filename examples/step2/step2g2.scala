@@ -42,18 +42,17 @@ val logMsg: String => Effect[Logger, Unit] = msg => Effect { logger =>
 @main def step2g2(): Unit =
   val env = AppEnv()
 
-  // Compose effects with flatMap — just like ZIO's for-comprehension
+  // fetchUser needs Database, logMsg needs Logger
+  // the for-comprehension combines them — the result needs both
   val program: Effect[Database & Logger, Unit] =
-    fetchUser.flatMap(user => logMsg(s"fetched $user"))
+    for
+      user <- fetchUser
+      _    <- logMsg(s"fetched $user")
+    yield ()
 
+  // AppEnv extends Database, Logger — it satisfies both
   program.run(env)  // LOG: fetched user-1
 
-  // An effect that needs only Database can run where AppEnv is available.
-  // AppEnv <: Database, so Effect[Database, String] <: Effect[AppEnv, String]
-  // (contravariance flips the direction on R)
-  val effect: Effect[AppEnv, String] = fetchUser  // OK!
-  println(effect.run(env))
-
-  // The reverse doesn't work: an effect needing AppEnv can't run with just a Database.
-  // val bad: Effect[Database, String] = program  // Compile error!
-  // What would program do without a Logger?
+  // A plain Database isn't enough — program also needs a Logger
+  // val db: Database = new Database { def lookup(id: Int) = s"user-$id" }
+  // program.run(db)  // Compile error — db is not a Logger

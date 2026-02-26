@@ -9,7 +9,9 @@
 
   // Try to do arithmetic — compile error
   // val doubled = first * 2
-  // error: value * is not a member of Any
+  // [error] value * is not a member of Any
+  // [error]    val doubled = first * 2
+  // [error]                  ^^^^^^^
 
   println(first)            // prints 100
   println(first.getClass)   // class java.lang.Integer

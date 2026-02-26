@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-965f2ec9.js";
+            window.path_to_searchindex_js = "../searchindex-ca27be99.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-9571e420.js"></script>
@@ -236,14 +236,18 @@ class DVD(val name: String, val price: Double) extends Item:
   val recovered: Either[String, Item] = failed.orElse(Right(dvd))
   println(recovered)  // Right(DVD(The Matrix))
 </code></pre>
-<p>The code introduces <code>Nothing</code> — Scala’s <strong>bottom type</strong>. It’s a subtype of every type,
-and no value of type <code>Nothing</code> can ever exist. The compiler uses it as a placeholder
-when one side of a type is unspecified: <code>Right(book)</code> is <code>Right[Nothing, Book]</code>,
-<code>Left("error")</code> is <code>Left[String, Nothing]</code>, <code>List()</code> is <code>List[Nothing]</code>, and <code>None</code>
-is <code>Option[Nothing]</code>. Covariance makes this work — since <code>Nothing &lt;: A</code> for any <code>A</code>,
-these always fit wherever a type is expected.</p>
-<p>You already saw this in section 2-5: <code>Cart()</code> is <code>Cart[Nothing]</code>. Adding a <code>Book</code>
-widens it to <code>Cart[Book]</code> via the <code>[B &gt;: A]</code> lower bound.</p>
+<p>The code introduces <code>Nothing</code> — Scala’s <strong>bottom type</strong>. It’s a subtype of every
+type, and no value of type <code>Nothing</code> can ever exist.</p>
+<p>The compiler uses it as a placeholder when one side of a type is unspecified:</p>
+<ul>
+<li><code>Right(book)</code> is <code>Right[Nothing, Book]</code> — no Left type yet</li>
+<li><code>Left("error")</code> is <code>Left[String, Nothing]</code> — no Right type yet</li>
+<li><code>List()</code> is <code>List[Nothing]</code> — empty, no element type yet</li>
+<li><code>None</code> is <code>Option[Nothing]</code> — no value, no type yet</li>
+</ul>
+<p>Covariance makes this work. Since <code>Nothing &lt;: A</code> for any <code>A</code>, these always fit
+wherever a type is expected. You already saw this in section 2-5: <code>Cart()</code> is
+<code>Cart[Nothing]</code>. Adding a <code>Book</code> widens it to <code>Cart[Book]</code> via <code>[B &gt;: A]</code>.</p>
 <p>The pattern is the same in every case: the type <strong>produces</strong> (returns, holds, emits)
 values of <code>A</code>, so <code>+A</code> is natural. And when you need to add or combine values of
 a different subtype, <code>[B &gt;: A]</code> widens the type safely.</p>
@@ -255,36 +259,63 @@ types that <strong>consume</strong> or <strong>process</strong> values.</p>
 trait Item:
   def name: String
   def price: Double
-class Book(val name: String, val price: Double, val isbn: String) extends Item
-class DVD(val name: String, val price: Double) extends Item
+class Book(val name: String, val price: Double, val isbn: String) extends Item:
+  override def toString = s"Book($name, $price, $isbn)"
+class DVD(val name: String, val price: Double) extends Item:
+  override def toString = s"DVD($name, $price)"
 
 // JSON serializer — consumes a value and produces a String
 trait JsonWriter[-A]:
   def write(value: A): String
 
 class ItemWriter extends JsonWriter[Item]:
-  def write(value: Item): String = s"""{"name":"${value.name}","price":${value.price}}"""
+  def write(value: Item): String =
+    s"""{"name":"${value.name}","price":${value.price}}"""
 
 class BookWriter extends JsonWriter[Book]:
-  def write(value: Book): String = s"""{"name":"${value.name}","price":${value.price},"isbn":"${value.isbn}"}"""
+  def write(value: Book): String =
+    s"""{"name":"${value.name}","price":${value.price},""" +
+    s""""isbn":"${value.isbn}"}"""
+
+// Validator — consumes a value and returns pass/fail
+trait Validator[-A]:
+  def validate(value: A): Boolean
+
+class PriceValidator extends Validator[Item]:
+  def validate(value: Item): Boolean = value.price &gt; 0
+
+def serialize[A](value: A, writer: JsonWriter[A]): String =
+  writer.write(value)
 
 @main def step2i(): Unit =
-  val itemWriter: JsonWriter[Item] = ItemWriter()
+  val itemWriter = ItemWriter()
+  val book = Book("Scala in Depth", 45.0, "978-1617295")
 
-  // An ItemWriter can write Books too — it handles anything that's an Item
-  val bookWriter: JsonWriter[Book] = itemWriter  // Contravariance!
-  println(bookWriter.write(Book("Scala in Depth", 45.0, "978-1617295")))
-  // prints: {"name":"Scala in Depth","price":45.0} — no isbn, same as PriceFormatter
+  // serialize expects JsonWriter[Book] — ItemWriter handles any Item, so it qualifies
+  println(serialize(book, itemWriter))
+  // {"name":"Scala in Depth","price":45.0} — no isbn, but it works
 
-  // A BookWriter can NOT write arbitrary Items — it expects Book-specific fields
-  val specificWriter: JsonWriter[Book] = BookWriter()
-  // val generalWriter: JsonWriter[Item] = specificWriter  // REJECTED
-  // What would specificWriter.write(DVD("The Matrix", 19.99)) do with isbn?
+  // A BookWriter knows about Book-specific fields
+  val bookWriter = BookWriter()
+  println(serialize(book, bookWriter))
+  // {"name":"Scala in Depth","price":45.0,"isbn":"978-1617295"}
+
+  // The reverse doesn't work: a BookWriter can't handle arbitrary Items
+  // serialize(DVD("The Matrix", 19.99), bookWriter)  // Compile error
+  // What would bookWriter do with a DVD's isbn?
+
+  // Same pattern with Validator: PriceValidator validates any Item,
+  // so it works on Books too
+  val books = List(Book("Scala", 45.0, "978-1"), Book("Free", 0.0, "978-2"))
+  val valid = books.filter(PriceValidator().validate)
+  println(valid)  // List(Book(Scala, 45.0, 978-1))
 </code></pre>
 <p>You already saw this pattern in section 2-7: <code>Function1[-A, +B]</code> is contravariant
-in its input, which is why <code>books.filter(cheap)</code> works when <code>cheap</code> is <code>Item =&gt; Boolean</code>.
-The <code>JsonWriter</code> here is the same idea — if it can serialize any <code>Item</code>, it can
-serialize a <code>Book</code>.</p>
+in its input, which is why <code>books.filter(cheap)</code> works when <code>cheap</code> is <code>Item =&gt; Boolean</code>.</p>
+<p>The <code>JsonWriter</code> here is the same idea. <code>serialize</code> expects a <code>JsonWriter[Book]</code>,
+and <code>ItemWriter</code> (a <code>JsonWriter[Item]</code>) qualifies — if it can serialize any <code>Item</code>,
+it can serialize a <code>Book</code>. The <code>Validator</code> follows the same pattern: a
+<code>PriceValidator</code> that validates any <code>Item</code> works in <code>books.filter</code> too.</p>
 <h2 id="2-11-so-is-invariant-actually-useful"><a class="header" href="#2-11-so-is-invariant-actually-useful">2-11. So Is Invariant Actually Useful?</a></h2>
 <p>Yes, but its role is narrower than you might think.</p>
 <p>Invariant is the right choice when your type <strong>both reads and writes</strong> — mutable containers,
