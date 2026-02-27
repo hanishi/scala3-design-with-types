@@ -40,7 +40,12 @@ javac Step2bJava.java && java Step2bJava
 
 It compiles without warnings — and crashes at runtime with `ArrayStoreException`.
 
-Scala's invariant default is a design decision to **eliminate this class of bugs at compile time**.
+Java *generics* are invariant — `List<Book>` is not `List<Item>`, and the compiler
+rejects the assignment. Uncomment the generics section in the example to see this.
+Arrays, designed earlier, are covariant — and that's where the runtime crash comes from.
+
+Scala's invariant default applies to everything — arrays included — and **eliminates
+this class of bugs at compile time**.
 
 ## 2-3. Making It Covariant — What `+A` Means
 
@@ -91,10 +96,12 @@ That's where **type bounds** come in.
 In 2-4, we saw that `+A` rejects `A` in input positions.
 
 `B >: A` means "`B` is a supertype of `A`" — `B` must be `A` or something above it.
-That's what makes this possible: rather than accepting `A` directly (which `+A` forbids),
-the method asks the compiler to find a type `B` broad enough for both
-what's already in the cart and what's being added.
-The cart's type either stays the same or widens — never narrows.
+Think of the compiler saying:
+*"You declared `+A`, so I can't let you take an `A` as input — that would break
+covariance. But give me a `B` that's a supertype of `A`, and I'll find the narrowest
+type that fits both what's already here and what you're adding.
+If it already fits, `B` is just `A` and nothing changes. Otherwise the cart
+widens — but it never narrows."*
 
 ```scala
 {{#include ../../../examples/step2/step2e.scala}}
@@ -150,8 +157,13 @@ You won't write `[B >: A]` in everyday application code — but those foundation
 genuinely depend on it. Without lower bounds, covariant containers simply couldn't
 have "add" methods.
 
-One thing to keep in mind: widening means callers get back a less precise type.
-Use `[B >: A]` when widening is a real requirement, not as a precaution.
+Why is widening safe? Think of it as the compiler telling you:
+*"I'll allow this — every element has at least `Item`'s methods, so your operations
+are safe. But I can no longer promise what's specifically inside. You asked me to
+widen to `Item`, so `Item` is all I'll guarantee."*
+
+You gain the ability to mix types; you lose the right to assume a specific one.
+Use `[B >: A]` when that trade-off is real, not as a precaution.
 
 ## 2-6. Upper Bounds — Requiring Minimum Behavior
 
@@ -234,6 +246,21 @@ The upper bound gives you both: access to `Item`'s API and the precise element t
 back (`Book` in, `Book` out; `DVD` in, `DVD` out). In other words, `<: Item` is not
 about restricting callers — it's about telling the compiler what operations are valid
 while still keeping the result type maximally specific.
+
+<details>
+<summary><strong>Coming from Java?</strong></summary>
+
+Java needs `? extends` at the call site to accept `List<Book>` where `List<Item>` is expected:
+
+```java
+{{#include ../../../examples/step2/Step2kCov.java}}
+```
+
+**Try it:** `javac Step2kCov.java && java Step2kCov`
+
+Scala's `List[+A]` declares covariance once — `cheapest(books)` just works without a wildcard.
+
+</details>
 
 **Standard library** — `WeakReference[+T <: AnyRef]` only accepts reference types:
 
@@ -330,24 +357,74 @@ can handle a `Book`, a `DVD`, anything. A `BookFormatter` uses `isbn` — someth
 only `Book` has. Hand it a `DVD` and it breaks. Hence the flip:
 `Book <: Item`, but `PriceFormatter[Item] <: PriceFormatter[Book]`.
 
+<details>
+<summary><strong>Coming from Java?</strong></summary>
+
+Java's `Predicate<Item>` can filter a `List<Book>` because `filter()` accepts
+`Predicate<? super T>` — use-site contravariance:
+
+```java
+{{#include ../../../examples/step2/Step2kCon.java}}
+```
+
+**Try it:** `javac Step2kCon.java && java Step2kCon`
+
+Scala's `Function1[-A, +B]` declares contravariance once — `books.filter(cheap)` just works.
+
+</details>
+
 ### What about bounds for contravariance?
 
-With covariance, `+A` forbids `A` in input positions (method parameters — where the
-method *receives* values). Lower bounds (`[B >: A]`) are the escape hatch, as you saw
-in section 2-5. 
+With covariance, the compiler said: *"You declared `+A`, so I can't let you take
+an `A` as input."* Lower bounds (`[B >: A]`) were the escape hatch — widen upward.
 
-Symmetrically, `-A` forbids `A` in output positions (return types —
-where the method *produces* values). Upper bounds (`[B <: A]`) would be the escape hatch.
+The mirror exists: `-A` forbids `A` in output positions, and upper bounds
+(`[B <: A]`) are the escape hatch — narrow downward. The pairings are fixed:
 
-For simple consumers like `PriceFormatter[-A]` or `Function1[-A, +B]`, this never
-comes up — they return `String` or `Boolean`, not `A`.
+| Variance | Problem | Escape hatch | Direction |
+|---|---|---|---|
+| `+A` covariant | `A` can't appear in input | `[B >: A]` lower bound | widen up |
+| `-A` contravariant | `A` can't appear in output | `[B <: A]` upper bound | narrow down |
 
-But it *does* come up when you compose contravariant types. Here's a simplified
-example inspired by [ZIO](https://zio.dev/), a popular Scala library for building
-concurrent and asynchronous programs. 
+Lower bounds solve a covariance problem. Upper bounds solve a contravariance
+problem. They don't cross — covariance widens, so its escape hatch widens;
+contravariance narrows, so its escape hatch narrows.
 
-ZIO's actual type is `ZIO[-R, +E, +A]` (environment, error, value) — we drop
-the error channel here to focus on variance.
+For simple consumers like `PriceFormatter[-A]` or `Function1[-A, +B]`, the
+contravariant escape hatch never comes up — they return `String` or `Boolean`,
+not `A`.
+
+But it *does* come up when you compose contravariant types — and seeing it
+in a real example is the best way to understand why the escape hatch exists.
+
+### A real example: ZIO
+
+[ZIO](https://zio.dev/), one of the most popular Scala libraries, takes an
+interesting approach to dependency management: instead of passing dependencies
+(a database connection, a logger) directly to functions, you describe what you
+*need* in the type. A program becomes a value: *"I need a Database to run,
+and I'll produce a String."* The compiler then verifies that all dependencies
+are satisfied before the program runs — dependency injection at the type level.
+
+ZIO encodes this as `ZIO[-R, +E, +A]`:
+
+- **`-R`** (environment) — what the program *needs* to run. Contravariant,
+  as we've been discussing.
+- **`+E`** (error) — how the program can *fail*. Covariant — a function that
+  handles `DatabaseError` also handles it when composed with code that fails
+  with `NetworkError`, widening to `DatabaseError | NetworkError`.
+- **`+A`** (value) — what the program *produces* on success. Covariant.
+
+The typed error channel is a big part of what makes ZIO useful in production:
+instead of catching `Exception` and hoping for the best, the compiler tells
+you exactly which errors each operation can produce — and forces you to handle
+them. Variance makes this composable: combining two operations that fail
+differently gives you a union of their error types.
+
+We'll build a simplified version — `Effect[-R, +A]` — dropping the error channel
+to focus on variance and upper bounds. Our `Effect` is just a teaching tool to
+see why the contravariant escape hatch is necessary: without `R1 <: R`, you
+can't write `flatMap` — and without `flatMap`, you can't combine effects.
 
 `Effect[-R, +A]` is a computation that needs an environment `R` to run and
 produces a value `A`. Internally it wraps a function `R => A`:
@@ -356,16 +433,24 @@ produces a value `A`. Internally it wraps a function `R => A`:
 class Effect[-R, +A](val run: R => A)
 ```
 
-Look at the variance annotations. `+A` is in the output — `run` *returns* it.
-`-R` is in the input — `run` *receives* it. In fact, `R => A` is `Function1[R, A]`,
-and `R` sits in the `-A` slot of `Function1`. That's a contravariant position,
-so `R` must be declared `-R` for the class to compile.
+`R => A` is `Function1[R, A]`: `R` sits in the `-A` slot, `A` sits in the
+`+B` slot. So `Effect[-R, +A]` has the same variance shape as
+`Function1[-A, +B]` — which makes sense, since it's just a wrapper.
 
-This is the same variance shape as `Function1[-A, +B]` — which makes sense,
-since `Effect` is essentially a wrapper around `R => A`.
+To see how `Effect[-R, +A]` works in practice, let's define two traits that
+represent different capabilities, and an `AppEnv` that provides both:
 
-The example below defines two traits — `Database` and `Logger` — and a class
-`AppEnv` that extends both:
+```scala
+trait Database:
+  def lookup(id: Int): String
+
+trait Logger:
+  def log(msg: String): Unit
+
+class AppEnv extends Database, Logger:
+  def lookup(id: Int) = s"user-$id"
+  def log(msg: String) = println(s"  LOG: $msg")
+```
 
 ```
 Database          Logger
@@ -373,28 +458,47 @@ Database          Logger
     └── AppEnv ──────┘
 ```
 
-`AppEnv <: Database` and `AppEnv <: Logger`. An effect that needs only a
-`Database` can run where an `AppEnv` is available — `AppEnv` has at least
-everything the effect needs. That's contravariance in action:
+We want an effect that takes a `Database` and returns a `String` — so we
+pass `db => db.lookup(1)`, and the type becomes `Effect[Database, String]`.
+`logMsg` takes a `String` and returns an effect that needs a `Logger` —
+it closes over the message:
 
 ```scala
-{{#include ../../../examples/step2/step2g2.scala}}
+val fetchUser: Effect[Database, String] = Effect(db => db.lookup(1))
+val logMsg: String => Effect[Logger, Unit] = msg => Effect(logger => logger.log(msg))
 ```
 
-Compare `flatMap` in `List[+A]` and `Effect[-R, +A]`. In `List`, the `A` comes
-from the class's `+A` — and it lands in the right position without any bound.
-In `Effect`, the `R` comes from the class's `-R` — but the extra nesting of
-`Effect[R, B]` inside `Function1` changes where `R` lands, and a bound becomes
-necessary.
+Compose them with a for-comprehension, and the result is an effect that
+requires `Database & Logger` — which we run by providing the environment:
 
-To trace this, we need to understand how the compiler decides. It checks whether
-each type parameter lands in an **input** or **output** position:
+```scala
+val program: Effect[Database & Logger, Unit] =
+  for
+    user <- fetchUser
+    _    <- logMsg(s"fetched $user")
+  yield ()
 
-- Method parameters are **input** — the method *receives* them → position is `(-)`
-- Return types are **output** — the method *produces* them → position is `(+)`
-- So for `Effect[-R, +A]`: `+A` must end up in `(+)` positions, `-R` must end up in `(-)` positions.
+program.run(AppEnv())  // LOG: fetched user-1
+```
 
-When types are nested, positions multiply like signs in arithmetic:
+The for-comprehension desugars to `flatMap` and `map` — but defining
+`flatMap` is where variance gets in the way.
+
+### The problem: `flatMap` and `-R`
+
+Intuitively, `flatMap` should use the
+class's `R` — the same environment for both the current effect and the next one:
+
+```scala
+def flatMap[B](f: A => Effect[R, B]): Effect[R, B]
+```
+
+But the compiler rejects it. To see why, you need to know how the compiler
+reads **positions**:
+
+- Method parameters are **input** — position is `(-)`
+- Return types are **output** — position is `(+)`
+- When types are nested, positions multiply like signs:
 
 ```
 (+) × (+) = (+)     output inside output → still output
@@ -402,20 +506,7 @@ When types are nested, positions multiply like signs in arithmetic:
 (-) × (-) = (+)     input inside input → flips back to output
 ```
 
-**`List[+A]`'s flatMap — no bound needed:**
-
-Desugar: `flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]`
-
-| Step | Where is A? | Position |
-|------|-------------|----------|
-| `f` is a method parameter | start | `(-)` |
-| `A` is in the `-A` slot of `Function1` | `(-) × (-)` | `(+)` |
-
-Result: `A` lands in `(+)`. We declared `+A`. **OK.**
-
-**`Effect[-R, +A]`'s flatMap — what if we tried without a bound?**
-
-Desugar (without bound): `flatMap[B](f: Function1[A, Effect[R, B]]): Effect[R, B]`
+Desugar the signature: `flatMap[B](f: Function1[A, Effect[R, B]]): Effect[R, B]`
 
 | Step | Where is R? | Position |
 |------|-------------|----------|
@@ -425,49 +516,62 @@ Desugar (without bound): `flatMap[B](f: Function1[A, Effect[R, B]]): Effect[R, B
 
 Result: `R` lands in `(+)`. We declared `-R`. **Rejected.**
 
-The fix:
+The fix: introduce a fresh type parameter `R1 <: R` on the method.
+Variance rules (`+` and `-`) only apply to the *class's* own type parameters.
+`R1` is a *method* type parameter — the variance checker doesn't track it at
+all. It can appear in any position. The only thing the compiler checks is that
+`R1 <: R` holds at the call site.
 
 ```scala
-// Desugared => for readability
-def flatMap[R1 <: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B]
+def flatMap[R1 <: R, B](f: A => Effect[R1, B]): Effect[R1, B] =
+    Effect(r => f(run(r)).run(r))
 ```
 
-`R1 <: R` means `R1` is `R` or a subtype of `R` — it has at least everything `R` has.
+<details>
+<summary><strong>Comparison: why does List's flatMap work without a bound?</strong></summary>
 
-Variance rules (`+` and `-`) only apply to the class's own type parameters.
-`R1` is a type parameter on the *method*, so it's not subject to variance checking —
-the compiler just checks that `R1 <: R` holds at the call site.
+Desugar: `flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]`
 
-`R1 <: R` also makes the implementation work — not just the type checker.
+| Step | Where is A? | Position |
+|------|-------------|----------|
+| `f` is a method parameter | start | `(-)` |
+| `A` is in the `-A` slot of `Function1` | `(-) × (-)` | `(+)` |
 
-Let's break `Effect(r => f(run(r)).run(r))` into named steps — and write
-`Function1` explicitly instead of `=>` — so we can see both how the
-implementation works and where each type parameter lands:
+Result: `A` lands in `(+)`. We declared `+A`. **OK.** No extra nesting layer,
+so no position flip — and no bound needed.
+
+</details>
+
+### How the implementation works
+
+`R1 <: R` isn't just for the variance checker — it makes the implementation
+work too. Let's break `Effect(r => f(run(r)).run(r))` into named steps,
+writing `Function1[-A, +B]` explicitly so we can see where each type parameter lands:
 
 ```scala
-//                                       i.e. R => A
+//                               i.e. R => A
 class Effect[-R, +A](val run: Function1[R, A]):
-//                                     i.e. A => Effect[R1, B]
+//                              i.e. A => Effect[R1, B]
   def flatMap[R1 <: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B] =
-    Effect { r =>              // r: R1
+    Effect { r =>              // r: R1 — the return type is Effect[R1, B]
       val a = run(r)           // run this effect — OK because R1 <: R
       val effect2 = f(a)       // build the next effect
       effect2.run(r)           // run it with the same environment
     }
 ```
 
-`A` — the value produced by `run` — gets passed to `f`. Look at
-`f: Function1[A, Effect[R1, B]]`: `A` sits in the `-A` slot of `Function1`.
-The class's `+A` ends up in a contravariant position inside a contravariant
-position — `(-) × (-) = (+)` — so the compiler is satisfied.
+Why is `r` an `R1`, not an `R`? Because `flatMap` returns `Effect[R1, B]`,
+which wraps a function `R1 => B`. So `r` — the environment passed to
+that function — has type `R1`. And since `R1 <: R`, the same `r` can feed
+`run(r)` (which expects `R`) and `effect2.run(r)` (which expects `R1`).
+This is the contravariant pattern: `run` expects an `R`, and `R1` has at
+least everything `R` has — a consumer of a broader type works with a narrower one.
 
-The same `r` feeds both effects — that's why `R1 <: R` matters at the
-implementation level, not just for the variance checker.
+You can run the complete example with `scala-cli run step2g2.scala`:
 
-Because `R` is contravariant, an effect that needs a `Database` (`R`) can run
-where an `AppEnv` (`R1`) is available — `AppEnv <: Database`, so it has at least
-everything the effect needs. That's why `fetchUser.run(AppEnv())` works:
-`fetchUser` only needs a `Database`, and `AppEnv` is one.
+```scala
+{{#include ../../../examples/step2/step2g2.scala}}
+```
 
 ## 2-8. Quick Reference
 

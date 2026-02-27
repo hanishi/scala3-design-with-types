@@ -7,11 +7,14 @@ src = "src"
 
 [build]
 build-dir = "../docs"
+extra-watch-dirs = ["../examples"]
 
 [output.html]
 default-theme = "light"
 preferred-dark-theme = "navy"
 no-section-label = false
+git-repository-url = "https://github.com/hanishi/scala3-design-with-types"
+edit-url-template = "https://github.com/hanishi/scala3-design-with-types/edit/book/book/{path}"
 
 [output.html.search]
 enable = true
