@@ -250,7 +250,8 @@ while still keeping the result type maximally specific.
 <details>
 <summary><strong>Coming from Java?</strong></summary>
 
-Java needs `? extends` at the call site to accept `List<Book>` where `List<Item>` is expected:
+Java generics are invariant by default. To accept `List<Book>` where
+`List<Item>` is expected, you must write `? extends` **at every call site**:
 
 ```java
 {{#include ../../../examples/step2/Step2kCov.java}}
@@ -258,7 +259,12 @@ Java needs `? extends` at the call site to accept `List<Book>` where `List<Item>
 
 **Try it:** `javac Step2kCov.java && java Step2kCov`
 
-Scala's `List[+A]` declares covariance once — `cheapest(books)` just works without a wildcard.
+This is *use-site* variance — if you forget `? extends`, the code silently
+stops accepting subtypes. Every method that should be flexible needs the
+annotation, and nothing warns you when you leave it out.
+
+Scala's `List[+A]` declares covariance once at the class definition —
+`cheapest(books)` just works everywhere, and you can't forget.
 
 </details>
 
@@ -360,8 +366,8 @@ only `Book` has. Hand it a `DVD` and it breaks. Hence the flip:
 <details>
 <summary><strong>Coming from Java?</strong></summary>
 
-Java's `Predicate<Item>` can filter a `List<Book>` because `filter()` accepts
-`Predicate<? super T>` — use-site contravariance:
+Java's `Predicate<Item>` can filter a `List<Book>` only because `filter()`
+explicitly accepts `Predicate<? super T>` — use-site contravariance:
 
 ```java
 {{#include ../../../examples/step2/Step2kCon.java}}
@@ -369,7 +375,12 @@ Java's `Predicate<Item>` can filter a `List<Book>` because `filter()` accepts
 
 **Try it:** `javac Step2kCon.java && java Step2kCon`
 
-Scala's `Function1[-A, +B]` declares contravariance once — `books.filter(cheap)` just works.
+If `filter()` had been written as `filter(Predicate<T>)` without `? super`,
+passing a `Predicate<Item>` where `Predicate<Book>` is expected would fail —
+and nothing warns you that the annotation is missing.
+
+Scala's `Function1[-A, +B]` declares contravariance once —
+`books.filter(cheap)` just works, and the caller never thinks about it.
 
 </details>
 
