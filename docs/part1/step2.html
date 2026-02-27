@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-e0efec9d.js";
+            window.path_to_searchindex_js = "../searchindex-c69cdb8c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-9571e420.js"></script>
@@ -587,7 +587,8 @@ about restricting callers — it’s about telling the compiler what operations 
 while still keeping the result type maximally specific.</p>
 <details>
 <summary><strong>Coming from Java?</strong></summary>
-<p>Java needs <code>? extends</code> at the call site to accept <code>List&lt;Book&gt;</code> where <code>List&lt;Item&gt;</code> is expected:</p>
+<p>Java generics are invariant by default. To accept <code>List&lt;Book&gt;</code> where
+<code>List&lt;Item&gt;</code> is expected, you must write <code>? extends</code> <strong>at every call site</strong>:</p>
 <pre><code class="language-java">// Step2kCov.java — Java's use-site covariance: ? extends
 
 import java.util.List;
@@ -641,7 +642,11 @@ public class Step2kCov {
 }
 </code></pre>
 <p><strong>Try it:</strong> <code>javac Step2kCov.java &amp;&amp; java Step2kCov</code></p>
-<p>Scala’s <code>List[+A]</code> declares covariance once — <code>cheapest(books)</code> just works without a wildcard.</p>
+<p>This is <em>use-site</em> variance — if you forget <code>? extends</code>, the code silently
+stops accepting subtypes. Every method that should be flexible needs the
+annotation, and nothing warns you when you leave it out.</p>
+<p>Scala’s <code>List[+A]</code> declares covariance once at the class definition —
+<code>cheapest(books)</code> just works everywhere, and you can’t forget.</p>
 </details>
 <p><strong>Standard library</strong> — <code>WeakReference[+T &lt;: AnyRef]</code> only accepts reference types:</p>
 <pre><code class="language-scala">import scala.ref.WeakReference
@@ -797,8 +802,8 @@ only <code>Book</code> has. Hand it a <code>DVD</code> and it breaks. Hence the 
 <code>Book &lt;: Item</code>, but <code>PriceFormatter[Item] &lt;: PriceFormatter[Book]</code>.</p>
 <details>
 <summary><strong>Coming from Java?</strong></summary>
-<p>Java’s <code>Predicate&lt;Item&gt;</code> can filter a <code>List&lt;Book&gt;</code> because <code>filter()</code> accepts
-<code>Predicate&lt;? super T&gt;</code> — use-site contravariance:</p>
+<p>Java’s <code>Predicate&lt;Item&gt;</code> can filter a <code>List&lt;Book&gt;</code> only because <code>filter()</code>
+explicitly accepts <code>Predicate&lt;? super T&gt;</code> — use-site contravariance:</p>
 <pre><code class="language-java">// Step2kCon.java — Java's use-site contravariance: ? super
 
 import java.util.List;
@@ -855,7 +860,11 @@ public class Step2kCon {
 }
 </code></pre>
 <p><strong>Try it:</strong> <code>javac Step2kCon.java &amp;&amp; java Step2kCon</code></p>
-<p>Scala’s <code>Function1[-A, +B]</code> declares contravariance once — <code>books.filter(cheap)</code> just works.</p>
+<p>If <code>filter()</code> had been written as <code>filter(Predicate&lt;T&gt;)</code> without <code>? super</code>,
+passing a <code>Predicate&lt;Item&gt;</code> where <code>Predicate&lt;Book&gt;</code> is expected would fail —
+and nothing warns you that the annotation is missing.</p>
+<p>Scala’s <code>Function1[-A, +B]</code> declares contravariance once —
+<code>books.filter(cheap)</code> just works, and the caller never thinks about it.</p>
 </details>
 <h3 id="what-about-bounds-for-contravariance"><a class="header" href="#what-about-bounds-for-contravariance">What about bounds for contravariance?</a></h3>
 <p>With covariance, the compiler said: <em>“You declared <code>+A</code>, so I can’t let you take

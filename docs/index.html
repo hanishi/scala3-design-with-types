@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e0efec9d.js";
+            window.path_to_searchindex_js = "searchindex-c69cdb8c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-9571e420.js"></script>
@@ -202,6 +202,12 @@ The JVM doesn’t know what types your collections hold.</p>
 Everything in this tutorial — variance, opaque types, typeclasses, match types —
 is about giving the compiler more information so it can catch more mistakes
 <em>before</em> erasure throws that information away.</p>
+<p>This matters even more now. In an era where LLMs write more code than humans
+type, the type system becomes the critical layer between human intent and
+generated code. A rich type system with explicit compiler messages catches
+what LLMs silently drop — an implicit convention, a missing annotation, a
+subtle variance requirement. The compiler doesn’t forget, and it doesn’t
+hallucinate. It’s the one reviewer that checks every line, every time.</p>
 <h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
 <p><strong>Part 1: The Type System</strong> (Steps 0–5) covers how to <em>use</em> Scala’s type system
 effectively — type parameters, variance, bounds, opaque types, type members, and typeclasses.

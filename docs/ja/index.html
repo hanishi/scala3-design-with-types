@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-2c50eef9.js";
+            window.path_to_searchindex_js = "searchindex-fe4f0e77.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-b88b2e60.js"></script>
@@ -202,6 +202,12 @@ JVM はコレクションがどの型を保持しているか知りません。<
 このチュートリアルで扱うすべて ― 変位、不透明型、型クラス、マッチ型 ―
 は、消去が情報を捨てる<em>前に</em>コンパイラにより多くの情報を与え、
 より多くのミスを検出するためのものです。</p>
+<p>これは今、さらに重要です。LLM が人間よりも多くのコードを書く時代、
+型システムは人間の意図と生成されたコードの間にある重要な層になります。
+明示的なコンパイラメッセージを持つ豊かな型システムは、LLM が黙って落とすもの
+― 暗黙の慣習、抜けたアノテーション、微妙な変位の要件 ― を検出します。
+コンパイラは忘れないし、幻覚も見ません。すべての行を、毎回チェックする
+唯一のレビュアーです。</p>
 <h2 id="構成"><a class="header" href="#構成">構成</a></h2>
 <p><strong>Part 1: 型システム</strong>（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱います
 ― 型パラメータ、変位、境界、不透明型、型メンバー、型クラス。
