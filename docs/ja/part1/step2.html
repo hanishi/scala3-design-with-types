@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light sidebar-visible" dir="ltr">
+<html lang="ja" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Step 2: Variance and Bounds - Design with Types</title>
+        <title>Step 2: 変位と境界 - 型で設計する</title>
 
 
         <!-- Custom HTML head -->
 
-        <meta name="description" content="Practical Scala 3 from Basics to Type-Level Programming">
+        <meta name="description" content="Scala 3 実践ガイド ― 基礎から型レベルプログラミングまで">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-e0efec9d.js";
+            window.path_to_searchindex_js = "../searchindex-2c50eef9.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-9571e420.js"></script>
+        <script src="../toc-b88b2e60.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -137,7 +137,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Design with Types</h1>
+                    <h1 class="menu-title">型で設計する</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -146,7 +146,7 @@
                         <a href="https://github.com/hanishi/scala3-design-with-types" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/hanishi/scala3-design-with-types/edit/book/book/src/part1/step2.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/hanishi/scala3-design-with-types/edit/book/book-ja/src/part1/step2.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -180,11 +180,11 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="step-2-variance-and-bounds"><a class="header" href="#step-2-variance-and-bounds">Step 2: Variance and Bounds</a></h1>
-<p>Variance is not a set of rules to memorize.
-It’s something you experience by asking “why won’t this compile?” alongside the compiler.
-The starting point is <strong>invariant</strong> (no compatibility). The fact that this is the default matters.</p>
-<h2 id="2-1-invariant--the-default-wall"><a class="header" href="#2-1-invariant--the-default-wall">2-1. Invariant — The Default Wall</a></h2>
+                        <h1 id="step-2-変位と境界"><a class="header" href="#step-2-変位と境界">Step 2: 変位と境界</a></h1>
+<p>変位は暗記するルールの集まりではありません。
+「なぜこれはコンパイルできないのか？」とコンパイラに問いかけることで体験するものです。
+出発点は<strong>不変（invariant）</strong>（互換性なし）。これがデフォルトであることに意味があります。</p>
+<h2 id="2-1-不変--デフォルトの壁"><a class="header" href="#2-1-不変--デフォルトの壁">2-1. 不変 ― デフォルトの壁</a></h2>
 <pre><code class="language-scala">// step2a.scala
 
 trait Item:
@@ -210,16 +210,16 @@ class Box[A](val value: A)
 
   println("Box[Book] is NOT Box[Item]")
 </code></pre>
-<p><strong>Uncomment and compile.</strong></p>
-<p>The compiler treats <code>Box[Book]</code> and <code>Box[Item]</code> as <strong>completely different types</strong>.
-Just because <code>Book &lt;: Item</code> doesn’t mean <code>Box[Book] &lt;: Box[Item]</code>.</p>
+<p><strong>コメントを外してコンパイルしてください。</strong></p>
+<p>コンパイラは <code>Box[Book]</code> と <code>Box[Item]</code> を<strong>まったく別の型</strong>として扱います。
+<code>Book &lt;: Item</code> だからといって <code>Box[Book] &lt;: Box[Item]</code> とはなりません。</p>
 <blockquote>
-<p><strong>Notation:</strong> <code>&lt;:</code> means “is a subtype of” and <code>&gt;:</code> means “is a supertype of.”
-<code>Book &lt;: Item</code> reads as “Book is a subtype of Item” — i.e., <code>Book extends Item</code>.
-You’ll see these symbols used both in prose and in Scala code (type bounds) throughout this chapter.</p>
+<p><strong>記法について：</strong> <code>&lt;:</code> は「〜のサブタイプ」、<code>&gt;:</code> は「〜のスーパータイプ」を意味します。
+<code>Book &lt;: Item</code> は「Book は Item のサブタイプ」、つまり <code>Book extends Item</code> です。
+これらの記号はこの章を通じて、文章中でも Scala コード（型境界）でも使われます。</p>
 </blockquote>
-<p>The compiler’s default: <em>“Show me it’s safe, and I’ll allow it.”</em></p>
-<h2 id="2-2-why-invariant-is-the-default--break-it-to-understand"><a class="header" href="#2-2-why-invariant-is-the-default--break-it-to-understand">2-2. Why Invariant Is the Default — Break It to Understand</a></h2>
+<p>コンパイラのデフォルト：<em>「安全だと証明してくれたら許可する。」</em></p>
+<h2 id="2-2-なぜ不変がデフォルトなのか--壊して理解する"><a class="header" href="#2-2-なぜ不変がデフォルトなのか--壊して理解する">2-2. なぜ不変がデフォルトなのか ― 壊して理解する</a></h2>
 <pre><code class="language-scala">// step2b.scala
 
 trait Item:
@@ -250,7 +250,7 @@ class Box[A](var value: A)
 
   println("The compiler prevents this — a mutable box must be invariant")
 </code></pre>
-<p>This is a thought experiment, but in Java <strong>it actually happens</strong>:</p>
+<p>これは思考実験ですが、Java では<strong>実際に起きます</strong>：</p>
 <pre><code class="language-java">// Step2bJava.java — Java arrays are covariant, but generics are invariant
 
 import java.util.List;
@@ -283,16 +283,15 @@ public class Step2bJava {
     }
 }
 </code></pre>
-<p><strong>Try it</strong> (requires <code>javac</code> and <code>java</code>):</p>
+<p><strong>試してみよう</strong>（<code>javac</code> と <code>java</code> が必要）：</p>
 <pre><code class="language-sh">javac Step2bJava.java &amp;&amp; java Step2bJava
 </code></pre>
-<p>It compiles without warnings — and crashes at runtime with <code>ArrayStoreException</code>.</p>
-<p>Java <em>generics</em> are invariant — <code>List&lt;Book&gt;</code> is not <code>List&lt;Item&gt;</code>, and the compiler
-rejects the assignment. Uncomment the generics section in the example to see this.
-Arrays, designed earlier, are covariant — and that’s where the runtime crash comes from.</p>
-<p>Scala’s invariant default applies to everything — arrays included — and <strong>eliminates
-this class of bugs at compile time</strong>.</p>
-<h2 id="2-3-making-it-covariant--what-a-means"><a class="header" href="#2-3-making-it-covariant--what-a-means">2-3. Making It Covariant — What <code>+A</code> Means</a></h2>
+<p>警告なしでコンパイルされますが、実行時に <code>ArrayStoreException</code> でクラッシュします。</p>
+<p>Java の<em>ジェネリクス</em>は不変です ― <code>List&lt;Book&gt;</code> は <code>List&lt;Item&gt;</code> ではなく、
+コンパイラが代入を拒否します。例のジェネリクスセクションのコメントを外して確認してください。
+配列はより早くに設計されており共変です ― 実行時クラッシュの原因はそこにあります。</p>
+<p>Scala の不変デフォルトは配列を含むすべてに適用され、<strong>このクラスのバグをコンパイル時に排除</strong>します。</p>
+<h2 id="2-3-共変にする--a-の意味"><a class="header" href="#2-3-共変にする--a-の意味">2-3. 共変にする ― <code>+A</code> の意味</a></h2>
 <pre><code class="language-scala">// step2c.scala
 
 trait Item:
@@ -314,11 +313,11 @@ class Box[+A](val value: A)
   val itemBox: Box[Item] = bookBox
   println(itemBox.value)  // Book(Scala in Depth, $45.0)
 </code></pre>
-<p>With <code>+A</code>, subtyping lifts through the container:
-if <code>Book &lt;: Item</code>, then <code>Box[Book] &lt;: Box[Item]</code>.</p>
-<p>This <code>Box</code> only holds a value. What if you also want to check what’s inside, or change it?</p>
-<h2 id="2-4-testing-the-compilers-checks"><a class="header" href="#2-4-testing-the-compilers-checks">2-4. Testing the Compiler’s Checks</a></h2>
-<p><strong>Uncomment each block one at a time.</strong></p>
+<p><code>+A</code> を付けると、サブタイプ関係がコンテナを通じて持ち上がります：
+<code>Book &lt;: Item</code> ならば <code>Box[Book] &lt;: Box[Item]</code>。</p>
+<p>この <code>Box</code> は値を保持するだけです。中身を検査したり変更したりもしたい場合はどうでしょう？</p>
+<h2 id="2-4-コンパイラのチェックを試す"><a class="header" href="#2-4-コンパイラのチェックを試す">2-4. コンパイラのチェックを試す</a></h2>
+<p><strong>ブロックを一つずつコメント解除してください。</strong></p>
 <pre><code class="language-scala">// step2d.scala
 
 trait Item:
@@ -350,42 +349,42 @@ class Box[+A](val value: A):
 @main def step2d(): Unit =
   println("Uncomment each block and read the error messages")
 </code></pre>
-<p>With an invariant <code>Box[A]</code>, both <code>var value: A</code> and <code>contains(item: A)</code> are safe.
-This is because <code>Box[Book]</code> is not a <code>Box[Item]</code>.
-The type cannot be widened through subtyping, so no incompatible value can be introduced.</p>
-<p>Once we declare <code>Box[+A]</code>, Scala permits <code>Box[Book]</code> to be viewed as <code>Box[Item]</code>.
-From that broader perspective:</p>
+<p>不変の <code>Box[A]</code> では、<code>var value: A</code> も <code>contains(item: A)</code> も安全です。
+<code>Box[Book]</code> は <code>Box[Item]</code> ではないからです。
+サブタイプ関係で型が広がることがないので、互換性のない値が入り込む余地がありません。</p>
+<p><code>Box[+A]</code> を宣言すると、Scala は <code>Box[Book]</code> を <code>Box[Item]</code> として見ることを許可します。
+その広い視点から見ると：</p>
 <ul>
-<li><code>var value: A</code> would allow assigning a <code>DVD</code> into what is actually a <code>Box[Book]</code></li>
-<li><code>contains(DVD(...))</code> would appear valid — since a <code>DVD</code> is an <code>Item</code></li>
+<li><code>var value: A</code> は、実際には <code>Box[Book]</code> であるところに <code>DVD</code> を代入できてしまう</li>
+<li><code>contains(DVD(...))</code> が有効に見える ― <code>DVD</code> は <code>Item</code> だから</li>
 </ul>
-<p>However, the underlying object remains a <code>Box[Book]</code>. To preserve type safety, Scala rejects both cases:</p>
+<p>しかし、基盤となるオブジェクトは <code>Box[Book]</code> のままです。型安全性を保つために、Scala は両方を拒否します：</p>
 <ul>
-<li><code>var value: A</code> → <em>“invariant position”</em> — a <code>var</code> is both read and write</li>
-<li><code>contains(item: A)</code> → <em>“contravariant position”</em> — a parameter consumes values</li>
+<li><code>var value: A</code> → <em>「不変位置（invariant position）」</em> ― <code>var</code> は読み書き両方</li>
+<li><code>contains(item: A)</code> → <em>「反変位置（contravariant position）」</em> ― パラメータは値を消費する</li>
 </ul>
-<p>A covariant type parameter (<code>+A</code>) may appear only in <strong>output</strong> positions, such as:</p>
+<p>共変型パラメータ（<code>+A</code>）は<strong>出力</strong>位置にのみ現れることができます：</p>
 <ul>
 <li><code>val value: A</code></li>
-<li>a method return type</li>
+<li>メソッドの戻り値型</li>
 </ul>
 <blockquote>
-<p><strong>Why reject <code>contains</code>, even though it seems harmless?</strong> Scala enforces variance rules structurally —
-it does not analyze method implementations.
-While <code>contains</code> would be harmless in this case, other members — like <code>var value: A</code> — would be unsound.
-The rule is uniform: a covariant type parameter (<code>+A</code>) cannot appear in input positions.</p>
+<p><strong>なぜ <code>contains</code> は無害に見えるのに拒否されるのか？</strong> Scala は変位ルールを構造的に強制します ―
+メソッドの実装は分析しません。
+<code>contains</code> はこの場合は無害でしょうが、<code>var value: A</code> のような他のメンバーは不健全です。
+ルールは統一的です：共変型パラメータ（<code>+A</code>）は入力位置に現れることができません。</p>
 </blockquote>
-<p>So how can we retain covariance without giving up useful inputs?
-That’s where <strong>type bounds</strong> come in.</p>
-<h2 id="2-5-lower-bounds--escaping-the-variance-constraint"><a class="header" href="#2-5-lower-bounds--escaping-the-variance-constraint">2-5. Lower Bounds — Escaping the Variance Constraint</a></h2>
-<p>In 2-4, we saw that <code>+A</code> rejects <code>A</code> in input positions.</p>
-<p><code>B &gt;: A</code> means “<code>B</code> is a supertype of <code>A</code>” — <code>B</code> must be <code>A</code> or something above it.
-Think of the compiler saying:
-<em>“You declared <code>+A</code>, so I can’t let you take an <code>A</code> as input — that would break
-covariance. But give me a <code>B</code> that’s a supertype of <code>A</code>, and I’ll find the narrowest
-type that fits both what’s already here and what you’re adding.
-If it already fits, <code>B</code> is just <code>A</code> and nothing changes. Otherwise the cart
-widens — but it never narrows.”</em></p>
+<p>では、共変を維持しつつ有用な入力を諦めずに済む方法は？
+そこで<strong>型境界</strong>の出番です。</p>
+<h2 id="2-5-下限境界--変位制約からの脱出"><a class="header" href="#2-5-下限境界--変位制約からの脱出">2-5. 下限境界 ― 変位制約からの脱出</a></h2>
+<p>2-4 で、<code>+A</code> は <code>A</code> を入力位置で拒否することを見ました。</p>
+<p><code>B &gt;: A</code> は「<code>B</code> は <code>A</code> のスーパータイプ」― <code>B</code> は <code>A</code> またはその上の型でなければなりません。
+コンパイラがこう言っていると考えてください：
+<em>「<code>+A</code> と宣言したので、<code>A</code> を入力として受け取ることは許可できません ― 共変が壊れます。
+しかし <code>A</code> のスーパータイプである <code>B</code> を示してくれれば、既にある中身と追加するものの
+両方に合う最も狭い型を見つけます。
+既に合っていれば <code>B</code> は <code>A</code> のままで何も変わりません。そうでなければカートは
+広がります ― しかし狭まることはありません。」</em></p>
 <pre><code class="language-scala">// step2e.scala
 
 trait Item:
@@ -433,46 +432,43 @@ class Cart[+A](private val items: List[A] = Nil):
   println(f"Subtotal:     $$$subtotal%.2f")       // Subtotal:     $64.99
   println(f"With 5%% off: $$$discounted%.2f")     // With 5% off: $61.74
 </code></pre>
-<p>This is exactly what <code>List[+A]</code>’s <code>prepended</code> does:</p>
-<pre><code class="language-scala">// Simplified definition of List
+<p>これはまさに <code>List[+A]</code> の <code>prepended</code> がやっていることです：</p>
+<pre><code class="language-scala">// List の簡略化された定義
 sealed abstract class List[+A]:
   def prepended[B &gt;: A](elem: B): List[B]
 </code></pre>
-<p>Prepend a <code>DVD</code> to a <code>List[Book]</code> and you get <code>List[Item]</code>. The types don’t lie.</p>
-<h3 id="where-do-lower-bounds-show-up"><a class="header" href="#where-do-lower-bounds-show-up">Where do lower bounds show up?</a></h3>
-<p>You might wonder: <em>“Are lower bounds basically used in the same kinds of situations?”</em></p>
-<p>Yes — they cluster around a small set of roles:</p>
-<p><strong>Widening containers</strong> — inserting into covariant collections:</p>
+<p><code>List[Book]</code> に <code>DVD</code> を prepend すると <code>List[Item]</code> になります。型は嘘をつきません。</p>
+<h3 id="下限境界はどこで使われるか"><a class="header" href="#下限境界はどこで使われるか">下限境界はどこで使われるか？</a></h3>
+<p>「下限境界は基本的に同じような場面で使われるのか？」と思うかもしれません。</p>
+<p>はい ― いくつかの役割に集中しています：</p>
+<p><strong>コンテナの拡大</strong> ― 共変コレクションへの挿入：</p>
 <pre><code class="language-scala">val books: List[Book] = List(Book("Scala", 45.0))
 val items: List[Item] = books :+ DVD("The Matrix", 19.99)
-// List[Book] widened to List[Item]
+// List[Book] が List[Item] に拡大
 </code></pre>
-<p><strong>Fallback values</strong> — <code>Option.getOrElse[B &gt;: A](default: =&gt; B): B</code>:</p>
+<p><strong>フォールバック値</strong> ― <code>Option.getOrElse[B &gt;: A](default: =&gt; B): B</code>：</p>
 <pre><code class="language-scala">val maybeBook: Option[Book] = None
 val item: Item = maybeBook.getOrElse(DVD("The Matrix", 19.99))
-// Option[Book] → no Book present → falls back to DVD → result is Item
+// Option[Book] → Book がない → DVD にフォールバック → 結果は Item
 </code></pre>
-<p><strong>Combining/merging</strong> — <code>Either</code>’s <code>orElse</code> widens the <code>Right</code> type:</p>
+<p><strong>結合/マージ</strong> ― <code>Either</code> の <code>orElse</code> は <code>Right</code> 型を拡大する：</p>
 <pre><code class="language-scala">val result: Either[String, Book] = Left("not found")
 val recovered: Either[String, Item] = result.orElse(Right(DVD("The Matrix", 19.99)))
-// Either[String, Book] → recovery with DVD → Either[String, Item]
+// Either[String, Book] → DVD で復旧 → Either[String, Item]
 </code></pre>
-<p>In each case, the pattern is the same: <code>[B &gt;: A]</code> lets the type widen to accommodate
-a value that doesn’t fit <code>A</code> exactly. The compiler picks the narrowest type that works —
-<code>Item</code>, not <code>Any</code>. This is called the <strong>LUB</strong> (Least Upper Bound).
-In <a href="../part2/step9.html">Step 9</a>, we’ll see what happens when there <em>is</em> no named common
-supertype — Scala 3 uses union types instead.</p>
-<p>You won’t write <code>[B &gt;: A]</code> in everyday application code — but those foundational APIs
-genuinely depend on it. Without lower bounds, covariant containers simply couldn’t
-have “add” methods.</p>
-<p>Why is widening safe? Think of it as the compiler telling you:
-<em>“I’ll allow this — every element has at least <code>Item</code>’s methods, so your operations
-are safe. But I can no longer promise what’s specifically inside. You asked me to
-widen to <code>Item</code>, so <code>Item</code> is all I’ll guarantee.”</em></p>
-<p>You gain the ability to mix types; you lose the right to assume a specific one.
-Use <code>[B &gt;: A]</code> when that trade-off is real, not as a precaution.</p>
-<h2 id="2-6-upper-bounds--requiring-minimum-behavior"><a class="header" href="#2-6-upper-bounds--requiring-minimum-behavior">2-6. Upper Bounds — Requiring Minimum Behavior</a></h2>
-<p>If lower bounds <strong>widen</strong>, upper bounds <strong>narrow</strong>.</p>
+<p>いずれの場合もパターンは同じです：<code>[B &gt;: A]</code> は <code>A</code> にぴったり合わない値を受け入れるために型を拡大します。コンパイラは機能する最も狭い型を選びます ―
+<code>Any</code> ではなく <code>Item</code>。これを<strong>LUB</strong>（Least Upper Bound、最小上界）と呼びます。
+名前のついた共通のスーパータイプが<em>ない</em>場合、Scala 3 はユニオン型を使います。</p>
+<p>日常のアプリケーションコードで <code>[B &gt;: A]</code> を書くことはないでしょう ― しかし基盤となる API は
+本当にこれに依存しています。下限境界がなければ、共変コンテナは「追加」メソッドを持てません。</p>
+<p>なぜ拡大は安全なのか？ コンパイラがこう言っていると考えてください：
+<em>「許可します ― すべての要素は少なくとも <code>Item</code> のメソッドを持っているので、
+操作は安全です。ただし、中身が具体的に何かはもう約束できません。
+<code>Item</code> に拡大するよう求めたので、<code>Item</code> だけを保証します。」</em></p>
+<p>型を混ぜる能力を得る代わりに、特定の型を仮定する権利を失います。
+<code>[B &gt;: A]</code> はそのトレードオフが本当に必要なときに使いましょう。予防策としてではなく。</p>
+<h2 id="2-6-上限境界--最低限の振る舞いを要求する"><a class="header" href="#2-6-上限境界--最低限の振る舞いを要求する">2-6. 上限境界 ― 最低限の振る舞いを要求する</a></h2>
+<p>下限境界が<strong>拡大</strong>するなら、上限境界は<strong>制限</strong>します。</p>
 <pre><code class="language-scala">// step2f.scala
 
 trait Item:
@@ -527,67 +523,64 @@ class Shipment[+A &lt;: Shippable](private val items: List[A]):
   // [error]   val shipmentFails = Shipment(List(DigitalGiftCertificate("Netflix", 20.00)))
   // [error]                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 </code></pre>
-<h3 id="where-do-upper-bounds-show-up"><a class="header" href="#where-do-upper-bounds-show-up">Where do upper bounds show up?</a></h3>
-<p>Like lower bounds, they cluster around a few roles:</p>
-<p><strong>Requiring specific behavior</strong> — only accept types with certain methods:</p>
+<h3 id="上限境界はどこで使われるか"><a class="header" href="#上限境界はどこで使われるか">上限境界はどこで使われるか？</a></h3>
+<p>下限境界と同様に、いくつかの役割に集中しています：</p>
+<p><strong>特定の振る舞いを要求</strong> ― 特定のメソッドを持つ型のみ受け入れる：</p>
 <pre><code class="language-scala">def sortByShipping[A &lt;: Shippable](items: List[A]): List[A] =
   items.sortBy(_.shippingCost)
-// Only works for Shippable items — DigitalGiftCertificate rejected at compile time
+// Shippable なアイテムのみ動作 — DigitalGiftCertificate はコンパイル時に拒否
 </code></pre>
-<p><code>[A &lt;: Shippable]</code> tells the compiler: “only accept types that extend <code>Shippable</code>.”
-Inside the function, you can call <code>_.shippingCost</code> because the compiler <em>knows</em> every <code>A</code>
-has that method. <code>DigitalGiftCertificate</code> extends <code>Item</code> but not <code>Shippable</code> — so the
-compiler rejects it before the code even runs.</p>
-<p><strong>Constraining type parameters on classes</strong> — ensuring a container only holds suitable types:</p>
+<p><code>[A &lt;: Shippable]</code> はコンパイラに「<code>Shippable</code> を拡張する型のみ受け入れよ」と伝えます。
+関数内部では <code>_.shippingCost</code> を呼べます。コンパイラはすべての <code>A</code> が
+そのメソッドを持つことを<em>知っている</em>からです。<code>DigitalGiftCertificate</code> は <code>Item</code> を拡張しますが
+<code>Shippable</code> は拡張しません ― だからコンパイラはコードが実行される前に拒否します。</p>
+<p><strong>クラスの型パラメータを制約</strong> ― コンテナが適切な型のみ保持することを保証：</p>
 <pre><code class="language-scala">class Shipment[+A &lt;: Shippable](items: List[A]):
   def totalShippingCost: Double = items.map(_.shippingCost).sum
   def add[B &gt;: A &lt;: Shippable](item: B): Shipment[B] = Shipment(items :+ item)
-// Can't create Shipment[DigitalGiftCertificate] — not Shippable
+// Shipment[DigitalGiftCertificate] は作れない — Shippable ではない
 </code></pre>
-<p>The <code>+</code> is the same covariance you saw in section 2-4 — it just works alongside
-the bound. <code>&lt;: Shippable</code> restricts which types are allowed, <code>+</code> makes
-<code>Shipment[Book] &lt;: Shipment[Shippable]</code>.</p>
-<p>The <code>add</code> method uses <code>[B &gt;: A &lt;: Shippable]</code> — the same <code>[B &gt;: A]</code> escape hatch
-from section 2-5, combined with <code>&lt;: Shippable</code> to stay within the class’s bound.
-Adding a <code>DVD</code> to a <code>Shipment[Book]</code> widens it to <code>Shipment[Shippable]</code>.</p>
+<p><code>+</code> は 2-4 で見た共変と同じです ― 境界と一緒に機能します。<code>&lt;: Shippable</code> は許可される型を制限し、<code>+</code> は
+<code>Shipment[Book] &lt;: Shipment[Shippable]</code> を可能にします。</p>
+<p><code>add</code> メソッドは <code>[B &gt;: A &lt;: Shippable]</code> を使います ― 2-5 で見た <code>[B &gt;: A]</code> 脱出口に
+<code>&lt;: Shippable</code> を組み合わせてクラスの境界内に留まります。
+<code>Shipment[Book]</code> に <code>DVD</code> を追加すると <code>Shipment[Shippable]</code> に拡大します。</p>
 <blockquote>
-<p><strong>Why two bounds?</strong></p>
-<p>You might expect <code>B</code> to inherit the <code>&lt;: Shippable</code>
-bound from the class — after all, <code>A</code> is already constrained. But <code>B</code> is
-its own type parameter, introduced on the method. It only knows what you
-tell it.</p>
-<p>And <code>B &gt;: A</code> points <em>up</em> the hierarchy. In Scala, every type has <code>AnyRef</code>
-and <code>Any</code> above it, so without a cap <code>B</code> could widen all the way:
-<code>Book → Shippable → Item → AnyRef → Any</code>. The <code>&lt;: Shippable</code> says
-“stop here.” Without it, <code>Shipment[B]</code> wouldn’t compile — <code>Shipment</code>
-requires its type parameter to be <code>&lt;: Shippable</code>.</p>
+<p><strong>なぜ二つの境界が必要なのか？</strong></p>
+<p><code>B</code> がクラスから <code>&lt;: Shippable</code> 境界を継承すると期待するかもしれません ―
+結局 <code>A</code> はすでに制約されています。しかし <code>B</code> はメソッドで導入された
+独自の型パラメータです。あなたが伝えたことしか知りません。</p>
+<p>そして <code>B &gt;: A</code> は階層を<em>上に</em>向かいます。Scala ではすべての型の上に <code>AnyRef</code> と
+<code>Any</code> があるので、上限がなければ <code>B</code> はどこまでも拡大できます：
+<code>Book → Shippable → Item → AnyRef → Any</code>。<code>&lt;: Shippable</code> は
+「ここで止まれ」と言います。これがなければ <code>Shipment[B]</code> はコンパイルできません ―
+<code>Shipment</code> は型パラメータが <code>&lt;: Shippable</code> であることを要求します。</p>
 </blockquote>
-<p><strong>Preserving type information</strong> — keeping the specific subtype through a computation:</p>
+<p><strong>型情報の保持</strong> ― 計算を通じて具体的なサブタイプを維持する：</p>
 <pre><code class="language-scala">def cheapest[A &lt;: Item](items: List[A]): A =
   items.minBy(_.price)
 
 val books: List[Book] = List(Book("Scala", 45.0), Book("FP", 35.0))
-val b: Book = cheapest(books)  // returns Book, not Item
+val b: Book = cheapest(books)  // Book を返す、Item ではなく
 
 val dvds: List[DVD] = List(DVD("The Matrix", 19.99), DVD("Inception", 24.99))
-val d: DVD = cheapest(dvds)  // returns DVD, not Item
+val d: DVD = cheapest(dvds)  // DVD を返す、Item ではなく
 
 val cards: List[DigitalGiftCertificate] = List(DigitalGiftCertificate("$50", 50.0))
-val c: DigitalGiftCertificate = cheapest(cards)  // returns DigitalGiftCertificate, not Item
+val c: DigitalGiftCertificate = cheapest(cards)  // DigitalGiftCertificate を返す、Item ではなく
 </code></pre>
-<p>Without the bound, you’d have to write <code>def cheapest(items: List[Item]): Item</code> — and every
-call would return <code>Item</code>, even when the list contains <code>Book</code> or <code>DVD</code>. You’d preserve
-the behavior, but lose the specific return type.</p>
-<p>You also can’t write <code>def cheapest[A](items: List[A]): A</code>, because <code>minBy(_.price)</code>
-requires that each element has a <code>.price</code> member. With no bound, the compiler has no
-reason to believe that about <code>A</code>.</p>
-<p>The upper bound gives you both: access to <code>Item</code>’s API and the precise element type
-back (<code>Book</code> in, <code>Book</code> out; <code>DVD</code> in, <code>DVD</code> out). In other words, <code>&lt;: Item</code> is not
-about restricting callers — it’s about telling the compiler what operations are valid
-while still keeping the result type maximally specific.</p>
+<p>境界がなければ <code>def cheapest(items: List[Item]): Item</code> と書くしかなく、リストが <code>Book</code> や <code>DVD</code> を含んでいても
+すべての呼び出しが <code>Item</code> を返します。振る舞いは保持できますが、具体的な戻り値型を失います。</p>
+<p><code>def cheapest[A](items: List[A]): A</code> とも書けません。<code>minBy(_.price)</code> は
+各要素が <code>.price</code> メンバーを持つことを要求するからです。境界がなければ、
+コンパイラには <code>A</code> がそれを持つと信じる理由がありません。</p>
+<p>上限境界は両方を実現します：<code>Item</code> の API へのアクセスと、正確な要素型の返却
+（<code>Book</code> を入れれば <code>Book</code> が出る、<code>DVD</code> を入れれば <code>DVD</code> が出る）。言い換えれば、<code>&lt;: Item</code> は
+呼び出し側を制限するためではなく、どの操作が有効かをコンパイラに伝えつつ
+結果型を最大限に具体的に保つためのものです。</p>
 <details>
-<summary><strong>Coming from Java?</strong></summary>
-<p>Java needs <code>? extends</code> at the call site to accept <code>List&lt;Book&gt;</code> where <code>List&lt;Item&gt;</code> is expected:</p>
+<summary><strong>Java から来た方へ</strong></summary>
+<p>Java では <code>List&lt;Book&gt;</code> を <code>List&lt;Item&gt;</code> として受け取るために、呼び出し側が毎回 <code>? extends</code> を書く必要があります：</p>
 <pre><code class="language-java">// Step2kCov.java — Java's use-site covariance: ? extends
 
 import java.util.List;
@@ -640,51 +633,51 @@ public class Step2kCov {
     }
 }
 </code></pre>
-<p><strong>Try it:</strong> <code>javac Step2kCov.java &amp;&amp; java Step2kCov</code></p>
-<p>Scala’s <code>List[+A]</code> declares covariance once — <code>cheapest(books)</code> just works without a wildcard.</p>
+<p><strong>試してみよう：</strong> <code>javac Step2kCov.java &amp;&amp; java Step2kCov</code></p>
+<p>Scala の <code>List[+A]</code> は共変を一度だけ宣言します ― <code>cheapest(books)</code> はワイルドカードなしでそのまま動きます。</p>
 </details>
-<p><strong>Standard library</strong> — <code>WeakReference[+T &lt;: AnyRef]</code> only accepts reference types:</p>
+<p><strong>標準ライブラリ</strong> ― <code>WeakReference[+T &lt;: AnyRef]</code> は参照型のみ受け入れます：</p>
 <pre><code class="language-scala">import scala.ref.WeakReference
-val ref = WeakReference(List(1, 2, 3))  // OK: List is AnyRef
-// WeakReference(42) — won't work: Int is not AnyRef
+val ref = WeakReference(List(1, 2, 3))  // OK: List は AnyRef
+// WeakReference(42) — 動きません: Int は AnyRef ではない
 </code></pre>
-<p>A normal reference (<code>val x = ...</code>) keeps an object alive — the garbage collector won’t
-reclaim it as long as someone points to it. A <code>WeakReference</code> is different: it holds
-a reference without preventing the GC from reclaiming the object. When memory is tight,
-the GC can reclaim it, and the weak reference silently becomes empty.</p>
-<p>The most common use case is caches. You want to keep a computed result around
-for reuse, but not at the cost of running out of memory:</p>
+<p>通常の参照（<code>val x = ...</code>）はオブジェクトを生かし続けます ― 誰かが指している限り
+ガベージコレクタは回収しません。<code>WeakReference</code> は違います：GC による回収を
+妨げずに参照を保持します。メモリが逼迫すると GC はオブジェクトを回収でき、
+弱参照は静かに空になります。</p>
+<p>最も一般的な用途はキャッシュです。計算結果を再利用のために保持したいが、
+メモリ不足のコストは払いたくない：</p>
 <pre><code class="language-scala">import scala.ref.WeakReference
 
 class Cache[T &lt;: AnyRef](compute: () =&gt; T):
   private var ref: WeakReference[T] = WeakReference(null)
 
   def get(): T = ref.get match
-    case Some(value) =&gt; value        // still in memory, reuse it
-    case None =&gt;                     // GC reclaimed it, recompute
+    case Some(value) =&gt; value        // まだメモリにある、再利用
+    case None =&gt;                     // GC が回収した、再計算
       val value = compute()
       ref = WeakReference(value)
       value
 
 val users = Cache(() =&gt; List("alice", "bob", "charlie"))
-users.get()  // computes the first time, reuses if GC hasn't reclaimed
+users.get()  // 初回は計算、GC が回収していなければ再利用
 </code></pre>
-<p>This only makes sense for heap-allocated objects (<code>AnyRef</code>). Value types like <code>Int</code>
-and <code>Double</code> are stored directly on the stack or inlined into objects — there’s no
-heap object for the GC to track or reclaim. The upper bound <code>T &lt;: AnyRef</code> encodes
-this JVM reality at the type level: you literally <em>can’t</em> create a weak reference
-to something that doesn’t live on the heap.</p>
-<p>Don’t worry if this feels advanced — you can safely skip this example and come back to it later. It’s a clever use of upper bounds, not a prerequisite for what follows.</p>
-<p>Lower bounds <em>widen</em> — they accept broader types. Upper bounds <em>narrow</em> — they
-reject types that lack the required behavior.</p>
+<p>これはヒープ割り当てオブジェクト（<code>AnyRef</code>）でのみ意味があります。<code>Int</code> や <code>Double</code> のような
+値型はスタックに直接格納されるか、オブジェクトにインライン化されます ― GC が追跡や
+回収するヒープオブジェクトがありません。上限境界 <code>T &lt;: AnyRef</code> はこの JVM の現実を
+型レベルでエンコードします：ヒープ上に存在しないものへの弱参照は文字通り<em>作れません</em>。</p>
+<p>これが高度に感じても心配不要です ― この例は安全にスキップして後で戻ってきてください。
+上限境界の巧妙な使い方であり、続きの前提条件ではありません。</p>
+<p>下限境界は<em>拡大</em>します ― より広い型を受け入れます。上限境界は<em>制限</em>します ―
+必要な振る舞いを持たない型を拒否します。</p>
 <blockquote>
-<p><strong>You now have the full toolkit for the output side:</strong> covariance (<code>+A</code>) for safe widening,
-lower bounds (<code>&gt;:</code>) to add methods without breaking covariance, and upper bounds (<code>&lt;:</code>)
-to require specific behavior. Next up: the input side.</p>
+<p><strong>出力側の全ツールキットが揃いました：</strong> 安全な拡大のための共変（<code>+A</code>）、
+共変を壊さずにメソッドを追加するための下限境界（<code>&gt;:</code>）、
+特定の振る舞いを要求するための上限境界（<code>&lt;:</code>）。次は入力側です。</p>
 </blockquote>
-<h2 id="2-7-contravariance--consumer-compatibility"><a class="header" href="#2-7-contravariance--consumer-compatibility">2-7. Contravariance — Consumer Compatibility</a></h2>
-<p>Finally, <code>-A</code>. Covariance is about the <strong>output</strong> side — producers.
-Contravariance is about the <strong>input</strong> side — consumers.</p>
+<h2 id="2-7-反変--消費者の互換性"><a class="header" href="#2-7-反変--消費者の互換性">2-7. 反変 ― 消費者の互換性</a></h2>
+<p>最後に <code>-A</code>。共変は<strong>出力</strong>側 ― プロデューサーの話でした。
+反変は<strong>入力</strong>側 ― コンシューマーの話です。</p>
 <pre><code class="language-scala">// step2g.scala
 
 trait Item:
@@ -732,18 +725,18 @@ class BookFormatter extends PriceFormatter[Book]:
   // BookFormatter.format reads item.isbn — but DVD has no isbn.
   // The compiler catches this: a Book consumer can't safely consume all Items.
 </code></pre>
-<p>Most tutorials explain contravariance with explicit assignment like
-<code>val bookFmt: Formatter[Book] = itemFormatter</code> — like the one in the example
-above. That makes the subtyping visible, but you rarely write code like that.
-Where you <em>do</em> use contravariance — without realizing it — is every <code>.filter</code>,
-<code>.map</code>, <code>.sortBy</code> call where you pass a function on a supertype.</p>
-<p><code>Function1[-A, +B]</code> — the desugared form of <code>A =&gt; B</code> — is the most common
-contravariant type in the standard library.</p>
-<p><code>A</code> is in the <strong>input position</strong> —
-the function <em>receives</em> it — so it’s contravariant (<code>-A</code>).</p>
-<p><code>B</code> is in the <strong>output
-position</strong> — the function <em>returns</em> it — so it’s covariant (<code>+B</code>).</p>
-<p>That’s why <code>Item =&gt; Boolean</code> is usable wherever <code>Book =&gt; Boolean</code> is expected:</p>
+<p>多くのチュートリアルは反変を
+<code>val bookFmt: Formatter[Book] = itemFormatter</code> のような明示的な代入で説明します ―
+上の例のように。サブタイプ関係が見えますが、こんなコードはめったに書きません。
+あなたが反変を<em>使っている</em> ― 気づかずに ― のは、スーパータイプの関数を渡す
+<code>.filter</code>、<code>.map</code>、<code>.sortBy</code> の呼び出しすべてです。</p>
+<p><code>Function1[-A, +B]</code> ― <code>A =&gt; B</code> のデシュガー形式 ― は
+標準ライブラリで最も一般的な反変型です。</p>
+<p><code>A</code> は<strong>入力位置</strong>にあります ―
+関数はそれを<em>受け取り</em>ます ― だから反変（<code>-A</code>）です。</p>
+<p><code>B</code> は<strong>出力位置</strong>にあります ―
+関数はそれを<em>返し</em>ます ― だから共変（<code>+B</code>）です。</p>
+<p>だから <code>Item =&gt; Boolean</code> は <code>Book =&gt; Boolean</code> が期待される場所で使えます：</p>
 <pre><code class="language-scala">// step2g1.scala — Contravariance in Function1
 
 trait Item:
@@ -782,23 +775,23 @@ class DVD(val name: String, val price: Double) extends Item:
   // dvds.map(isbnOf)   // Compile error! DVD has no isbn
   // items.map(isbnOf)  // Compile error! Item has no isbn
 </code></pre>
-<p>The pattern: if a type <strong>consumes</strong> <code>A</code> (takes it as input), it’s a candidate for <code>-A</code>.
-If it <strong>produces</strong> <code>A</code> (returns it as output), it’s a candidate for <code>+A</code>.</p>
-<p>Why does the direction flip? Look at <code>val cheap: Item =&gt; Boolean = _.price &lt; 40.0</code>.
-Every subtype of <code>Item</code> — <code>Book</code>, <code>DVD</code>, <code>DigitalGiftCertificate</code> — has <code>.price</code>.
-So a function that only uses <code>Item</code>’s properties naturally works for any of them.
-You write it once and reuse it with <code>List[Book]</code>, <code>List[DVD]</code>, or <code>List[Item]</code>.</p>
-<p>That’s what contravariance means in practice: <strong>a consumer of a broader type is a
-safe substitute for a consumer of a narrower type.</strong></p>
-<p>The <code>PriceFormatter</code> from the first example is the same idea made explicit.
-An <code>ItemFormatter</code> only uses <code>name</code> and <code>price</code> — things every <code>Item</code> has. So it
-can handle a <code>Book</code>, a <code>DVD</code>, anything. A <code>BookFormatter</code> uses <code>isbn</code> — something
-only <code>Book</code> has. Hand it a <code>DVD</code> and it breaks. Hence the flip:
-<code>Book &lt;: Item</code>, but <code>PriceFormatter[Item] &lt;: PriceFormatter[Book]</code>.</p>
+<p>パターン：型が <code>A</code> を<strong>消費する</strong>（入力として受け取る）なら、<code>-A</code> の候補です。
+<code>A</code> を<strong>生産する</strong>（出力として返す）なら、<code>+A</code> の候補です。</p>
+<p>なぜ方向が逆転するのか？ <code>val cheap: Item =&gt; Boolean = _.price &lt; 40.0</code> を見てください。
+<code>Item</code> のすべてのサブタイプ ― <code>Book</code>、<code>DVD</code>、<code>DigitalGiftCertificate</code> ― は <code>.price</code> を持ちます。
+だから <code>Item</code> のプロパティだけを使う関数は、どれに対しても自然に動作します。
+一度書けば <code>List[Book]</code>、<code>List[DVD]</code>、<code>List[Item]</code> で再利用できます。</p>
+<p>反変が実践で意味すること：<strong>より広い型のコンシューマーは、
+より狭い型のコンシューマーの安全な代替品です。</strong></p>
+<p>最初の例の <code>PriceFormatter</code> は同じアイデアを明示的にしたものです。
+<code>ItemFormatter</code> は <code>name</code> と <code>price</code> だけを使います ― すべての <code>Item</code> が持つものです。だから
+<code>Book</code> でも <code>DVD</code> でも何でも扱えます。<code>BookFormatter</code> は <code>isbn</code> を使います ―
+<code>Book</code> だけが持つものです。<code>DVD</code> を渡すと壊れます。だから逆転：
+<code>Book &lt;: Item</code>、しかし <code>PriceFormatter[Item] &lt;: PriceFormatter[Book]</code>。</p>
 <details>
-<summary><strong>Coming from Java?</strong></summary>
-<p>Java’s <code>Predicate&lt;Item&gt;</code> can filter a <code>List&lt;Book&gt;</code> because <code>filter()</code> accepts
-<code>Predicate&lt;? super T&gt;</code> — use-site contravariance:</p>
+<summary><strong>Java から来た方へ</strong></summary>
+<p>Java の <code>Predicate&lt;Item&gt;</code> が <code>List&lt;Book&gt;</code> をフィルタできるのは、<code>filter()</code> が
+<code>Predicate&lt;? super T&gt;</code> を受け取るからです ― 使用側反変：</p>
 <pre><code class="language-java">// Step2kCon.java — Java's use-site contravariance: ? super
 
 import java.util.List;
@@ -854,67 +847,63 @@ public class Step2kCon {
     }
 }
 </code></pre>
-<p><strong>Try it:</strong> <code>javac Step2kCon.java &amp;&amp; java Step2kCon</code></p>
-<p>Scala’s <code>Function1[-A, +B]</code> declares contravariance once — <code>books.filter(cheap)</code> just works.</p>
+<p><strong>試してみよう：</strong> <code>javac Step2kCon.java &amp;&amp; java Step2kCon</code></p>
+<p>Scala の <code>Function1[-A, +B]</code> は反変を一度だけ宣言します ― <code>books.filter(cheap)</code> はそのまま動きます。</p>
 </details>
-<h3 id="what-about-bounds-for-contravariance"><a class="header" href="#what-about-bounds-for-contravariance">What about bounds for contravariance?</a></h3>
-<p>With covariance, the compiler said: <em>“You declared <code>+A</code>, so I can’t let you take
-an <code>A</code> as input.”</em> Lower bounds (<code>[B &gt;: A]</code>) were the escape hatch — widen upward.</p>
-<p>The mirror exists: <code>-A</code> forbids <code>A</code> in output positions, and upper bounds
-(<code>[B &lt;: A]</code>) are the escape hatch — narrow downward. The pairings are fixed:</p>
+<h3 id="反変の場合の境界は"><a class="header" href="#反変の場合の境界は">反変の場合の境界は？</a></h3>
+<p>共変では、コンパイラはこう言いました：<em>「<code>+A</code> と宣言したので、<code>A</code> を入力として
+受け取ることは許可できません。」</em> 下限境界（<code>[B &gt;: A]</code>）が脱出口でした ― 上に向かって拡大。</p>
+<p>鏡像も存在します：<code>-A</code> は <code>A</code> を出力位置で禁止し、上限境界（<code>[B &lt;: A]</code>）が
+脱出口です ― 下に向かって制限。対応関係は固定されています：</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Variance</th><th>Problem</th><th>Escape hatch</th><th>Direction</th></tr>
+<tr><th>変位</th><th>問題</th><th>脱出口</th><th>方向</th></tr>
 </thead>
 <tbody>
-<tr><td><code>+A</code> covariant</td><td><code>A</code> can’t appear in input</td><td><code>[B &gt;: A]</code> lower bound</td><td>widen up</td></tr>
-<tr><td><code>-A</code> contravariant</td><td><code>A</code> can’t appear in output</td><td><code>[B &lt;: A]</code> upper bound</td><td>narrow down</td></tr>
+<tr><td><code>+A</code> 共変</td><td><code>A</code> が入力に現れない</td><td><code>[B &gt;: A]</code> 下限境界</td><td>上に拡大</td></tr>
+<tr><td><code>-A</code> 反変</td><td><code>A</code> が出力に現れない</td><td><code>[B &lt;: A]</code> 上限境界</td><td>下に制限</td></tr>
 </tbody>
 </table>
 </div>
-<p>Lower bounds solve a covariance problem. Upper bounds solve a contravariance
-problem. They don’t cross — covariance widens, so its escape hatch widens;
-contravariance narrows, so its escape hatch narrows.</p>
-<p>For simple consumers like <code>PriceFormatter[-A]</code> or <code>Function1[-A, +B]</code>, the
-contravariant escape hatch never comes up — they return <code>String</code> or <code>Boolean</code>,
-not <code>A</code>.</p>
-<p>But it <em>does</em> come up when you compose contravariant types — and seeing it
-in a real example is the best way to understand why the escape hatch exists.</p>
-<h3 id="a-real-example-zio"><a class="header" href="#a-real-example-zio">A real example: ZIO</a></h3>
-<p><a href="https://zio.dev/">ZIO</a>, one of the most popular Scala libraries, takes an
-interesting approach to dependency management: instead of passing dependencies
-(a database connection, a logger) directly to functions, you describe what you
-<em>need</em> in the type. A program becomes a value: <em>“I need a Database to run,
-and I’ll produce a String.”</em> The compiler then verifies that all dependencies
-are satisfied before the program runs — dependency injection at the type level.</p>
-<p>ZIO encodes this as <code>ZIO[-R, +E, +A]</code>:</p>
+<p>下限境界は共変の問題を解決します。上限境界は反変の問題を解決します。
+交差しません ― 共変は拡大するので脱出口も拡大、反変は制限するので脱出口も制限。</p>
+<p><code>PriceFormatter[-A]</code> や <code>Function1[-A, +B]</code> のような単純なコンシューマーでは、
+反変の脱出口は問題になりません ― <code>String</code> や <code>Boolean</code> を返し、<code>A</code> は返さないからです。</p>
+<p>しかし、反変型を合成するときには問題になります ― 実際の例で見るのが
+脱出口の存在意義を理解する最良の方法です。</p>
+<h3 id="実例zio"><a class="header" href="#実例zio">実例：ZIO</a></h3>
+<p><a href="https://zio.dev/">ZIO</a>（最も人気のある Scala ライブラリの一つ）は依存関係管理に
+興味深いアプローチを取ります：依存関係（データベース接続、ロガー）を関数に直接渡す
+代わりに、<em>必要なもの</em>を型で記述します。プログラムは一つの値になります：
+<em>「Database があれば実行でき、String を生産する。」</em>
+コンパイラはプログラムの実行前にすべての依存関係が満たされていることを検証します
+― 型レベルの依存性注入です。</p>
+<p>ZIO はこれを <code>ZIO[-R, +E, +A]</code> としてエンコードします：</p>
 <ul>
-<li><strong><code>-R</code></strong> (environment) — what the program <em>needs</em> to run. Contravariant,
-as we’ve been discussing.</li>
-<li><strong><code>+E</code></strong> (error) — how the program can <em>fail</em>. Covariant — a function that
-handles <code>DatabaseError</code> also handles it when composed with code that fails
-with <code>NetworkError</code>, widening to <code>DatabaseError | NetworkError</code>.</li>
-<li><strong><code>+A</code></strong> (value) — what the program <em>produces</em> on success. Covariant.</li>
+<li><strong><code>-R</code></strong>（環境） ― プログラムが実行に<em>必要とする</em>もの。ここまで議論してきた
+とおり反変。</li>
+<li><strong><code>+E</code></strong>（エラー） ― プログラムがどう<em>失敗しうる</em>か。共変 ―
+<code>DatabaseError</code> を処理する関数は、<code>NetworkError</code> で失敗するコードと合成しても
+動作し、<code>DatabaseError | NetworkError</code> に拡大します。</li>
+<li><strong><code>+A</code></strong>（値） ― 成功時にプログラムが<em>生産する</em>もの。共変。</li>
 </ul>
-<p>The typed error channel is a big part of what makes ZIO useful in production:
-instead of catching <code>Exception</code> and hoping for the best, the compiler tells
-you exactly which errors each operation can produce — and forces you to handle
-them. Variance makes this composable: combining two operations that fail
-differently gives you a union of their error types.</p>
-<p>We’ll build a simplified version — <code>Effect[-R, +A]</code> — dropping the error channel
-to focus on variance and upper bounds. Our <code>Effect</code> is just a teaching tool to
-see why the contravariant escape hatch is necessary: without <code>R1 &lt;: R</code>, you
-can’t write <code>flatMap</code> — and without <code>flatMap</code>, you can’t combine effects.</p>
-<p><code>Effect[-R, +A]</code> is a computation that needs an environment <code>R</code> to run and
-produces a value <code>A</code>. Internally it wraps a function <code>R =&gt; A</code>:</p>
+<p>型付きエラーチャネルは ZIO がプロダクションで有用な大きな理由です：
+<code>Exception</code> を catch して最善を祈る代わりに、コンパイラが各操作がどのエラーを
+生産しうるかを正確に教え、処理を強制します。変位がこれを合成可能にします：
+異なる失敗をする二つの操作を組み合わせると、エラー型のユニオンが得られます。</p>
+<p>簡略版 <code>Effect[-R, +A]</code> を作ります ― 変位と上限境界に集中するためエラーチャネルを
+省きます。私たちの <code>Effect</code> は反変の脱出口がなぜ必要かを見るための教材にすぎません：
+<code>R1 &lt;: R</code> なしでは <code>flatMap</code> が書けず、<code>flatMap</code> なしではエフェクトを合成できません。</p>
+<p><code>Effect[-R, +A]</code> は環境 <code>R</code> を必要として実行し、値 <code>A</code> を生産する計算です。
+内部的には関数 <code>R =&gt; A</code> をラップしています：</p>
 <pre><code class="language-scala">class Effect[-R, +A](val run: R =&gt; A)
 </code></pre>
-<p><code>R =&gt; A</code> is <code>Function1[R, A]</code>: <code>R</code> sits in the <code>-A</code> slot, <code>A</code> sits in the
-<code>+B</code> slot. So <code>Effect[-R, +A]</code> has the same variance shape as
-<code>Function1[-A, +B]</code> — which makes sense, since it’s just a wrapper.</p>
-<p>To see how <code>Effect[-R, +A]</code> works in practice, let’s define two traits that
-represent different capabilities, and an <code>AppEnv</code> that provides both:</p>
+<p><code>R =&gt; A</code> は <code>Function1[R, A]</code> であり、<code>R</code> は <code>-A</code> スロットに、<code>A</code> は <code>+B</code>
+スロットにあります。つまり <code>Effect[-R, +A]</code> は <code>Function1[-A, +B]</code> と同じ変位の
+形です ― ただのラッパーなので当然です。</p>
+<p><code>Effect[-R, +A]</code> が実際にどう動くか見るために、異なる機能を表す2つのトレイトと、
+両方を提供する <code>AppEnv</code> を定義しましょう：</p>
 <pre><code class="language-scala">trait Database:
   def lookup(id: Int): String
 
@@ -929,15 +918,15 @@ class AppEnv extends Database, Logger:
     ↑                ↑
     └── AppEnv ──────┘
 </code></pre>
-<p>We want an effect that takes a <code>Database</code> and returns a <code>String</code> — so we
-pass <code>db =&gt; db.lookup(1)</code>, and the type becomes <code>Effect[Database, String]</code>.
-<code>logMsg</code> takes a <code>String</code> and returns an effect that needs a <code>Logger</code> —
-it closes over the message:</p>
+<p><code>Database</code> を受け取り <code>String</code> を返すエフェクトが欲しい ― そこで
+<code>db =&gt; db.lookup(1)</code> を渡すと、型は <code>Effect[Database, String]</code> になります。
+<code>logMsg</code> は <code>String</code> を受け取り、<code>Logger</code> を必要とするエフェクトを返します ―
+メッセージをクロージャで閉じ込めます：</p>
 <pre><code class="language-scala">val fetchUser: Effect[Database, String] = Effect(db =&gt; db.lookup(1))
 val logMsg: String =&gt; Effect[Logger, Unit] = msg =&gt; Effect(logger =&gt; logger.log(msg))
 </code></pre>
-<p>Compose them with a for-comprehension, and the result is an effect that
-requires <code>Database &amp; Logger</code> — which we run by providing the environment:</p>
+<p>for 内包表記で合成すると、<code>Database &amp; Logger</code> を必要とするエフェクトになります
+― 環境を渡して実行します：</p>
 <pre><code class="language-scala">val program: Effect[Database &amp; Logger, Unit] =
   for
     user &lt;- fetchUser
@@ -946,84 +935,84 @@ requires <code>Database &amp; Logger</code> — which we run by providing the en
 
 program.run(AppEnv())  // LOG: fetched user-1
 </code></pre>
-<p>The for-comprehension desugars to <code>flatMap</code> and <code>map</code> — but defining
-<code>flatMap</code> is where variance gets in the way.</p>
-<h3 id="the-problem-flatmap-and--r"><a class="header" href="#the-problem-flatmap-and--r">The problem: <code>flatMap</code> and <code>-R</code></a></h3>
-<p>Intuitively, <code>flatMap</code> should use the
-class’s <code>R</code> — the same environment for both the current effect and the next one:</p>
+<p>for 内包表記は <code>flatMap</code> と <code>map</code> にデシュガーされます ― しかし <code>flatMap</code> の
+定義こそ、変位が立ちはだかるところです。</p>
+<h3 id="問題flatmap-と--r"><a class="header" href="#問題flatmap-と--r">問題：<code>flatMap</code> と <code>-R</code></a></h3>
+<p>直感的には、<code>flatMap</code> はクラスの <code>R</code> をそのまま使うはずです ―
+現在のエフェクトも次のエフェクトも同じ環境で：</p>
 <pre><code class="language-scala">def flatMap[B](f: A =&gt; Effect[R, B]): Effect[R, B]
 </code></pre>
-<p>But the compiler rejects it. To see why, you need to know how the compiler
-reads <strong>positions</strong>:</p>
+<p>しかしコンパイラはこれを拒否します。理由を見るには、コンパイラが<strong>位置</strong>をどう
+読むかを知る必要があります：</p>
 <ul>
-<li>Method parameters are <strong>input</strong> — position is <code>(-)</code></li>
-<li>Return types are <strong>output</strong> — position is <code>(+)</code></li>
-<li>When types are nested, positions multiply like signs:</li>
+<li>メソッドパラメータは<strong>入力</strong> ― 位置は <code>(-)</code></li>
+<li>戻り値型は<strong>出力</strong> ― 位置は <code>(+)</code></li>
+<li>型がネストされると、位置は符号のように掛け合わされます：</li>
 </ul>
-<pre><code>(+) × (+) = (+)     output inside output → still output
-(+) × (-) = (-)     output inside input → flips to input
-(-) × (-) = (+)     input inside input → flips back to output
+<pre><code>(+) × (+) = (+)     出力の中の出力 → そのまま出力
+(+) × (-) = (-)     入力の中の出力 → 入力に反転
+(-) × (-) = (+)     入力の中の入力 → 出力に戻る
 </code></pre>
-<p>Desugar the signature: <code>flatMap[B](f: Function1[A, Effect[R, B]]): Effect[R, B]</code></p>
+<p>シグネチャをデシュガー：<code>flatMap[B](f: Function1[A, Effect[R, B]]): Effect[R, B]</code></p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Step</th><th>Where is R?</th><th>Position</th></tr>
+<tr><th>ステップ</th><th>R はどこ？</th><th>位置</th></tr>
 </thead>
 <tbody>
-<tr><td><code>f</code> is a method parameter</td><td>start</td><td><code>(-)</code></td></tr>
-<tr><td><code>Effect[R, B]</code> is in the <code>+B</code> slot of <code>Function1</code></td><td><code>(-) × (+)</code></td><td><code>(-)</code></td></tr>
-<tr><td><code>R</code> is in the <code>-R</code> slot of <code>Effect</code></td><td><code>(-) × (-)</code></td><td><code>(+)</code></td></tr>
+<tr><td><code>f</code> はメソッドパラメータ</td><td>開始</td><td><code>(-)</code></td></tr>
+<tr><td><code>Effect[R, B]</code> は <code>Function1</code> の <code>+B</code> スロット</td><td><code>(-) × (+)</code></td><td><code>(-)</code></td></tr>
+<tr><td><code>R</code> は <code>Effect</code> の <code>-R</code> スロット</td><td><code>(-) × (-)</code></td><td><code>(+)</code></td></tr>
 </tbody>
 </table>
 </div>
-<p>Result: <code>R</code> lands in <code>(+)</code>. We declared <code>-R</code>. <strong>Rejected.</strong></p>
-<p>The fix: introduce a fresh type parameter <code>R1 &lt;: R</code> on the method.
-Variance rules (<code>+</code> and <code>-</code>) only apply to the <em>class’s</em> own type parameters.
-<code>R1</code> is a <em>method</em> type parameter — the variance checker doesn’t track it at
-all. It can appear in any position. The only thing the compiler checks is that
-<code>R1 &lt;: R</code> holds at the call site.</p>
+<p>結果：<code>R</code> は <code>(+)</code> に着地。<code>-R</code> と宣言した。<strong>拒否。</strong></p>
+<p>修正：メソッドに新しい型パラメータ <code>R1 &lt;: R</code> を導入します。
+変位ルール（<code>+</code> と <code>-</code>）は<em>クラス自身の</em>型パラメータにのみ適用されます。
+<code>R1</code> は<em>メソッド</em>の型パラメータなので、変位チェッカーはまったく追跡しません。
+どの位置にも現れることができます。コンパイラがチェックするのは、呼び出し側で
+<code>R1 &lt;: R</code> が成立するかだけです。</p>
 <pre><code class="language-scala">def flatMap[R1 &lt;: R, B](f: A =&gt; Effect[R1, B]): Effect[R1, B] =
     Effect(r =&gt; f(run(r)).run(r))
 </code></pre>
 <details>
-<summary><strong>Comparison: why does List's flatMap work without a bound?</strong></summary>
-<p>Desugar: <code>flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]</code></p>
+<summary><strong>比較：なぜ List の flatMap は境界なしで動くのか？</strong></summary>
+<p>デシュガー：<code>flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]</code></p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Step</th><th>Where is A?</th><th>Position</th></tr>
+<tr><th>ステップ</th><th>A はどこ？</th><th>位置</th></tr>
 </thead>
 <tbody>
-<tr><td><code>f</code> is a method parameter</td><td>start</td><td><code>(-)</code></td></tr>
-<tr><td><code>A</code> is in the <code>-A</code> slot of <code>Function1</code></td><td><code>(-) × (-)</code></td><td><code>(+)</code></td></tr>
+<tr><td><code>f</code> はメソッドパラメータ</td><td>開始</td><td><code>(-)</code></td></tr>
+<tr><td><code>A</code> は <code>Function1</code> の <code>-A</code> スロット</td><td><code>(-) × (-)</code></td><td><code>(+)</code></td></tr>
 </tbody>
 </table>
 </div>
-<p>Result: <code>A</code> lands in <code>(+)</code>. We declared <code>+A</code>. <strong>OK.</strong> No extra nesting layer,
-so no position flip — and no bound needed.</p>
+<p>結果：<code>A</code> は <code>(+)</code> に着地。<code>+A</code> と宣言した。<strong>OK。</strong> ネストの追加層がないので
+位置は反転せず、境界は不要です。</p>
 </details>
-<h3 id="how-the-implementation-works"><a class="header" href="#how-the-implementation-works">How the implementation works</a></h3>
-<p><code>R1 &lt;: R</code> isn’t just for the variance checker — it makes the implementation
-work too. Let’s break <code>Effect(r =&gt; f(run(r)).run(r))</code> into named steps,
-writing <code>Function1[-A, +B]</code> explicitly so we can see where each type parameter lands:</p>
-<pre><code class="language-scala">//                               i.e. R =&gt; A
+<h3 id="実装の仕組み"><a class="header" href="#実装の仕組み">実装の仕組み</a></h3>
+<p><code>R1 &lt;: R</code> は変位チェッカーのためだけではありません ― 実装も動作させます。
+<code>Effect(r =&gt; f(run(r)).run(r))</code> を名前付きステップに分解し、
+<code>Function1[-A, +B]</code> を明示的に書いて各型パラメータの着地位置を見てみましょう：</p>
+<pre><code class="language-scala">//                               つまり R =&gt; A
 class Effect[-R, +A](val run: Function1[R, A]):
-//                              i.e. A =&gt; Effect[R1, B]
+//                              つまり A =&gt; Effect[R1, B]
   def flatMap[R1 &lt;: R, B](f: Function1[A, Effect[R1, B]]): Effect[R1, B] =
-    Effect { r =&gt;              // r: R1 — the return type is Effect[R1, B]
-      val a = run(r)           // run this effect — OK because R1 &lt;: R
-      val effect2 = f(a)       // build the next effect
-      effect2.run(r)           // run it with the same environment
+    Effect { r =&gt;              // r: R1 — 戻り値型が Effect[R1, B] だから
+      val a = run(r)           // このエフェクトを実行 — R1 &lt;: R なので OK
+      val effect2 = f(a)       // 次のエフェクトを構築
+      effect2.run(r)           // 同じ環境で実行
     }
 </code></pre>
-<p>Why is <code>r</code> an <code>R1</code>, not an <code>R</code>? Because <code>flatMap</code> returns <code>Effect[R1, B]</code>,
-which wraps a function <code>R1 =&gt; B</code>. So <code>r</code> — the environment passed to
-that function — has type <code>R1</code>. And since <code>R1 &lt;: R</code>, the same <code>r</code> can feed
-<code>run(r)</code> (which expects <code>R</code>) and <code>effect2.run(r)</code> (which expects <code>R1</code>).
-This is the contravariant pattern: <code>run</code> expects an <code>R</code>, and <code>R1</code> has at
-least everything <code>R</code> has — a consumer of a broader type works with a narrower one.</p>
-<p>You can run the complete example with <code>scala-cli run step2g2.scala</code>:</p>
+<p>なぜ <code>r</code> は <code>R</code> ではなく <code>R1</code> なのか？ <code>flatMap</code> は <code>Effect[R1, B]</code> を返すからです。
+これは関数 <code>R1 =&gt; B</code> をラップしています。だからその関数に渡される <code>r</code> は型 <code>R1</code> です。
+そして <code>R1 &lt;: R</code> なので、同じ <code>r</code> が <code>run(r)</code>（<code>R</code> を期待）と
+<code>effect2.run(r)</code>（<code>R1</code> を期待）の両方に使えます。
+これは反変のパターンです：<code>run</code> は <code>R</code> を期待し、<code>R1</code> は <code>R</code> が持つものをすべて
+持っています ― より広い型のコンシューマーはより狭い型で動作します。</p>
+<p><code>scala-cli run step2g2.scala</code> で完全な例を実行できます：</p>
 <pre><code class="language-scala">// step2g2.scala — Variance in action: a simplified ZIO-like effect
 
 // An effect that requires an environment R and produces a value A.
@@ -1083,19 +1072,19 @@ val logMsg: String =&gt; Effect[Logger, Unit] = msg =&gt; Effect { logger =&gt;
   // val db: Database = new Database { def lookup(id: Int) = s"user-$id" }
   // program.run(db)  // Compile error — db is not a Logger
 </code></pre>
-<h2 id="2-8-quick-reference"><a class="header" href="#2-8-quick-reference">2-8. Quick Reference</a></h2>
-<p>That was a lot of moving parts. Here’s everything from this chapter in one place:</p>
-<pre><code>Invariant (default)   → No compatibility assumed
-+A (covariant)        → Output side — safe to widen
--A (contravariant)    → Input side — safe in the opposite direction
-&gt;: (lower bound)      → Escape hatch for covariant types (widen)
-&lt;: (upper bound)      → Escape hatch for contravariant types (narrow)
+<h2 id="2-8-クイックリファレンス"><a class="header" href="#2-8-クイックリファレンス">2-8. クイックリファレンス</a></h2>
+<p>たくさんの要素が出てきました。この章のすべてをまとめます：</p>
+<pre><code>不変（デフォルト）     → 互換性を仮定しない
++A（共変）            → 出力側 — 安全に拡大
+-A（反変）            → 入力側 — 逆方向で安全
+&gt;:（下限境界）         → 共変型の脱出口（拡大）
+&lt;:（上限境界）         → 反変型の脱出口（制限）
 </code></pre>
-<p>But knowing the mechanics is only half the story. The next question is:
-<em>in practice, how often do you actually want invariant, and when should you reach for <code>+</code> or <code>-</code>?</em></p>
+<p>しかし仕組みを知るのは話の半分です。次の問いは：
+<em>実際にどのくらい不変が欲しくて、いつ <code>+</code> や <code>-</code> を使うべきなのか？</em></p>
 <blockquote>
-<p><strong>Take a breath.</strong> The hard conceptual work is done. Sections 2-9 through 2-11
-show how variance plays out in real code — these are shorter and more concrete.</p>
+<p><strong>一息つきましょう。</strong> 難しい概念的な作業は終わりました。セクション 2-9 から 2-11 は
+変位が実際のコードでどう働くかを示します ― より短く、より具体的です。</p>
 </blockquote>
 
                     </main>
