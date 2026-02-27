@@ -343,8 +343,8 @@ For simple consumers like `PriceFormatter[-A]` or `Function1[-A, +B]`, this neve
 comes up — they return `String` or `Boolean`, not `A`.
 
 But it *does* come up when you compose contravariant types. Here's a simplified
-inspired by [ZIO](https://zio.dev/), a popular Scala library for building concurrent
-and asynchronous programs. 
+example inspired by [ZIO](https://zio.dev/), a popular Scala library for building
+concurrent and asynchronous programs. 
 
 ZIO's actual type is `ZIO[-R, +E, +A]` (environment, error, value) — we drop
 the error channel here to focus on variance.

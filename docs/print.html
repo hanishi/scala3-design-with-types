@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-40968073.js";
+            window.path_to_searchindex_js = "searchindex-9a04617a.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-9571e420.js"></script>
@@ -873,8 +873,8 @@ where the method <em>produces</em> values). Upper bounds (<code>[B &lt;: A]</cod
 <p>For simple consumers like <code>PriceFormatter[-A]</code> or <code>Function1[-A, +B]</code>, this never
 comes up — they return <code>String</code> or <code>Boolean</code>, not <code>A</code>.</p>
 <p>But it <em>does</em> come up when you compose contravariant types. Here’s a simplified
-inspired by <a href="https://zio.dev/">ZIO</a>, a popular Scala library for building concurrent
-and asynchronous programs.</p>
+example inspired by <a href="https://zio.dev/">ZIO</a>, a popular Scala library for building
+concurrent and asynchronous programs.</p>
 <p>ZIO’s actual type is <code>ZIO[-R, +E, +A]</code> (environment, error, value) — we drop
 the error channel here to focus on variance.</p>
 <p><code>Effect[-R, +A]</code> is a computation that needs an environment <code>R</code> to run and
