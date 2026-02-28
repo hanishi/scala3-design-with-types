@@ -48,7 +48,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-db7e95e2.js";
+            window.path_to_searchindex_js = "searchindex-9330fbb9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-9571e420.js"></script>
@@ -1118,12 +1118,12 @@ def printPrices(items: List[Item], fmt: PriceFormatter[Item]): Unit =
   printPrices(List(Book("Scala", 45.0), DVD("The Matrix", 19.99)), itemFmt)
 </code></pre>
 </details>
+<h3 id="a-real-example-zio"><a class="header" href="#a-real-example-zio">A real example: ZIO</a></h3>
 <p>For simple consumers like <code>PriceFormatter[-A]</code> or <code>Function1[-A, +B]</code>, the
 contravariant escape hatch never comes up — they return <code>String</code> or <code>Boolean</code>,
-not <code>A</code>.</p>
-<p>But it <em>does</em> come up when you compose contravariant types — and seeing it
-in a real example is the best way to understand why the escape hatch exists.</p>
-<h3 id="a-real-example-zio"><a class="header" href="#a-real-example-zio">A real example: ZIO</a></h3>
+not <code>A</code>. But it <em>does</em> come up when you compose contravariant types — and
+seeing it in a real example is the best way to understand why the escape
+hatch exists.</p>
 <p><a href="https://zio.dev/">ZIO</a>, one of the most popular Scala libraries, takes an
 interesting approach to dependency management: instead of passing dependencies
 (a database connection, a logger) directly to functions, you describe what you

@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-bd32b4b1.js";
+            window.path_to_searchindex_js = "searchindex-32fced52.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-b88b2e60.js"></script>
@@ -1097,11 +1097,11 @@ def printPrices(items: List[Item], fmt: PriceFormatter[Item]): Unit =
   printPrices(List(Book("Scala", 45.0), DVD("The Matrix", 19.99)), itemFmt)
 </code></pre>
 </details>
-<p><code>PriceFormatter[-A]</code> や <code>Function1[-A, +B]</code> のような単純なコンシューマーでは、
-反変の脱出口は問題になりません ― <code>String</code> や <code>Boolean</code> を返し、<code>A</code> は返さないからです。</p>
-<p>しかし、反変型を合成するときには問題になります ― 実際の例で見るのが
-脱出口の存在意義を理解する最良の方法です。</p>
 <h3 id="実例zio"><a class="header" href="#実例zio">実例：ZIO</a></h3>
+<p><code>PriceFormatter[-A]</code> や <code>Function1[-A, +B]</code> のような単純なコンシューマーでは、
+反変の脱出口は問題になりません ― <code>String</code> や <code>Boolean</code> を返し、<code>A</code> は返さない
+からです。しかし反変型を合成するときには問題になります ― 実際の例で見るのが
+脱出口の存在意義を理解する最良の方法です。</p>
 <p><a href="https://zio.dev/">ZIO</a>（最も人気のある Scala ライブラリの一つ）は依存関係管理に
 興味深いアプローチを取ります：依存関係（データベース接続、ロガー）を関数に直接渡す
 代わりに、<em>必要なもの</em>を型で記述します。プログラムは一つの値になります：
