@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-fe4f0e77.js";
+            window.path_to_searchindex_js = "../searchindex-893d50b1.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-b88b2e60.js"></script>
@@ -877,6 +877,70 @@ public class Step2kCon {
 </div>
 <p>下限境界は共変の問題を解決します。上限境界は反変の問題を解決します。
 交差しません ― 共変は拡大するので脱出口も拡大、反変は制限するので脱出口も制限。</p>
+<details>
+<summary><strong>交差するとどうなる？ <code>[-A &gt;: Item]</code></strong></summary>
+<p><code>[-A &gt;: Item]</code> ― 反変に下限境界 ― と書くことは<em>できます</em>。コンパイルも通ります。
+しかし境界は何の役にも立っていません：</p>
+<pre><code class="language-scala">// step2crossed.scala — Why [-A &gt;: X] is a code smell
+//
+// The pairings are fixed: +A pairs with &gt;: (lower bound),
+// -A pairs with &lt;: (upper bound). What if you cross them?
+
+// --- Domain (same as earlier) ---
+trait Item:
+  def name: String
+  def price: Double
+
+case class Book(name: String, price: Double) extends Item
+case class DVD(name: String, price: Double) extends Item
+
+// --- Contravariance + lower bound: [-A &gt;: Item] ---
+trait Sink[-A &gt;: Item]:
+  def accept(a: A): Unit
+
+// A = Item — works (Item &gt;: Item)
+val itemSink: Sink[Item] = a =&gt; println(s"Got item: ${a.name}")
+
+// A = Any — works (Any &gt;: Item)
+val anySink: Sink[Any] = a =&gt; println(s"Got anything: $a")
+
+// A = Book — compile error! Book is narrower than Item
+// val bookSink: Sink[Book] = b =&gt; println(b.name)  // blocked by &gt;: Item
+
+// --- But remove the bound and compare ---
+trait SinkNoBound[-A]:
+  def accept(a: A): Unit
+
+// Now Book compiles...
+val bookSink: SinkNoBound[Book] = b =&gt; println(b.name)
+
+// ...but can you use it where SinkNoBound[Item] is expected?
+def process(items: List[Item], sink: SinkNoBound[Item]): Unit =
+  items.foreach(sink.accept)
+
+// process(List(Book("Scala", 45.0)), bookSink)  // won't compile!
+// SinkNoBound[Book] is a SUPERTYPE of SinkNoBound[Item], not a subtype.
+// Contravariance flips the direction: Item &lt;: Any, so Sink[Any] &lt;: Sink[Item].
+// A Book-only sink can't safely handle arbitrary Items.
+
+// --- Conclusion ---
+// The bound [-A &gt;: Item] prevents Sink[Book] from existing.
+// Without the bound, Sink[Book] exists but can't be used anywhere useful.
+// The bound is redundant safety — contravariance already handles it.
+// Don't cross the pairings. The complexity isn't earning its keep.
+
+@main def step2crossed(): Unit =
+  val sink: SinkNoBound[Item] = a =&gt; println(s"Got item: ${a.name}")
+  process(List(Book("Scala", 45.0), DVD("The Matrix", 19.99)), sink)
+</code></pre>
+<p>境界 <code>&gt;: Item</code> は <code>Sink[Book]</code> の存在を防ぎます。しかし境界がなくても
+<code>Sink[Book]</code> はどこでも使えません ― 反変なので <code>Sink[Book]</code> は <code>Sink[Item]</code> の
+<em>スーパータイプ</em>であり、サブタイプではないからです。<code>Book</code> だけの sink は
+任意の <code>Item</code> を処理できません。</p>
+<p>境界は冗長な安全策です。反変がすでに誤用を防いでいます。
+コードに <code>[-A &gt;: X]</code> を見かけたら、それはコードスメルです ―
+複雑さに見合う働きをしていません。</p>
+</details>
 <p><code>PriceFormatter[-A]</code> や <code>Function1[-A, +B]</code> のような単純なコンシューマーでは、
 反変の脱出口は問題になりません ― <code>String</code> や <code>Boolean</code> を返し、<code>A</code> は返さないからです。</p>
 <p>しかし、反変型を合成するときには問題になります ― 実際の例で見るのが

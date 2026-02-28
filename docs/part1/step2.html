@@ -47,7 +47,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-c69cdb8c.js";
+            window.path_to_searchindex_js = "../searchindex-ffd7c0da.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-9571e420.js"></script>
@@ -897,6 +897,70 @@ an <code>A</code> as input.”</em> Lower bounds (<code>[B &gt;: A]</code>) were
 <p>Lower bounds solve a covariance problem. Upper bounds solve a contravariance
 problem. They don’t cross — covariance widens, so its escape hatch widens;
 contravariance narrows, so its escape hatch narrows.</p>
+<details>
+<summary><strong>What if you cross them? <code>[-A &gt;: Item]</code></strong></summary>
+<p>You <em>can</em> write <code>[-A &gt;: Item]</code> — contravariance with a lower bound. It compiles.
+But the bound is doing nothing useful:</p>
+<pre><code class="language-scala">// step2crossed.scala — Why [-A &gt;: X] is a code smell
+//
+// The pairings are fixed: +A pairs with &gt;: (lower bound),
+// -A pairs with &lt;: (upper bound). What if you cross them?
+
+// --- Domain (same as earlier) ---
+trait Item:
+  def name: String
+  def price: Double
+
+case class Book(name: String, price: Double) extends Item
+case class DVD(name: String, price: Double) extends Item
+
+// --- Contravariance + lower bound: [-A &gt;: Item] ---
+trait Sink[-A &gt;: Item]:
+  def accept(a: A): Unit
+
+// A = Item — works (Item &gt;: Item)
+val itemSink: Sink[Item] = a =&gt; println(s"Got item: ${a.name}")
+
+// A = Any — works (Any &gt;: Item)
+val anySink: Sink[Any] = a =&gt; println(s"Got anything: $a")
+
+// A = Book — compile error! Book is narrower than Item
+// val bookSink: Sink[Book] = b =&gt; println(b.name)  // blocked by &gt;: Item
+
+// --- But remove the bound and compare ---
+trait SinkNoBound[-A]:
+  def accept(a: A): Unit
+
+// Now Book compiles...
+val bookSink: SinkNoBound[Book] = b =&gt; println(b.name)
+
+// ...but can you use it where SinkNoBound[Item] is expected?
+def process(items: List[Item], sink: SinkNoBound[Item]): Unit =
+  items.foreach(sink.accept)
+
+// process(List(Book("Scala", 45.0)), bookSink)  // won't compile!
+// SinkNoBound[Book] is a SUPERTYPE of SinkNoBound[Item], not a subtype.
+// Contravariance flips the direction: Item &lt;: Any, so Sink[Any] &lt;: Sink[Item].
+// A Book-only sink can't safely handle arbitrary Items.
+
+// --- Conclusion ---
+// The bound [-A &gt;: Item] prevents Sink[Book] from existing.
+// Without the bound, Sink[Book] exists but can't be used anywhere useful.
+// The bound is redundant safety — contravariance already handles it.
+// Don't cross the pairings. The complexity isn't earning its keep.
+
+@main def step2crossed(): Unit =
+  val sink: SinkNoBound[Item] = a =&gt; println(s"Got item: ${a.name}")
+  process(List(Book("Scala", 45.0), DVD("The Matrix", 19.99)), sink)
+</code></pre>
+<p>The bound <code>&gt;: Item</code> prevents <code>Sink[Book]</code> from existing. But without the bound,
+<code>Sink[Book]</code> exists yet can’t be used anywhere — contravariance means
+<code>Sink[Book]</code> is a <em>supertype</em> of <code>Sink[Item]</code>, not a subtype. A <code>Book</code>-only
+sink can’t handle arbitrary <code>Item</code>s.</p>
+<p>The bound is redundant safety. Contravariance already prevents the misuse.
+If you see <code>[-A &gt;: X]</code> in code, it’s a smell — the complexity isn’t earning
+its keep.</p>
+</details>
 <p>For simple consumers like <code>PriceFormatter[-A]</code> or <code>Function1[-A, +B]</code>, the
 contravariant escape hatch never comes up — they return <code>String</code> or <code>Boolean</code>,
 not <code>A</code>.</p>

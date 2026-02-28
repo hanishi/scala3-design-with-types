@@ -401,6 +401,27 @@ Lower bounds solve a covariance problem. Upper bounds solve a contravariance
 problem. They don't cross — covariance widens, so its escape hatch widens;
 contravariance narrows, so its escape hatch narrows.
 
+<details>
+<summary><strong>What if you cross them? <code>[-A >: Item]</code></strong></summary>
+
+You *can* write `[-A >: Item]` — contravariance with a lower bound. It compiles.
+But the bound is doing nothing useful:
+
+```scala
+{{#include ../../../examples/step2/step2crossed.scala}}
+```
+
+The bound `>: Item` prevents `Sink[Book]` from existing. But without the bound,
+`Sink[Book]` exists yet can't be used anywhere — contravariance means
+`Sink[Book]` is a *supertype* of `Sink[Item]`, not a subtype. A `Book`-only
+sink can't handle arbitrary `Item`s.
+
+The bound is redundant safety. Contravariance already prevents the misuse.
+If you see `[-A >: X]` in code, it's a smell — the complexity isn't earning
+its keep.
+
+</details>
+
 For simple consumers like `PriceFormatter[-A]` or `Function1[-A, +B]`, the
 contravariant escape hatch never comes up — they return `String` or `Boolean`,
 not `A`.
