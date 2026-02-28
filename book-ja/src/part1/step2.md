@@ -396,21 +396,18 @@ Scala の `Function1[-A, +B]` は反変を一度だけ宣言します ―
 <details>
 <summary><strong>交差するとどうなる？ <code>[-A >: Item]</code></strong></summary>
 
-`[-A >: Item]` ― 反変に下限境界 ― と書くことは*できます*。コンパイルも通ります。
-しかし境界は何の役にも立っていません：
+`PriceFormatter[-A]` はすでに知っています。もし誰かが下限境界を加えたら？
 
 ```scala
 {{#include ../../../examples/step2/step2crossed.scala}}
 ```
 
-境界 `>: Item` は `Sink[Book]` の存在を防ぎます。しかし境界がなくても
-`Sink[Book]` はどこでも使えません ― 反変なので `Sink[Book]` は `Sink[Item]` の
-*スーパータイプ*であり、サブタイプではないからです。`Book` だけの sink は
-任意の `Item` を処理できません。
-
-境界は冗長な安全策です。反変がすでに誤用を防いでいます。
-コードに `[-A >: X]` を見かけたら、それはコードスメルです ―
-複雑さに見合う働きをしていません。
+境界 `>: Item` は `PriceFormatter[Book]` の存在を防ぎます。しかし境界がなくても、
+`PriceFormatter[Book]` を `PriceFormatter[Item]` が期待される場所で使えるでしょうか？
+いいえ ― 反変が方向を逆転させるので、`PriceFormatter[Book]` は
+`PriceFormatter[Item]` の*スーパータイプ*です。
+境界は、反変がすでに使用側で処理することを定義側で制限しています。
+コードに `[-A >: X]` を見かけたら、それはコードスメルです。
 
 </details>
 

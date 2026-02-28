@@ -404,21 +404,18 @@ contravariance narrows, so its escape hatch narrows.
 <details>
 <summary><strong>What if you cross them? <code>[-A >: Item]</code></strong></summary>
 
-You *can* write `[-A >: Item]` — contravariance with a lower bound. It compiles.
-But the bound is doing nothing useful:
+You already know `PriceFormatter[-A]`. What if someone adds a lower bound?
 
 ```scala
 {{#include ../../../examples/step2/step2crossed.scala}}
 ```
 
-The bound `>: Item` prevents `Sink[Book]` from existing. But without the bound,
-`Sink[Book]` exists yet can't be used anywhere — contravariance means
-`Sink[Book]` is a *supertype* of `Sink[Item]`, not a subtype. A `Book`-only
-sink can't handle arbitrary `Item`s.
-
-The bound is redundant safety. Contravariance already prevents the misuse.
-If you see `[-A >: X]` in code, it's a smell — the complexity isn't earning
-its keep.
+The bound `>: Item` prevents `PriceFormatter[Book]` from existing. But even
+without the bound, could you use a `PriceFormatter[Book]` where
+`PriceFormatter[Item]` is expected? No — contravariance flips the direction,
+so `PriceFormatter[Book]` is a *supertype* of `PriceFormatter[Item]`.
+The bound restricts at the definition site what contravariance already
+handles at the use site. If you see `[-A >: X]` in code, it's a smell.
 
 </details>
 
