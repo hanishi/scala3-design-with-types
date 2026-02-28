@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4bd9598d.js";
+            window.path_to_searchindex_js = "searchindex-bd32b4b1.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-b88b2e60.js"></script>
@@ -1032,9 +1032,27 @@ public class Step2kCon {
 </div>
 <p>下限境界は共変の問題を解決します。上限境界は反変の問題を解決します。
 交差しません ― 共変は拡大するので脱出口も拡大、反変は制限するので脱出口も制限。</p>
+<p>しかし脱出口ではなく、クラス自体の境界 ― <code>[+A &lt;: Item]</code> や <code>[-A &gt;: Item]</code> ―
+はどうでしょう？有用なのは片方だけです：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th>共変</th><th>反変</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>脱出口</strong></td><td><code>[B &gt;: A]</code> 下限境界</td><td><code>[B &lt;: A]</code> 上限境界</td></tr>
+<tr><td><strong>クラス境界</strong></td><td><code>[+A &lt;: Item]</code> — <strong>有用</strong></td><td><code>[-A &gt;: Item]</code> — <strong>コードスメル</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p><code>[+A &lt;: Item]</code> は働きに見合います：クラス内部で <code>A</code> に対して <code>Item</code> のメソッド
+― <code>.name</code>、<code>.price</code> ― を呼べます。<code>WeakReference[+T &lt;: AnyRef]</code> や
+<code>Shipment[+A &lt;: Shippable]</code> ですでに見ました。</p>
+<p><code>[-A &gt;: Item]</code> は冗長です。<code>PriceFormatter[Book]</code> の存在を防ぎますが、
+反変がすでに <code>PriceFormatter[Book]</code> を <code>PriceFormatter[Item]</code> が期待される場所で
+使えなくしています ― 境界は反変がすでに使用側で処理することを定義側で制限しています。</p>
 <details>
-<summary><strong>交差するとどうなる？ <code>[-A &gt;: Item]</code></strong></summary>
-<p><code>PriceFormatter[-A]</code> はすでに知っています。もし誰かが下限境界を加えたら？</p>
+<summary><strong>コードで見る：<code>[-A &gt;: Item]</code></strong></summary>
 <pre><code class="language-scala">// step2crossed.scala — Why [-A &gt;: X] is a code smell
 //
 // The pairings are fixed: +A pairs with &gt;: (lower bound),
@@ -1078,12 +1096,6 @@ def printPrices(items: List[Item], fmt: PriceFormatter[Item]): Unit =
 @main def step2crossed(): Unit =
   printPrices(List(Book("Scala", 45.0), DVD("The Matrix", 19.99)), itemFmt)
 </code></pre>
-<p>境界 <code>&gt;: Item</code> は <code>PriceFormatter[Book]</code> の存在を防ぎます。しかし境界がなくても、
-<code>PriceFormatter[Book]</code> を <code>PriceFormatter[Item]</code> が期待される場所で使えるでしょうか？
-いいえ ― 反変が方向を逆転させるので、<code>PriceFormatter[Book]</code> は
-<code>PriceFormatter[Item]</code> の<em>スーパータイプ</em>です。
-境界は、反変がすでに使用側で処理することを定義側で制限しています。
-コードに <code>[-A &gt;: X]</code> を見かけたら、それはコードスメルです。</p>
 </details>
 <p><code>PriceFormatter[-A]</code> や <code>Function1[-A, +B]</code> のような単純なコンシューマーでは、
 反変の脱出口は問題になりません ― <code>String</code> や <code>Boolean</code> を返し、<code>A</code> は返さないからです。</p>

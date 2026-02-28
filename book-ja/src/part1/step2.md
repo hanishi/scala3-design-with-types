@@ -393,21 +393,28 @@ Scala の `Function1[-A, +B]` は反変を一度だけ宣言します ―
 下限境界は共変の問題を解決します。上限境界は反変の問題を解決します。
 交差しません ― 共変は拡大するので脱出口も拡大、反変は制限するので脱出口も制限。
 
-<details>
-<summary><strong>交差するとどうなる？ <code>[-A >: Item]</code></strong></summary>
+しかし脱出口ではなく、クラス自体の境界 ― `[+A <: Item]` や `[-A >: Item]` ―
+はどうでしょう？有用なのは片方だけです：
 
-`PriceFormatter[-A]` はすでに知っています。もし誰かが下限境界を加えたら？
+| | 共変 | 反変 |
+|---|---|---|
+| **脱出口** | `[B >: A]` 下限境界 | `[B <: A]` 上限境界 |
+| **クラス境界** | `[+A <: Item]` — **有用** | `[-A >: Item]` — **コードスメル** |
+
+`[+A <: Item]` は働きに見合います：クラス内部で `A` に対して `Item` のメソッド
+― `.name`、`.price` ― を呼べます。`WeakReference[+T <: AnyRef]` や
+`Shipment[+A <: Shippable]` ですでに見ました。
+
+`[-A >: Item]` は冗長です。`PriceFormatter[Book]` の存在を防ぎますが、
+反変がすでに `PriceFormatter[Book]` を `PriceFormatter[Item]` が期待される場所で
+使えなくしています ― 境界は反変がすでに使用側で処理することを定義側で制限しています。
+
+<details>
+<summary><strong>コードで見る：<code>[-A >: Item]</code></strong></summary>
 
 ```scala
 {{#include ../../../examples/step2/step2crossed.scala}}
 ```
-
-境界 `>: Item` は `PriceFormatter[Book]` の存在を防ぎます。しかし境界がなくても、
-`PriceFormatter[Book]` を `PriceFormatter[Item]` が期待される場所で使えるでしょうか？
-いいえ ― 反変が方向を逆転させるので、`PriceFormatter[Book]` は
-`PriceFormatter[Item]` の*スーパータイプ*です。
-境界は、反変がすでに使用側で処理することを定義側で制限しています。
-コードに `[-A >: X]` を見かけたら、それはコードスメルです。
 
 </details>
 

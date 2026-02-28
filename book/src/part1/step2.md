@@ -401,21 +401,29 @@ Lower bounds solve a covariance problem. Upper bounds solve a contravariance
 problem. They don't cross — covariance widens, so its escape hatch widens;
 contravariance narrows, so its escape hatch narrows.
 
-<details>
-<summary><strong>What if you cross them? <code>[-A >: Item]</code></strong></summary>
+But what about bounds on the class itself — not the escape hatch, but a
+constraint like `[+A <: Item]` or `[-A >: Item]`? Only one direction is useful:
 
-You already know `PriceFormatter[-A]`. What if someone adds a lower bound?
+| | Covariance | Contravariance |
+|---|---|---|
+| **Escape hatch** | `[B >: A]` lower bound | `[B <: A]` upper bound |
+| **Class bound** | `[+A <: Item]` — **useful** | `[-A >: Item]` — **code smell** |
+
+`[+A <: Item]` earns its keep: inside the class you can call `Item` methods
+on `A` — `.name`, `.price`. You've already seen this with
+`WeakReference[+T <: AnyRef]` and `Shipment[+A <: Shippable]`.
+
+`[-A >: Item]` is redundant. It prevents `PriceFormatter[Book]` from existing,
+but contravariance already makes `PriceFormatter[Book]` unusable where
+`PriceFormatter[Item]` is expected — the bound restricts at the definition
+site what contravariance already handles at the use site.
+
+<details>
+<summary><strong>See it in code: <code>[-A >: Item]</code></strong></summary>
 
 ```scala
 {{#include ../../../examples/step2/step2crossed.scala}}
 ```
-
-The bound `>: Item` prevents `PriceFormatter[Book]` from existing. But even
-without the bound, could you use a `PriceFormatter[Book]` where
-`PriceFormatter[Item]` is expected? No — contravariance flips the direction,
-so `PriceFormatter[Book]` is a *supertype* of `PriceFormatter[Item]`.
-The bound restricts at the definition site what contravariance already
-handles at the use site. If you see `[-A >: X]` in code, it's a smell.
 
 </details>
 

@@ -48,7 +48,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ae2602e3.js";
+            window.path_to_searchindex_js = "searchindex-db7e95e2.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-9571e420.js"></script>
@@ -1052,9 +1052,28 @@ an <code>A</code> as input.”</em> Lower bounds (<code>[B &gt;: A]</code>) were
 <p>Lower bounds solve a covariance problem. Upper bounds solve a contravariance
 problem. They don’t cross — covariance widens, so its escape hatch widens;
 contravariance narrows, so its escape hatch narrows.</p>
+<p>But what about bounds on the class itself — not the escape hatch, but a
+constraint like <code>[+A &lt;: Item]</code> or <code>[-A &gt;: Item]</code>? Only one direction is useful:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th>Covariance</th><th>Contravariance</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Escape hatch</strong></td><td><code>[B &gt;: A]</code> lower bound</td><td><code>[B &lt;: A]</code> upper bound</td></tr>
+<tr><td><strong>Class bound</strong></td><td><code>[+A &lt;: Item]</code> — <strong>useful</strong></td><td><code>[-A &gt;: Item]</code> — <strong>code smell</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p><code>[+A &lt;: Item]</code> earns its keep: inside the class you can call <code>Item</code> methods
+on <code>A</code> — <code>.name</code>, <code>.price</code>. You’ve already seen this with
+<code>WeakReference[+T &lt;: AnyRef]</code> and <code>Shipment[+A &lt;: Shippable]</code>.</p>
+<p><code>[-A &gt;: Item]</code> is redundant. It prevents <code>PriceFormatter[Book]</code> from existing,
+but contravariance already makes <code>PriceFormatter[Book]</code> unusable where
+<code>PriceFormatter[Item]</code> is expected — the bound restricts at the definition
+site what contravariance already handles at the use site.</p>
 <details>
-<summary><strong>What if you cross them? <code>[-A &gt;: Item]</code></strong></summary>
-<p>You already know <code>PriceFormatter[-A]</code>. What if someone adds a lower bound?</p>
+<summary><strong>See it in code: <code>[-A &gt;: Item]</code></strong></summary>
 <pre><code class="language-scala">// step2crossed.scala — Why [-A &gt;: X] is a code smell
 //
 // The pairings are fixed: +A pairs with &gt;: (lower bound),
@@ -1098,12 +1117,6 @@ def printPrices(items: List[Item], fmt: PriceFormatter[Item]): Unit =
 @main def step2crossed(): Unit =
   printPrices(List(Book("Scala", 45.0), DVD("The Matrix", 19.99)), itemFmt)
 </code></pre>
-<p>The bound <code>&gt;: Item</code> prevents <code>PriceFormatter[Book]</code> from existing. But even
-without the bound, could you use a <code>PriceFormatter[Book]</code> where
-<code>PriceFormatter[Item]</code> is expected? No — contravariance flips the direction,
-so <code>PriceFormatter[Book]</code> is a <em>supertype</em> of <code>PriceFormatter[Item]</code>.
-The bound restricts at the definition site what contravariance already
-handles at the use site. If you see <code>[-A &gt;: X]</code> in code, it’s a smell.</p>
 </details>
 <p>For simple consumers like <code>PriceFormatter[-A]</code> or <code>Function1[-A, +B]</code>, the
 contravariant escape hatch never comes up — they return <code>String</code> or <code>Boolean</code>,
