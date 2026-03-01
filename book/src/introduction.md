@@ -27,6 +27,13 @@ Everything in this tutorial — variance, opaque types, typeclasses, match types
 is about giving the compiler more information so it can catch more mistakes
 *before* erasure throws that information away.
 
+This matters even more now. In an era where LLMs write more code than humans
+type, the type system becomes the critical layer between human intent and
+generated code. A rich type system with explicit compiler messages catches
+what LLMs silently drop — an implicit convention, a missing annotation, a
+subtle variance requirement. The compiler doesn't forget, and it doesn't
+hallucinate. It's the one reviewer that checks every line, every time.
+
 ## Structure
 
 **Part 1: The Type System** (Steps 0–5) covers how to *use* Scala's type system

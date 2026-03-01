@@ -36,6 +36,8 @@ class Shipment[+A <: Shippable](private val items: List[A]):
   // Try sorting DigitalGiftCertificate?
   //val cards = List(DigitalGiftCertificate("Amazon $50", 50.0))
   //sortByShipping(cards)
+  // [error] Found:    (cards : List[DigitalGiftCertificate])
+  // [error] Required: List[Shippable]
   // [error]   sortByShipping(cards)
   // [error]                  ^^^^^
 
@@ -49,5 +51,7 @@ class Shipment[+A <: Shippable](private val items: List[A]):
 
   // Try adding a DigitalGiftCertificate to a Shipment?
   //val shipmentFails = Shipment(List(DigitalGiftCertificate("Netflix", 20.00)))
+  // [error] Found:    DigitalGiftCertificate
+  // [error] Required: Shippable
   // [error]   val shipmentFails = Shipment(List(DigitalGiftCertificate("Netflix", 20.00)))
   // [error]                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

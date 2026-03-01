@@ -1,6 +1,6 @@
-# Step 2: Variance in Practice
+# Step 3: Variance in Practice
 
-## 2-9. Covariance in Practice — You Already Use It
+## 3-1. Covariance in Practice — You Already Use It
 
 You don't need custom types to see covariance — it's in the standard library types
 you use every day. Each one also shows the `[B >: A]` lower bound escape hatch
@@ -28,7 +28,7 @@ The pattern is the same in every case: the type **produces** (returns, holds, em
 values of `A`, so `+A` is natural. And when you need to add or combine values of
 a different subtype, `[B >: A]` widens the type safely.
 
-## 2-10. Contravariance in Practice — Handlers, Validators, Serializers
+## 3-2. Contravariance in Practice — Handlers, Validators, Serializers
 
 Contravariance is less common but appears in a very specific pattern:
 types that **consume** or **process** values.
@@ -45,7 +45,7 @@ and `ItemWriter` (a `JsonWriter[Item]`) qualifies — if it can serialize any `I
 it can serialize a `Book`. The `Validator` follows the same pattern: a
 `PriceValidator` that validates any `Item` works in `books.filter` too.
 
-## 2-11. So Is Invariant Actually Useful?
+## 3-3. So Is Invariant Actually Useful?
 
 Yes, but its role is narrower than you might think.
 
