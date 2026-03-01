@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-df0ff4b1.js";
+            window.path_to_searchindex_js = "searchindex-807b343b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-c986c171.js"></script>
@@ -182,38 +182,38 @@
 <p><a href="../introduction.html">English version</a></p>
 <blockquote>
 <p>このチュートリアルは <code>scala-cli</code> を使いながら、
-ステップごとにコンパイラと対話して進める構成になっています。
+ステップごとにコンパイラと対話して進める構成だ。
 各ステップで最も大切なこと：<strong>まずコンパイル、エラーを読み、それから理解する。</strong></p>
 </blockquote>
 <h2 id="対象読者"><a class="header" href="#対象読者">対象読者</a></h2>
-<p>型パラメータ ― <code>List[Int]</code>、<code>Option[String]</code>、<code>Map[K, V]</code> ― は日常的に使っているでしょう。
-でも <code>[+A]</code>、<code>[B &gt;: A]</code>、<code>match</code> 型、<code>=:=</code> となると別の言語に見えるかもしれません。
-「上級者向け」と言われて飛ばしてきた。それはまったく自然なことです。</p>
+<p>型パラメータ ― <code>List[Int]</code>、<code>Option[String]</code>、<code>Map[K, V]</code> ― は日常的に使っているだろう。
+でも <code>[+A]</code>、<code>[B &gt;: A]</code>、<code>match</code> 型、<code>=:=</code> となると別の言語に見えるかもしれない。
+「上級者向け」と言われて飛ばしてきた。それはまったく自然なことだ。</p>
 <p>このチュートリアルでは、それらは「上級」ではなく、
-解決する問題を見れば自然に理解できると主張します。
-概念はまっすぐ積み重なり、どれもあなたがすでに経験した具体的な問題に対応しています。</p>
+解決する問題を見れば自然に理解できると主張する。
+概念はまっすぐ積み重なり、どれもすでに経験した具体的な問題に対応している。</p>
 <h2 id="なぜこれが重要なのか"><a class="header" href="#なぜこれが重要なのか">なぜこれが重要なのか</a></h2>
-<p>根本的な問題はこうです：JVM ではジェネリクスは**消去（erasure）**されます。
-実行時には <code>List[Int]</code> も <code>List[String]</code> もただの <code>List</code> です。
-JVM はコレクションがどの型を保持しているか知りません。</p>
-<p>つまり、<strong>コンパイル時が型エラーを捕まえる唯一のチャンス</strong>です。
+<p>根本的な問題はこうだ：JVM ではジェネリクスは**消去（erasure）**される。
+実行時には <code>List[Int]</code> も <code>List[String]</code> もただの <code>List</code> だ。
+JVM はコレクションがどの型を保持しているか知らない。</p>
+<p>つまり、<strong>コンパイル時が型エラーを捕まえる唯一のチャンス</strong>だ。
 このチュートリアルで扱うすべて ― 変位、不透明型、型クラス、マッチ型 ―
 は、消去が情報を捨てる<em>前に</em>コンパイラにより多くの情報を与え、
-より多くのミスを検出するためのものです。</p>
-<p>これは今、さらに重要です。LLM が人間よりも多くのコードを書く時代、
-型システムは人間の意図と生成されたコードの間にある重要な層になります。
+より多くのミスを検出するためのものだ。</p>
+<p>これは今、さらに重要だ。LLM が人間よりも多くのコードを書く時代、
+型システムは人間の意図と生成されたコードの間にある重要な層になる。
 明示的なコンパイラメッセージを持つ豊かな型システムは、LLM が黙って落とすもの
-― 暗黙の慣習、抜けたアノテーション、微妙な変位の要件 ― を検出します。
-コンパイラは忘れないし、幻覚も見ません。すべての行を、毎回チェックする
-唯一のレビュアーです。</p>
+― 暗黙の慣習、抜けたアノテーション、微妙な変位の要件 ― を検出する。
+コンパイラは忘れないし、幻覚も見ない。すべての行を、毎回チェックする
+唯一のレビュアーだ。</p>
 <h2 id="構成"><a class="header" href="#構成">構成</a></h2>
-<p><strong>Part 1: 型システム</strong>（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱います
+<p><strong>Part 1: 型システム</strong>（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱う
 ― 型パラメータ、変位、境界、不透明型、型メンバー、型クラス。
-ほとんどのプロダクションコードで必要な知識です。</p>
-<p><strong>Part 2: 型レベルプログラミング</strong>（Step 6〜8）では、<em>計算する</em>型を扱います ―
+ほとんどのプロダクションコードで必要な知識だ。</p>
+<p><strong>Part 2: 型レベルプログラミング</strong>（Step 6〜8）では、<em>計算する</em>型を扱う ―
 マッチ型、コンパイル時検証、型の等価性の証明。
 これらのテクニックはライブラリ設計やドメインモデリングで登場し、
-型システムだけでは捕捉できないバグの種類全体をコンパイラが検出できるようになります。</p>
+型システムだけでは捕捉できないバグの種類全体をコンパイラが検出できるようになる。</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="セットアップ"><a class="header" href="#セットアップ">セットアップ</a></h1>
 <pre><code class="language-bash"># scala-cli をインストール（まだの場合）
@@ -224,7 +224,7 @@ scala-cli version
 # Scala 3.x が必要です
 </code></pre>
 <h2 id="サンプルファイルの使い方"><a class="header" href="#サンプルファイルの使い方">サンプルファイルの使い方</a></h2>
-<p>本書のすべてのコード例は <code>examples/</code> ディレクトリにそのまま実行できるファイルとして用意されています。リポジトリをクローンして、任意の例を実行してください：</p>
+<p>本書のすべてのコード例は <code>examples/</code> ディレクトリにそのまま実行できるファイルとして用意されている。リポジトリをクローンして、任意の例を実行してほしい：</p>
 <pre><code class="language-bash">git clone https://github.com/hanishi/scala3-design-with-types.git
 cd scala3-design-with-types
 
@@ -235,16 +235,16 @@ scala-cli run examples/step0/step0.scala
 cd examples/step2
 scala-cli run step2c.scala
 </code></pre>
-<p>各ファイルは自己完結しています ― 読んでいるステップに対応するファイルを選んで実行するだけです。</p>
+<p>各ファイルは自己完結している ― 読んでいるステップに対応するファイルを選んで実行するだけだ。</p>
 <blockquote>
-<p><strong>注意:</strong> 必ず1ファイルずつ実行してください ― ディレクトリ全体をコンパイルしない（例：<code>scala-cli compile examples/step2/</code>）でください。各ステップのファイルは、進行を示すために同じクラス（<code>Product</code>、<code>Book</code>、<code>Box</code> など）を異なるシグネチャで意図的に再定義しています。まとめてコンパイルすると重複定義エラーになります。</p>
+<p><strong>注意:</strong> 必ず1ファイルずつ実行すること ― ディレクトリ全体をコンパイルしない（例：<code>scala-cli compile examples/step2/</code>）こと。各ステップのファイルは、進行を示すために同じクラス（<code>Product</code>、<code>Book</code>、<code>Box</code> など）を異なるシグネチャで意図的に再定義している。まとめてコンパイルすると重複定義エラーになる。</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="part-1-型システム"><a class="header" href="#part-1-型システム">Part 1: 型システム</a></h1>
-<p>Part 1（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱います ― 型パラメータ、変位、境界、不透明型、型メンバー、型クラス。ほとんどのプロダクションコードで必要な知識です。</p>
+<p>Part 1（Step 0〜5）では、Scala の型システムを<em>効果的に使う</em>方法を扱う ― 型パラメータ、変位、境界、不透明型、型メンバー、型クラス。ほとんどのプロダクションコードで必要な知識だ。</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="step-0-型のない世界"><a class="header" href="#step-0-型のない世界">Step 0: 型のない世界</a></h1>
-<p>型情報が失われると何が起きるか、体感してみましょう。</p>
+<p>型情報が失われると何が起きるか、体感してみよう。</p>
 <h2 id="0-1-何でも入るリスト"><a class="header" href="#0-1-何でも入るリスト">0-1. 何でも入るリスト</a></h2>
 <pre><code class="language-scala">// step0.scala
 @main def step0(): Unit =
@@ -267,10 +267,10 @@ scala-cli run step2c.scala
 <p><strong>試してみよう：</strong></p>
 <pre><code>&gt; scala-cli run step0.scala
 </code></pre>
-<p><code>first * 2</code> のコメントを外してコンパイルしてください。エラーを読みましょう。
-コンパイラは <code>Any</code> に <code>*</code> メソッドがないと言います。</p>
-<p><strong>ポイント：</strong> 実行時には値は 100 <em>です</em>が、コンパイラはそれを知りません。
-型情報が失われた瞬間、コンパイラはあなたを守れなくなります。</p>
+<p><code>first * 2</code> のコメントを外してコンパイルしてほしい。エラーを読もう。
+コンパイラは <code>Any</code> に <code>*</code> メソッドがないと言う。</p>
+<p><strong>ポイント：</strong> 実行時には値は 100 <em>だ</em>が、コンパイラはそれを知らない。
+型情報が失われた瞬間、コンパイラはもう守ってくれない。</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="step-1-型パラメータは契約である"><a class="header" href="#step-1-型パラメータは契約である">Step 1: 型パラメータは契約である</a></h1>
 <h2 id="1-1-自分だけの-box-を作る"><a class="header" href="#1-1-自分だけの-box-を作る">1-1. 自分だけの Box を作る</a></h2>
@@ -300,10 +300,10 @@ class Box[A](val value: A)
 <p><strong>試してみよう：</strong></p>
 <pre><code>&gt; scala-cli run step1a.scala
 </code></pre>
-<p>次に <code>val s: String = intBox.value</code> のコメントを外してみてください。</p>
-<p><strong>ポイント：</strong> <code>Box[A]</code> の <code>A</code> は中に入れたものを「覚えている」のではありません。
-コンパイラは構築時に <code>A = Int</code> と<strong>確定</strong>します。これが契約です。
-値を取り出すとき、それは <code>Int</code> であることが保証されます。</p>
+<p>次に <code>val s: String = intBox.value</code> のコメントを外してみてほしい。</p>
+<p><strong>ポイント：</strong> <code>Box[A]</code> の <code>A</code> は中に入れたものを「覚えている」のではない。
+コンパイラは構築時に <code>A = Int</code> と<strong>確定</strong>する。これが契約だ。
+値を取り出すとき、それは <code>Int</code> であることが保証される。</p>
 <h2 id="1-2-関数の型パラメータ--契約は伝播する"><a class="header" href="#1-2-関数の型パラメータ--契約は伝播する">1-2. 関数の型パラメータ ― 契約は伝播する</a></h2>
 <pre><code class="language-scala">// step1b.scala
 
@@ -329,11 +329,11 @@ def first[A](xs: List[A]): A = xs.head
 # 推論された型を見る（コンパイルキャッシュを回避するため先にクリーン）：
 scala-cli clean step1b.scala &amp;&amp; scala-cli compile step1b.scala -O -Xprint:typer 2&gt;&amp;1 | grep "mixed"
 </code></pre>
-<p><code>mixed</code> は <code>List[Int | String | Double]</code> と推論されます ― これはユニオン型で、Scala 3 の機能です。</p>
-<p><code>List[Int | String | Double]</code> とは一度も書いていないことに注目してください ― コンパイラが<strong>推論</strong>したのです。
-本書を通じて、コンパイラが文脈から型パラメータを導き出す能力に頼ります。
-型推論が内部的にどう動くかはそれ自体が一つのテーマですが、ここでは単にそれが機能すると信頼し、
-型が<em>何を意味するか</em>に集中します。</p>
+<p><code>mixed</code> は <code>List[Int | String | Double]</code> と推論される ― これはユニオン型で、Scala 3 の機能だ。</p>
+<p><code>List[Int | String | Double]</code> とは一度も書いていないことに注目してほしい ― コンパイラが<strong>推論</strong>したのだ。
+本書を通じて、コンパイラが文脈から型パラメータを導き出す能力に頼る。
+型推論が内部的にどう動くかはそれ自体が一つのテーマだが、ここでは単にそれが機能すると信頼し、
+型が<em>何を意味するか</em>に集中する。</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="step-2-変位と境界"><a class="header" href="#step-2-変位と境界">Step 2: 変位と境界</a></h1>
 <p>変位はルールを暗記するものじゃない。
@@ -1409,8 +1409,8 @@ val logMsg: String =&gt; Effect[Logger, Unit] = msg =&gt; Effect { logger =&gt;
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="step-3-変位の実践"><a class="header" href="#step-3-変位の実践">Step 3: 変位の実践</a></h1>
 <h2 id="3-1-共変の実践--すでに使っている"><a class="header" href="#3-1-共変の実践--すでに使っている">3-1. 共変の実践 ― すでに使っている</a></h2>
-<p>共変を見るためにカスタム型は必要ありません ― 毎日使う標準ライブラリの型に入っています。
-どれも 2-5 で見た <code>[B &gt;: A]</code> 下限境界の脱出口を示しています：</p>
+<p>共変を見るのにカスタム型は要らない ― 毎日使う標準ライブラリの型に入っている。
+どれも 2-5 で見た <code>[B &gt;: A]</code> 下限境界の脱出口を示している：</p>
 <pre><code class="language-scala">// step2h.scala — Covariance in the standard library
 
 trait Item:
@@ -1468,24 +1468,24 @@ class DVD(val name: String, val price: Double) extends Item:
   val recovered: Either[String, Item] = failed.orElse(Right(dvd))
   println(recovered)  // Right(DVD(The Matrix))
 </code></pre>
-<p>このコードは <code>Nothing</code> ― Scala の<strong>ボトム型</strong>を紹介します。すべての型のサブタイプであり、
-<code>Nothing</code> 型の値は決して存在できません。</p>
-<p>コンパイラは型の片側が未指定のときにプレースホルダーとして使います：</p>
+<p>このコードは <code>Nothing</code> ― Scala の<strong>ボトム型</strong>を紹介する。すべての型のサブタイプであり、
+<code>Nothing</code> 型の値は決して存在できない。</p>
+<p>コンパイラは型の片側が未指定のときにプレースホルダーとして使う：</p>
 <ul>
 <li><code>Right(book)</code> は <code>Right[Nothing, Book]</code> ― Left 型はまだない</li>
 <li><code>Left("error")</code> は <code>Left[String, Nothing]</code> ― Right 型はまだない</li>
 <li><code>List()</code> は <code>List[Nothing]</code> ― 空、要素型はまだない</li>
 <li><code>None</code> は <code>Option[Nothing]</code> ― 値がない、型もまだない</li>
 </ul>
-<p>共変がこれを機能させます。任意の <code>A</code> に対して <code>Nothing &lt;: A</code> なので、
-型が期待される場所にいつでも適合します。2-5 ですでに見ました：<code>Cart()</code> は
-<code>Cart[Nothing]</code> です。<code>Book</code> を追加すると <code>[B &gt;: A]</code> によって <code>Cart[Book]</code> に拡大します。</p>
-<p>パターンはすべて同じです：型は <code>A</code> の値を<strong>生産</strong>（返す、保持する、発行する）するので、
-<code>+A</code> が自然です。異なるサブタイプの値を追加・結合する必要があるときは、
-<code>[B &gt;: A]</code> が安全に型を拡大します。</p>
+<p>共変がこれを機能させる。任意の <code>A</code> に対して <code>Nothing &lt;: A</code> なので、
+型が期待される場所にいつでも適合する。2-5 ですでに見た：<code>Cart()</code> は
+<code>Cart[Nothing]</code> だ。<code>Book</code> を追加すると <code>[B &gt;: A]</code> によって <code>Cart[Book]</code> に拡大する。</p>
+<p>パターンはすべて同じだ：型は <code>A</code> の値を<strong>生産</strong>（返す、保持する、発行する）するので、
+<code>+A</code> が自然だ。異なるサブタイプの値を追加・結合する必要があるときは、
+<code>[B &gt;: A]</code> が安全に型を拡大する。</p>
 <h2 id="3-2-反変の実践--ハンドラバリデータシリアライザ"><a class="header" href="#3-2-反変の実践--ハンドラバリデータシリアライザ">3-2. 反変の実践 ― ハンドラ、バリデータ、シリアライザ</a></h2>
-<p>反変はより稀ですが、非常に特定のパターンで現れます：
-値を<strong>消費</strong>または<strong>処理</strong>する型です。</p>
+<p>反変はより稀だが、非常に特定のパターンで現れる：
+値を<strong>消費</strong>または<strong>処理</strong>する型だ。</p>
 <pre><code class="language-scala">// step2i.scala
 
 trait Item:
@@ -1542,17 +1542,17 @@ def serialize[A](value: A, writer: JsonWriter[A]): String =
   val valid = books.filter(PriceValidator().validate)
   println(valid)  // List(Book(Scala, 45.0, 978-1))
 </code></pre>
-<p>2-7 ですでにこのパターンを見ました：<code>Function1[-A, +B]</code> は入力に対して反変であり、
-<code>cheap</code> が <code>Item =&gt; Boolean</code> のとき <code>books.filter(cheap)</code> が動作する理由です。</p>
-<p>ここの <code>JsonWriter</code> は同じアイデアです。<code>serialize</code> は <code>JsonWriter[Book]</code> を期待し、
-<code>ItemWriter</code>（<code>JsonWriter[Item]</code>）が適格です ― 任意の <code>Item</code> をシリアライズできるなら、
-<code>Book</code> もシリアライズできます。<code>Validator</code> も同じパターンです：
-任意の <code>Item</code> を検証する <code>PriceValidator</code> は <code>books.filter</code> でも機能します。</p>
+<p>2-7 ですでにこのパターンを見た：<code>Function1[-A, +B]</code> は入力に対して反変であり、
+<code>cheap</code> が <code>Item =&gt; Boolean</code> のとき <code>books.filter(cheap)</code> が動作する理由だ。</p>
+<p>ここの <code>JsonWriter</code> は同じアイデアだ。<code>serialize</code> は <code>JsonWriter[Book]</code> を期待し、
+<code>ItemWriter</code>（<code>JsonWriter[Item]</code>）が適格だ ― 任意の <code>Item</code> をシリアライズできるなら、
+<code>Book</code> もシリアライズできる。<code>Validator</code> も同じパターンだ：
+任意の <code>Item</code> を検証する <code>PriceValidator</code> は <code>books.filter</code> でも機能する。</p>
 <h2 id="3-3-では不変は本当に役立つのか"><a class="header" href="#3-3-では不変は本当に役立つのか">3-3. では不変は本当に役立つのか？</a></h2>
-<p>はい、ただし役割はあなたが思うより狭いです。</p>
-<p>不変は型が<strong>読み書き両方する</strong>ときに正しい選択です ― 可変コンテナ、
+<p>役立つ。ただし役割は思うより狭い。</p>
+<p>不変は型が<strong>読み書き両方する</strong>ときに正しい選択だ ― 可変コンテナ、
 双方向チャネル、読み書き参照。しかし良く設計された Scala コードでは、
-不変性が好まれるため比較的稀です。</p>
+不変性が好まれるため比較的稀だ。</p>
 <pre><code class="language-scala">// step2j.scala
 
 trait Item:
@@ -1586,16 +1586,16 @@ trait Codec[A]:
   // If it were, you could put a DVD in a Book cell.
 </code></pre>
 <p><strong>実際のところ：</strong></p>
-<p>Scala で設計する型のほとんどは二つの陣営のどちらかに入ります：</p>
+<p>Scala で設計する型のほとんどは二つの陣営のどちらかに入る：</p>
 <pre><code>A を生産する（読み取り専用データ、結果、イベント、ストリーム） → 共変にする [+A]
 A を消費する（ハンドラ、ライター、バリデータ、順序付け）       → 反変にする [-A]
 </code></pre>
-<p>不変は<strong>アノテーションしない</strong>ときに得られるものです ― そしてそれは多くの場合、
-自分の型がプロデューサーなのかコンシューマーなのかまだ考えていないからです。
-考えてみると、<code>+</code> か <code>-</code> のどちらかが大抵当てはまることに気づくでしょう。</p>
+<p>不変は<strong>アノテーションしない</strong>ときに得られるものだ ― そしてそれは多くの場合、
+自分の型がプロデューサーなのかコンシューマーなのかまだ考えていないからだ。
+考えてみると、<code>+</code> か <code>-</code> のどちらかが大抵当てはまることに気づくだろう。</p>
 <p>「この型は <code>A</code> を生産するのか消費するのか？」と問う規律自体が
-貴重な設計エクササイズです。型の役割を明確にすることを強制し、
-コンパイラがその答えを検証してくれます。</p>
+貴重な設計エクササイズだ。型の役割を明確にすることを強制し、
+コンパイラがその答えを検証してくれる。</p>
 
                     </main>
 

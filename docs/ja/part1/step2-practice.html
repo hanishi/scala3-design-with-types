@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-df0ff4b1.js";
+            window.path_to_searchindex_js = "../searchindex-807b343b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c986c171.js"></script>
@@ -182,8 +182,8 @@
                     <main>
                         <h1 id="step-3-変位の実践"><a class="header" href="#step-3-変位の実践">Step 3: 変位の実践</a></h1>
 <h2 id="3-1-共変の実践--すでに使っている"><a class="header" href="#3-1-共変の実践--すでに使っている">3-1. 共変の実践 ― すでに使っている</a></h2>
-<p>共変を見るためにカスタム型は必要ありません ― 毎日使う標準ライブラリの型に入っています。
-どれも 2-5 で見た <code>[B &gt;: A]</code> 下限境界の脱出口を示しています：</p>
+<p>共変を見るのにカスタム型は要らない ― 毎日使う標準ライブラリの型に入っている。
+どれも 2-5 で見た <code>[B &gt;: A]</code> 下限境界の脱出口を示している：</p>
 <pre><code class="language-scala">// step2h.scala — Covariance in the standard library
 
 trait Item:
@@ -241,24 +241,24 @@ class DVD(val name: String, val price: Double) extends Item:
   val recovered: Either[String, Item] = failed.orElse(Right(dvd))
   println(recovered)  // Right(DVD(The Matrix))
 </code></pre>
-<p>このコードは <code>Nothing</code> ― Scala の<strong>ボトム型</strong>を紹介します。すべての型のサブタイプであり、
-<code>Nothing</code> 型の値は決して存在できません。</p>
-<p>コンパイラは型の片側が未指定のときにプレースホルダーとして使います：</p>
+<p>このコードは <code>Nothing</code> ― Scala の<strong>ボトム型</strong>を紹介する。すべての型のサブタイプであり、
+<code>Nothing</code> 型の値は決して存在できない。</p>
+<p>コンパイラは型の片側が未指定のときにプレースホルダーとして使う：</p>
 <ul>
 <li><code>Right(book)</code> は <code>Right[Nothing, Book]</code> ― Left 型はまだない</li>
 <li><code>Left("error")</code> は <code>Left[String, Nothing]</code> ― Right 型はまだない</li>
 <li><code>List()</code> は <code>List[Nothing]</code> ― 空、要素型はまだない</li>
 <li><code>None</code> は <code>Option[Nothing]</code> ― 値がない、型もまだない</li>
 </ul>
-<p>共変がこれを機能させます。任意の <code>A</code> に対して <code>Nothing &lt;: A</code> なので、
-型が期待される場所にいつでも適合します。2-5 ですでに見ました：<code>Cart()</code> は
-<code>Cart[Nothing]</code> です。<code>Book</code> を追加すると <code>[B &gt;: A]</code> によって <code>Cart[Book]</code> に拡大します。</p>
-<p>パターンはすべて同じです：型は <code>A</code> の値を<strong>生産</strong>（返す、保持する、発行する）するので、
-<code>+A</code> が自然です。異なるサブタイプの値を追加・結合する必要があるときは、
-<code>[B &gt;: A]</code> が安全に型を拡大します。</p>
+<p>共変がこれを機能させる。任意の <code>A</code> に対して <code>Nothing &lt;: A</code> なので、
+型が期待される場所にいつでも適合する。2-5 ですでに見た：<code>Cart()</code> は
+<code>Cart[Nothing]</code> だ。<code>Book</code> を追加すると <code>[B &gt;: A]</code> によって <code>Cart[Book]</code> に拡大する。</p>
+<p>パターンはすべて同じだ：型は <code>A</code> の値を<strong>生産</strong>（返す、保持する、発行する）するので、
+<code>+A</code> が自然だ。異なるサブタイプの値を追加・結合する必要があるときは、
+<code>[B &gt;: A]</code> が安全に型を拡大する。</p>
 <h2 id="3-2-反変の実践--ハンドラバリデータシリアライザ"><a class="header" href="#3-2-反変の実践--ハンドラバリデータシリアライザ">3-2. 反変の実践 ― ハンドラ、バリデータ、シリアライザ</a></h2>
-<p>反変はより稀ですが、非常に特定のパターンで現れます：
-値を<strong>消費</strong>または<strong>処理</strong>する型です。</p>
+<p>反変はより稀だが、非常に特定のパターンで現れる：
+値を<strong>消費</strong>または<strong>処理</strong>する型だ。</p>
 <pre><code class="language-scala">// step2i.scala
 
 trait Item:
@@ -315,17 +315,17 @@ def serialize[A](value: A, writer: JsonWriter[A]): String =
   val valid = books.filter(PriceValidator().validate)
   println(valid)  // List(Book(Scala, 45.0, 978-1))
 </code></pre>
-<p>2-7 ですでにこのパターンを見ました：<code>Function1[-A, +B]</code> は入力に対して反変であり、
-<code>cheap</code> が <code>Item =&gt; Boolean</code> のとき <code>books.filter(cheap)</code> が動作する理由です。</p>
-<p>ここの <code>JsonWriter</code> は同じアイデアです。<code>serialize</code> は <code>JsonWriter[Book]</code> を期待し、
-<code>ItemWriter</code>（<code>JsonWriter[Item]</code>）が適格です ― 任意の <code>Item</code> をシリアライズできるなら、
-<code>Book</code> もシリアライズできます。<code>Validator</code> も同じパターンです：
-任意の <code>Item</code> を検証する <code>PriceValidator</code> は <code>books.filter</code> でも機能します。</p>
+<p>2-7 ですでにこのパターンを見た：<code>Function1[-A, +B]</code> は入力に対して反変であり、
+<code>cheap</code> が <code>Item =&gt; Boolean</code> のとき <code>books.filter(cheap)</code> が動作する理由だ。</p>
+<p>ここの <code>JsonWriter</code> は同じアイデアだ。<code>serialize</code> は <code>JsonWriter[Book]</code> を期待し、
+<code>ItemWriter</code>（<code>JsonWriter[Item]</code>）が適格だ ― 任意の <code>Item</code> をシリアライズできるなら、
+<code>Book</code> もシリアライズできる。<code>Validator</code> も同じパターンだ：
+任意の <code>Item</code> を検証する <code>PriceValidator</code> は <code>books.filter</code> でも機能する。</p>
 <h2 id="3-3-では不変は本当に役立つのか"><a class="header" href="#3-3-では不変は本当に役立つのか">3-3. では不変は本当に役立つのか？</a></h2>
-<p>はい、ただし役割はあなたが思うより狭いです。</p>
-<p>不変は型が<strong>読み書き両方する</strong>ときに正しい選択です ― 可変コンテナ、
+<p>役立つ。ただし役割は思うより狭い。</p>
+<p>不変は型が<strong>読み書き両方する</strong>ときに正しい選択だ ― 可変コンテナ、
 双方向チャネル、読み書き参照。しかし良く設計された Scala コードでは、
-不変性が好まれるため比較的稀です。</p>
+不変性が好まれるため比較的稀だ。</p>
 <pre><code class="language-scala">// step2j.scala
 
 trait Item:
@@ -359,16 +359,16 @@ trait Codec[A]:
   // If it were, you could put a DVD in a Book cell.
 </code></pre>
 <p><strong>実際のところ：</strong></p>
-<p>Scala で設計する型のほとんどは二つの陣営のどちらかに入ります：</p>
+<p>Scala で設計する型のほとんどは二つの陣営のどちらかに入る：</p>
 <pre><code>A を生産する（読み取り専用データ、結果、イベント、ストリーム） → 共変にする [+A]
 A を消費する（ハンドラ、ライター、バリデータ、順序付け）       → 反変にする [-A]
 </code></pre>
-<p>不変は<strong>アノテーションしない</strong>ときに得られるものです ― そしてそれは多くの場合、
-自分の型がプロデューサーなのかコンシューマーなのかまだ考えていないからです。
-考えてみると、<code>+</code> か <code>-</code> のどちらかが大抵当てはまることに気づくでしょう。</p>
+<p>不変は<strong>アノテーションしない</strong>ときに得られるものだ ― そしてそれは多くの場合、
+自分の型がプロデューサーなのかコンシューマーなのかまだ考えていないからだ。
+考えてみると、<code>+</code> か <code>-</code> のどちらかが大抵当てはまることに気づくだろう。</p>
 <p>「この型は <code>A</code> を生産するのか消費するのか？」と問う規律自体が
-貴重な設計エクササイズです。型の役割を明確にすることを強制し、
-コンパイラがその答えを検証してくれます。</p>
+貴重な設計エクササイズだ。型の役割を明確にすることを強制し、
+コンパイラがその答えを検証してくれる。</p>
 
                     </main>
 

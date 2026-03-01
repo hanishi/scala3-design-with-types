@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-df0ff4b1.js";
+            window.path_to_searchindex_js = "../searchindex-807b343b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c986c171.js"></script>
@@ -208,10 +208,10 @@ class Box[A](val value: A)
 <p><strong>試してみよう：</strong></p>
 <pre><code>&gt; scala-cli run step1a.scala
 </code></pre>
-<p>次に <code>val s: String = intBox.value</code> のコメントを外してみてください。</p>
-<p><strong>ポイント：</strong> <code>Box[A]</code> の <code>A</code> は中に入れたものを「覚えている」のではありません。
-コンパイラは構築時に <code>A = Int</code> と<strong>確定</strong>します。これが契約です。
-値を取り出すとき、それは <code>Int</code> であることが保証されます。</p>
+<p>次に <code>val s: String = intBox.value</code> のコメントを外してみてほしい。</p>
+<p><strong>ポイント：</strong> <code>Box[A]</code> の <code>A</code> は中に入れたものを「覚えている」のではない。
+コンパイラは構築時に <code>A = Int</code> と<strong>確定</strong>する。これが契約だ。
+値を取り出すとき、それは <code>Int</code> であることが保証される。</p>
 <h2 id="1-2-関数の型パラメータ--契約は伝播する"><a class="header" href="#1-2-関数の型パラメータ--契約は伝播する">1-2. 関数の型パラメータ ― 契約は伝播する</a></h2>
 <pre><code class="language-scala">// step1b.scala
 
@@ -237,11 +237,11 @@ def first[A](xs: List[A]): A = xs.head
 # 推論された型を見る（コンパイルキャッシュを回避するため先にクリーン）：
 scala-cli clean step1b.scala &amp;&amp; scala-cli compile step1b.scala -O -Xprint:typer 2&gt;&amp;1 | grep "mixed"
 </code></pre>
-<p><code>mixed</code> は <code>List[Int | String | Double]</code> と推論されます ― これはユニオン型で、Scala 3 の機能です。</p>
-<p><code>List[Int | String | Double]</code> とは一度も書いていないことに注目してください ― コンパイラが<strong>推論</strong>したのです。
-本書を通じて、コンパイラが文脈から型パラメータを導き出す能力に頼ります。
-型推論が内部的にどう動くかはそれ自体が一つのテーマですが、ここでは単にそれが機能すると信頼し、
-型が<em>何を意味するか</em>に集中します。</p>
+<p><code>mixed</code> は <code>List[Int | String | Double]</code> と推論される ― これはユニオン型で、Scala 3 の機能だ。</p>
+<p><code>List[Int | String | Double]</code> とは一度も書いていないことに注目してほしい ― コンパイラが<strong>推論</strong>したのだ。
+本書を通じて、コンパイラが文脈から型パラメータを導き出す能力に頼る。
+型推論が内部的にどう動くかはそれ自体が一つのテーマだが、ここでは単にそれが機能すると信頼し、
+型が<em>何を意味するか</em>に集中する。</p>
 
                     </main>
 
