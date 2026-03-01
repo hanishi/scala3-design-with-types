@@ -47,10 +47,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-7aabdb85.js";
+            window.path_to_searchindex_js = "../searchindex-bcf05c45.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-9571e420.js"></script>
+        <script src="../toc-f899269a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -217,8 +217,8 @@ class Box[A](val value: A)
   // val itemBox: Box[Item] = bookBox
   // [error] Found:    (bookBox : Box[Book])
   // [error] Required: Box[Item]
-  // [error]    val itemBox: Box[Item] = bookBox
-  // [error]                                   ^^^^^^^
+  // [error]   val itemBox: Box[Item] = bookBox
+  // [error]                            ^^^^^^^
 
   println("Box[Book] is NOT Box[Item]")
 </code></pre>
@@ -253,8 +253,8 @@ class Box[A](var value: A)
   // val itemBox: Box[Item] = bookBox
   // [error] Found:    (bookBox : Box[Book])
   // [error] Required: Box[Item]
-  // [error]    val itemBox: Box[Item] = bookBox
-  // [error]                                      ^^^^^^^
+  // [error]   val itemBox: Box[Item] = bookBox
+  // [error]                            ^^^^^^^
   //
   // The compiler rejects this. But imagine if it didn't — what could go wrong?
   // itemBox.value = DVD("The Matrix", 19.99)  // Item allows DVD...
@@ -346,15 +346,15 @@ class DVD(val name: String, val price: Double) extends Item:
 // 1. Try +A with a var — var lets you write a new value in, violating +A.
 // class Box[+A](var value: A)
 // [error] covariant type A occurs in invariant position in type A of variable value
-// [error]  class Box[+A](var value: A)
-// [error]                   ^^^^^^^^^^^^
+// [error] class Box[+A](var value: A)
+// [error]               ^^^^^^^^^^^^
 
 // 2. OK, only a val. But what about checking what's inside?
 class Box[+A](val value: A):
   def contains(item: A): Boolean = value == item
   // [error] covariant type A occurs in contravariant position in type A of parameter item
   // [error]   def contains(item: A): Boolean = value == item
-  // [error]                ^^^^^^
+  // [error]                ^^^^^^^
   //
   // With just [A] (invariant), contains works fine.
   // It's the + that prevents passing A in.
@@ -523,6 +523,8 @@ class Shipment[+A &lt;: Shippable](private val items: List[A]):
   // Try sorting DigitalGiftCertificate?
   //val cards = List(DigitalGiftCertificate("Amazon $50", 50.0))
   //sortByShipping(cards)
+  // [error] Found:    (cards : List[DigitalGiftCertificate])
+  // [error] Required: List[Shippable]
   // [error]   sortByShipping(cards)
   // [error]                  ^^^^^
 
@@ -536,6 +538,8 @@ class Shipment[+A &lt;: Shippable](private val items: List[A]):
 
   // Try adding a DigitalGiftCertificate to a Shipment?
   //val shipmentFails = Shipment(List(DigitalGiftCertificate("Netflix", 20.00)))
+  // [error] Found:    DigitalGiftCertificate
+  // [error] Required: Shippable
   // [error]   val shipmentFails = Shipment(List(DigitalGiftCertificate("Netflix", 20.00)))
   // [error]                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 </code></pre>
@@ -1269,8 +1273,8 @@ val logMsg: String =&gt; Effect[Logger, Unit] = msg =&gt; Effect { logger =&gt;
 <p>But knowing the mechanics is only half the story. The next question is:
 <em>in practice, how often do you actually want invariant, and when should you reach for <code>+</code> or <code>-</code>?</em></p>
 <blockquote>
-<p><strong>Take a breath.</strong> The hard conceptual work is done. Sections 2-9 through 2-11
-show how variance plays out in real code — these are shorter and more concrete.</p>
+<p><strong>Take a breath.</strong> The hard conceptual work is done. Step 3 shows how variance
+plays out in real code — shorter and more concrete.</p>
 </blockquote>
 
                     </main>

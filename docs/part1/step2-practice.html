@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Step 2: Variance in Practice - Design with Types</title>
+        <title>Step 3: Variance in Practice - Design with Types</title>
 
 
         <!-- Custom HTML head -->
@@ -47,10 +47,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-7aabdb85.js";
+            window.path_to_searchindex_js = "../searchindex-bcf05c45.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-9571e420.js"></script>
+        <script src="../toc-f899269a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -192,8 +192,8 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="step-2-variance-in-practice"><a class="header" href="#step-2-variance-in-practice">Step 2: Variance in Practice</a></h1>
-<h2 id="2-9-covariance-in-practice--you-already-use-it"><a class="header" href="#2-9-covariance-in-practice--you-already-use-it">2-9. Covariance in Practice — You Already Use It</a></h2>
+                        <h1 id="step-3-variance-in-practice"><a class="header" href="#step-3-variance-in-practice">Step 3: Variance in Practice</a></h1>
+<h2 id="3-1-covariance-in-practice--you-already-use-it"><a class="header" href="#3-1-covariance-in-practice--you-already-use-it">3-1. Covariance in Practice — You Already Use It</a></h2>
 <p>You don’t need custom types to see covariance — it’s in the standard library types
 you use every day. Each one also shows the <code>[B &gt;: A]</code> lower bound escape hatch
 from section 2-5:</p>
@@ -269,7 +269,7 @@ wherever a type is expected. You already saw this in section 2-5: <code>Cart()</
 <p>The pattern is the same in every case: the type <strong>produces</strong> (returns, holds, emits)
 values of <code>A</code>, so <code>+A</code> is natural. And when you need to add or combine values of
 a different subtype, <code>[B &gt;: A]</code> widens the type safely.</p>
-<h2 id="2-10-contravariance-in-practice--handlers-validators-serializers"><a class="header" href="#2-10-contravariance-in-practice--handlers-validators-serializers">2-10. Contravariance in Practice — Handlers, Validators, Serializers</a></h2>
+<h2 id="3-2-contravariance-in-practice--handlers-validators-serializers"><a class="header" href="#3-2-contravariance-in-practice--handlers-validators-serializers">3-2. Contravariance in Practice — Handlers, Validators, Serializers</a></h2>
 <p>Contravariance is less common but appears in a very specific pattern:
 types that <strong>consume</strong> or <strong>process</strong> values.</p>
 <pre><code class="language-scala">// step2i.scala
@@ -334,7 +334,7 @@ in its input, which is why <code>books.filter(cheap)</code> works when <code>che
 and <code>ItemWriter</code> (a <code>JsonWriter[Item]</code>) qualifies — if it can serialize any <code>Item</code>,
 it can serialize a <code>Book</code>. The <code>Validator</code> follows the same pattern: a
 <code>PriceValidator</code> that validates any <code>Item</code> works in <code>books.filter</code> too.</p>
-<h2 id="2-11-so-is-invariant-actually-useful"><a class="header" href="#2-11-so-is-invariant-actually-useful">2-11. So Is Invariant Actually Useful?</a></h2>
+<h2 id="3-3-so-is-invariant-actually-useful"><a class="header" href="#3-3-so-is-invariant-actually-useful">3-3. So Is Invariant Actually Useful?</a></h2>
 <p>Yes, but its role is narrower than you might think.</p>
 <p>Invariant is the right choice when your type <strong>both reads and writes</strong> — mutable containers,
 bidirectional channels, read-write references. But in well-designed Scala code,

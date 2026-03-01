@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Step 2: 変位の実践 - 型で設計する</title>
+        <title>Step 3: 変位の実践 - 型で設計する</title>
 
 
         <!-- Custom HTML head -->
@@ -35,10 +35,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-c07b6f81.js";
+            window.path_to_searchindex_js = "../searchindex-df0ff4b1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-b88b2e60.js"></script>
+        <script src="../toc-c986c171.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -180,8 +180,8 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="step-2-変位の実践"><a class="header" href="#step-2-変位の実践">Step 2: 変位の実践</a></h1>
-<h2 id="2-9-共変の実践--すでに使っている"><a class="header" href="#2-9-共変の実践--すでに使っている">2-9. 共変の実践 ― すでに使っている</a></h2>
+                        <h1 id="step-3-変位の実践"><a class="header" href="#step-3-変位の実践">Step 3: 変位の実践</a></h1>
+<h2 id="3-1-共変の実践--すでに使っている"><a class="header" href="#3-1-共変の実践--すでに使っている">3-1. 共変の実践 ― すでに使っている</a></h2>
 <p>共変を見るためにカスタム型は必要ありません ― 毎日使う標準ライブラリの型に入っています。
 どれも 2-5 で見た <code>[B &gt;: A]</code> 下限境界の脱出口を示しています：</p>
 <pre><code class="language-scala">// step2h.scala — Covariance in the standard library
@@ -256,7 +256,7 @@ class DVD(val name: String, val price: Double) extends Item:
 <p>パターンはすべて同じです：型は <code>A</code> の値を<strong>生産</strong>（返す、保持する、発行する）するので、
 <code>+A</code> が自然です。異なるサブタイプの値を追加・結合する必要があるときは、
 <code>[B &gt;: A]</code> が安全に型を拡大します。</p>
-<h2 id="2-10-反変の実践--ハンドラバリデータシリアライザ"><a class="header" href="#2-10-反変の実践--ハンドラバリデータシリアライザ">2-10. 反変の実践 ― ハンドラ、バリデータ、シリアライザ</a></h2>
+<h2 id="3-2-反変の実践--ハンドラバリデータシリアライザ"><a class="header" href="#3-2-反変の実践--ハンドラバリデータシリアライザ">3-2. 反変の実践 ― ハンドラ、バリデータ、シリアライザ</a></h2>
 <p>反変はより稀ですが、非常に特定のパターンで現れます：
 値を<strong>消費</strong>または<strong>処理</strong>する型です。</p>
 <pre><code class="language-scala">// step2i.scala
@@ -321,7 +321,7 @@ def serialize[A](value: A, writer: JsonWriter[A]): String =
 <code>ItemWriter</code>（<code>JsonWriter[Item]</code>）が適格です ― 任意の <code>Item</code> をシリアライズできるなら、
 <code>Book</code> もシリアライズできます。<code>Validator</code> も同じパターンです：
 任意の <code>Item</code> を検証する <code>PriceValidator</code> は <code>books.filter</code> でも機能します。</p>
-<h2 id="2-11-では不変は本当に役立つのか"><a class="header" href="#2-11-では不変は本当に役立つのか">2-11. では不変は本当に役立つのか？</a></h2>
+<h2 id="3-3-では不変は本当に役立つのか"><a class="header" href="#3-3-では不変は本当に役立つのか">3-3. では不変は本当に役立つのか？</a></h2>
 <p>はい、ただし役割はあなたが思うより狭いです。</p>
 <p>不変は型が<strong>読み書き両方する</strong>ときに正しい選択です ― 可変コンテナ、
 双方向チャネル、読み書き参照。しかし良く設計された Scala コードでは、

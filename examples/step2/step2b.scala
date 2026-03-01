@@ -19,8 +19,8 @@ class Box[A](var value: A)
   // val itemBox: Box[Item] = bookBox
   // [error] Found:    (bookBox : Box[Book])
   // [error] Required: Box[Item]
-  // [error]    val itemBox: Box[Item] = bookBox
-  // [error]                                      ^^^^^^^
+  // [error]   val itemBox: Box[Item] = bookBox
+  // [error]                            ^^^^^^^
   //
   // The compiler rejects this. But imagine if it didn't — what could go wrong?
   // itemBox.value = DVD("The Matrix", 19.99)  // Item allows DVD...

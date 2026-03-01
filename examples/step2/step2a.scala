@@ -18,7 +18,7 @@ class Box[A](val value: A)
   // val itemBox: Box[Item] = bookBox
   // [error] Found:    (bookBox : Box[Book])
   // [error] Required: Box[Item]
-  // [error]    val itemBox: Box[Item] = bookBox
-  // [error]                                   ^^^^^^^
+  // [error]   val itemBox: Box[Item] = bookBox
+  // [error]                            ^^^^^^^
 
   println("Box[Book] is NOT Box[Item]")

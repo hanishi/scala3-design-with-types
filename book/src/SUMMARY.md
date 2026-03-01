@@ -11,4 +11,4 @@
   - [Step 0: Life Without Types](./part1/step0.md)
   - [Step 1: Type Parameters Are Contracts](./part1/step1.md)
   - [Step 2: Variance and Bounds](./part1/step2.md)
-  - [Step 2: Variance in Practice](./part1/step2-practice.md)
+  - [Step 3: Variance in Practice](./part1/step2-practice.md)

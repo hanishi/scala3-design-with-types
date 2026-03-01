@@ -624,5 +624,5 @@ Invariant (default)   → No compatibility assumed
 But knowing the mechanics is only half the story. The next question is:
 *in practice, how often do you actually want invariant, and when should you reach for `+` or `-`?*
 
-> **Take a breath.** The hard conceptual work is done. Sections 2-9 through 2-11
-> show how variance plays out in real code — these are shorter and more concrete.
+> **Take a breath.** The hard conceptual work is done. Step 3 shows how variance
+> plays out in real code — shorter and more concrete.
