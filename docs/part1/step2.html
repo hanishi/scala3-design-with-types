@@ -47,7 +47,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-b524a851.js";
+            window.path_to_searchindex_js = "../searchindex-21b923ff.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-f899269a.js"></script>
@@ -1166,8 +1166,9 @@ all. It can appear in any position. The only thing the compiler checks is that
     Effect(r =&gt; f(run(r)).run(r))
 </code></pre>
 <details>
-<summary><strong>Comparison: why does List's flatMap work without a bound?</strong></summary>
-<p>Desugar: <code>flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]</code></p>
+<summary><strong>Comparison: why does List[+A]'s flatMap work without a bound?</strong></summary>
+<p><code>List[+A]</code> is covariant, so <code>A</code> must land in a valid position here too.
+Desugar: <code>flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]</code></p>
 <div class="table-wrapper">
 <table>
 <thead>

@@ -564,8 +564,9 @@ def flatMap[R1 <: R, B](f: A => Effect[R1, B]): Effect[R1, B] =
 ```
 
 <details>
-<summary><strong>Comparison: why does List's flatMap work without a bound?</strong></summary>
+<summary><strong>Comparison: why does List[+A]'s flatMap work without a bound?</strong></summary>
 
+`List[+A]` is covariant, so `A` must land in a valid position here too.
 Desugar: `flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]`
 
 | Step | Where is A? | Position |

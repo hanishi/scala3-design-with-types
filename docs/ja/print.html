@@ -48,7 +48,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-807b343b.js";
+            window.path_to_searchindex_js = "searchindex-b7cc2176.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-c986c171.js"></script>
@@ -1308,8 +1308,9 @@ program.run(AppEnv())  // LOG: fetched user-1
     Effect(r =&gt; f(run(r)).run(r))
 </code></pre>
 <details>
-<summary><strong>比較：なぜ List の flatMap は境界なしで動くのか？</strong></summary>
-<p>デシュガー：<code>flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]</code></p>
+<summary><strong>比較：なぜ List[+A] の flatMap は境界なしで動くのか？</strong></summary>
+<p><code>List[+A]</code> は共変だから、ここでも <code>A</code> が有効な位置に着地する必要がある。
+デシュガー：<code>flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]</code></p>
 <div class="table-wrapper">
 <table>
 <thead>

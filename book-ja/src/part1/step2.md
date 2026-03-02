@@ -551,8 +551,9 @@ def flatMap[R1 <: R, B](f: A => Effect[R1, B]): Effect[R1, B] =
 ```
 
 <details>
-<summary><strong>比較：なぜ List の flatMap は境界なしで動くのか？</strong></summary>
+<summary><strong>比較：なぜ List[+A] の flatMap は境界なしで動くのか？</strong></summary>
 
+`List[+A]` は共変だから、ここでも `A` が有効な位置に着地する必要がある。
 デシュガー：`flatMap[B](f: Function1[A, IterableOnce[B]]): List[B]`
 
 | ステップ | A はどこ？ | 位置 |
