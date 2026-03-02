@@ -431,7 +431,7 @@ site what contravariance already handles at the use site.
 
 For simple consumers like `PriceFormatter[-A]` or `Function1[-A, +B]`, the
 contravariant escape hatch never comes up — they return `String` or `Boolean`,
-not `A`. But it *does* come up when you compose contravariant types — and
+so `A` never appears in their output. But it *does* come up when you compose contravariant types — and
 seeing it in a real example is the best way to understand why the escape
 hatch exists.
 

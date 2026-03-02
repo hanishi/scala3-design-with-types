@@ -47,7 +47,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-bcf05c45.js";
+            window.path_to_searchindex_js = "../searchindex-b524a851.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-f899269a.js"></script>
@@ -1058,7 +1058,7 @@ val itemFmt: PriceFormatter[Item] =
 <h3 id="a-real-example-zio"><a class="header" href="#a-real-example-zio">A real example: ZIO</a></h3>
 <p>For simple consumers like <code>PriceFormatter[-A]</code> or <code>Function1[-A, +B]</code>, the
 contravariant escape hatch never comes up — they return <code>String</code> or <code>Boolean</code>,
-not <code>A</code>. But it <em>does</em> come up when you compose contravariant types — and
+so <code>A</code> never appears in their output. But it <em>does</em> come up when you compose contravariant types — and
 seeing it in a real example is the best way to understand why the escape
 hatch exists.</p>
 <p><a href="https://zio.dev/">ZIO</a>, one of the most popular Scala libraries, takes an
