@@ -548,6 +548,69 @@ program.run(AppEnv())  // LOG: fetched user-1
 The for-comprehension desugars to `flatMap` and `map` — but defining
 `flatMap` is where variance gets in the way.
 
+<details>
+<summary><strong>New to Scala? What <code>flatMap</code> means beyond arrays</strong></summary>
+
+If you know `flatMap` from JavaScript or TypeScript, you know it as an array
+method: map, then flatten. In Scala, `Option`, `Either`, `List`, and `Effect`
+all have `flatMap` — for the same reason.
+
+Take `Option`. You have a value that might not exist:
+
+```scala
+val input: Option[String] = Some("42")
+```
+
+A conversion function also returns an `Option`:
+
+```scala
+def parseInt(s: String): Option[Int] = s.toIntOption
+```
+
+Use `map` and you get nesting — `Option[Option[Int]]`:
+
+```scala
+val nested = input.map(s => parseInt(s))   // Some(Some(42))
+```
+
+`flatMap` collapses it to one layer:
+
+```scala
+val flat = input.flatMap(s => parseInt(s)) // Some(42)
+```
+
+Same problem as arrays. When the function you pass to `map` returns the
+container type, you get nesting. `flatMap` avoids it.
+
+Chain multiple steps that can each fail:
+
+```scala
+def findUser(id: Int): Option[User] = ...
+def getEmail(user: User): Option[String] = ...
+
+val email = findUser(42).flatMap(user => getEmail(user))
+```
+
+If either step returns `None`, the whole chain short-circuits. Scala's
+for-comprehension is syntactic sugar for this:
+
+```scala
+val email =
+  for
+    user  <- findUser(42)
+    email <- getEmail(user)
+  yield email
+```
+
+Every `<-` is a `flatMap`. The last one with `yield` is a `map`. The
+compiler rewrites it mechanically.
+
+So when you see the for-comprehension over `Effect` above, it's the same
+thing: nested `flatMap` calls, where each step can use the previous
+step's result, written to look like sequential code.
+
+</details>
+
 ### The problem: `flatMap` and `-R`
 
 Intuitively, `flatMap` should use the

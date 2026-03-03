@@ -535,6 +535,68 @@ program.run(AppEnv())  // LOG: fetched user-1
 for 内包表記は `flatMap` と `map` にデシュガーされる ― だが `flatMap` の
 定義こそ、変位が立ちはだかるところだ。
 
+<details>
+<summary><strong>Scala が初めて？ 配列以外の <code>flatMap</code> とは</strong></summary>
+
+JavaScript や TypeScript で `flatMap` を知っているなら、それは配列のメソッド
+― map してから flatten する ― として記憶しているだろう。Scala では `Option`、
+`Either`、`List`、`Effect` のすべてが `flatMap` を持つ。理由は同じだ。
+
+`Option` を考える。存在しないかもしれない値がある：
+
+```scala
+val input: Option[String] = Some("42")
+```
+
+変換関数も `Option` を返す：
+
+```scala
+def parseInt(s: String): Option[Int] = s.toIntOption
+```
+
+`map` を使うとネストする ― `Option[Option[Int]]`：
+
+```scala
+val nested = input.map(s => parseInt(s))   // Some(Some(42))
+```
+
+`flatMap` は一層に潰す：
+
+```scala
+val flat = input.flatMap(s => parseInt(s)) // Some(42)
+```
+
+配列と同じ問題だ。`map` に渡す関数がコンテナ型を返すとネストする。
+`flatMap` はそれを避ける。
+
+失敗し得る複数のステップを連鎖させる：
+
+```scala
+def findUser(id: Int): Option[User] = ...
+def getEmail(user: User): Option[String] = ...
+
+val email = findUser(42).flatMap(user => getEmail(user))
+```
+
+どちらかのステップが `None` を返せば、チェーン全体がショートサーキットする。
+Scala の for 内包表記はこのシンタックスシュガーだ：
+
+```scala
+val email =
+  for
+    user  <- findUser(42)
+    email <- getEmail(user)
+  yield email
+```
+
+すべての `<-` は `flatMap` だ。`yield` を伴う最後のものは `map` になる。
+コンパイラが機械的に書き換える。
+
+つまり、上の `Effect` に対する for 内包表記も同じこと ― ネストした `flatMap`
+呼び出しを、前のステップの結果を使いながら逐次コードのように書いたものだ。
+
+</details>
+
 ### 問題：`flatMap` と `-R`
 
 直感的には `flatMap` はクラスの `R` をそのまま使うはずだ ―
