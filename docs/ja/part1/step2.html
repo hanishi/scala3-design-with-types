@@ -47,7 +47,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-b7cc2176.js";
+            window.path_to_searchindex_js = "../searchindex-c98f0c37.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c986c171.js"></script>
@@ -689,8 +689,86 @@ users.get()  // 初回は計算、GC が回収していなければ再利用
 型レベルでエンコードしている：ヒープ上に存在しないものへの弱参照は文字通り<em>作れない</em>。</p>
 <p>高度に感じても心配ない ― この例はスキップして後で戻ってきても大丈夫だ。
 上限境界の巧妙な使い方であり、続きの前提条件ではない。</p>
-<p>下限境界は<em>拡大</em>する ― より広い型を受け入れる。上限境界は<em>制限</em>する ―
-必要な振る舞いを持たない型を拒否する。</p>
+<p><strong>自己参照境界</strong> ― 境界の中に、境界される型自身が現れるとき：</p>
+<p>ここまでの境界は素直だった ― <code>A &lt;: Shippable</code>、<code>A &lt;: Item</code> ― 境界が固定の型だ。
+だが <code>T &lt;: Ordered[T]</code> のように、<code>T</code> が両側に現れる境界に出くわすことがある。
+初めて見ると循環しているように見える。実際にはそうではない ―
+ただ読み解くのに少しコツがいる。</p>
+<pre><code class="language-scala">// step2f1.scala — Self-referential bounds: T &lt;: Ordered[T]
+
+// We've seen A &lt;: Shippable — "A must extend Shippable."
+// But what happens when the bound refers back to the type itself?
+
+// Start with concrete classes. Notice: each class appears in its own extends clause.
+
+case class Temperature(celsius: Double) extends Ordered[Temperature]:
+  def compare(that: Temperature): Int =
+    this.celsius.compare(that.celsius)
+
+case class Priority(level: Int) extends Ordered[Priority]:
+  def compare(that: Priority): Int =
+    this.level.compare(that.level)
+
+// See the pattern?
+//   Temperature extends Ordered[Temperature]
+//   Priority    extends Ordered[Priority]
+//                              ^^^^^^^^^^
+//                              itself
+//
+// Each class promises: "I know how to compare myself to others of my own kind."
+
+// Now the generic version:
+def maximum[T &lt;: Ordered[T]](items: List[T]): T =
+  items.reduce((a, b) =&gt; if a &gt; b then a else b)
+
+// How to read T &lt;: Ordered[T]:
+//   1. Start simple:  T &lt;: Ordered     — "T must be Ordered."
+//   2. Then ask:      Ordered of what? — of itself.
+//
+// In plain English: "T must know how to compare itself to other T values."
+//
+// Plug in a concrete type and it's obvious:
+//   Temperature &lt;: Ordered[Temperature]  ✓ — that's exactly what it extends
+//   Priority    &lt;: Ordered[Priority]     ✓
+
+// A type without ordering:
+case class Label(text: String)
+
+@main def step2f1(): Unit =
+  val temps = List(Temperature(36.6), Temperature(38.1), Temperature(37.0))
+  println(s"Hottest: ${maximum(temps)}")
+  // Hottest: Temperature(38.1)
+
+  val priorities = List(Priority(3), Priority(1), Priority(5))
+  println(s"Highest: ${maximum(priorities)}")
+  // Highest: Priority(5)
+
+  // Uncomment to see the compiler reject Label:
+  //val labels = List(Label("urgent"), Label("low"))
+  //maximum(labels)
+  // [error] Found:    (labels : List[Label])
+  // [error] Required: List[T]
+  // [error]
+  // [error] where:    T is a type variable with constraint &lt;: Ordered[T]
+  // [error]   maximum(labels)
+  // [error]           ^^^^^^
+</code></pre>
+<p>読み方のコツは二段階だ：</p>
+<ol>
+<li><strong>まず単純に</strong> ― <code>T &lt;: Ordered</code> と読む：「T は Ordered でなければならない。」</li>
+<li><strong>次に問う</strong> ― 何に対する Ordered か？ 自分自身に対してだ。</li>
+</ol>
+<p>平たく言えば：<strong>「T は他の T の値と自分を比較する方法を知っていなければならない。」</strong></p>
+<p>具体的な型を代入すれば腑に落ちる。<code>Temperature extends Ordered[Temperature]</code> ―
+Temperature は他の Temperature と自分を比較する方法を知っている。汎用の境界
+<code>T &lt;: Ordered[T]</code> は、<code>T</code> がどんな型であれ、自分自身の種類に対する
+<code>compare</code> を実装した型でなければならないと言っているだけだ。</p>
+<p><code>Label</code> に対するコンパイラのエラーがこれを具体化する：<code>T</code> には
+<code>constraint &lt;: Ordered[T]</code> があると教えてくれるが、<code>Label</code> はそれを満たさない。
+<code>Label</code> は何かと自分を比較できるとは一度も約束していない。</p>
+<p><code>T &gt;: Ordered[T]</code> はどうか？ 存在しない ― 下限境界はインターフェースから
+<em>離れる</em>方向に拡大するので、<code>compare</code> を呼ぶ能力を失う。自己参照境界は
+常に上限境界だ：<code>T &lt;: Something[T]</code>。</p>
 <blockquote>
 <p><strong>出力側の全ツールキットが揃った：</strong> 安全な拡大のための共変（<code>+A</code>）、
 共変を壊さずにメソッドを追加するための下限境界（<code>&gt;:</code>）、
