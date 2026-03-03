@@ -47,7 +47,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-21b923ff.js";
+            window.path_to_searchindex_js = "../searchindex-c4b75398.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-f899269a.js"></script>
@@ -696,8 +696,86 @@ heap object for the GC to track or reclaim. The upper bound <code>T &lt;: AnyRef
 this JVM reality at the type level: you literally <em>can’t</em> create a weak reference
 to something that doesn’t live on the heap.</p>
 <p>Don’t worry if this feels advanced — you can safely skip this example and come back to it later. It’s a clever use of upper bounds, not a prerequisite for what follows.</p>
-<p>Lower bounds <em>widen</em> — they accept broader types. Upper bounds <em>narrow</em> — they
-reject types that lack the required behavior.</p>
+<p><strong>Self-referential bounds</strong> — when the type being bounded appears in its own bound:</p>
+<p>All the bounds so far have been straightforward — <code>A &lt;: Shippable</code>, <code>A &lt;: Item</code> — where
+the bound is a fixed type. But sometimes you’ll encounter bounds like <code>T &lt;: Ordered[T]</code>,
+where <code>T</code> appears on both sides. The first time you see this, it looks circular. It isn’t —
+but it does take a moment to parse.</p>
+<pre><code class="language-scala">// step2f1.scala — Self-referential bounds: T &lt;: Ordered[T]
+
+// We've seen A &lt;: Shippable — "A must extend Shippable."
+// But what happens when the bound refers back to the type itself?
+
+// Start with concrete classes. Notice: each class appears in its own extends clause.
+
+case class Temperature(celsius: Double) extends Ordered[Temperature]:
+  def compare(that: Temperature): Int =
+    this.celsius.compare(that.celsius)
+
+case class Priority(level: Int) extends Ordered[Priority]:
+  def compare(that: Priority): Int =
+    this.level.compare(that.level)
+
+// See the pattern?
+//   Temperature extends Ordered[Temperature]
+//   Priority    extends Ordered[Priority]
+//                              ^^^^^^^^^^
+//                              itself
+//
+// Each class promises: "I know how to compare myself to others of my own kind."
+
+// Now the generic version:
+def maximum[T &lt;: Ordered[T]](items: List[T]): T =
+  items.reduce((a, b) =&gt; if a &gt; b then a else b)
+
+// How to read T &lt;: Ordered[T]:
+//   1. Start simple:  T &lt;: Ordered     — "T must be Ordered."
+//   2. Then ask:      Ordered of what? — of itself.
+//
+// In plain English: "T must know how to compare itself to other T values."
+//
+// Plug in a concrete type and it's obvious:
+//   Temperature &lt;: Ordered[Temperature]  ✓ — that's exactly what it extends
+//   Priority    &lt;: Ordered[Priority]     ✓
+
+// A type without ordering:
+case class Label(text: String)
+
+@main def step2f1(): Unit =
+  val temps = List(Temperature(36.6), Temperature(38.1), Temperature(37.0))
+  println(s"Hottest: ${maximum(temps)}")
+  // Hottest: Temperature(38.1)
+
+  val priorities = List(Priority(3), Priority(1), Priority(5))
+  println(s"Highest: ${maximum(priorities)}")
+  // Highest: Priority(5)
+
+  // Uncomment to see the compiler reject Label:
+  //val labels = List(Label("urgent"), Label("low"))
+  //maximum(labels)
+  // [error] Found:    (labels : List[Label])
+  // [error] Required: List[T]
+  // [error]
+  // [error] where:    T is a type variable with constraint &lt;: Ordered[T]
+  // [error]   maximum(labels)
+  // [error]           ^^^^^^
+</code></pre>
+<p>The trick is to read it in two steps:</p>
+<ol>
+<li><strong>Start simple</strong> — read it as <code>T &lt;: Ordered</code>: “T must be Ordered.”</li>
+<li><strong>Then ask</strong> — Ordered <em>of what?</em> Of itself.</li>
+</ol>
+<p>In plain English: <strong>“T must know how to compare itself to other T values.”</strong></p>
+<p>Substitute a concrete type and it clicks. <code>Temperature extends Ordered[Temperature]</code> —
+Temperature knows how to compare itself to other Temperatures. The generic bound
+<code>T &lt;: Ordered[T]</code> just says: whatever <code>T</code> turns out to be, it must be a type that
+implements <code>compare</code> against its own kind.</p>
+<p>The compiler’s error for <code>Label</code> makes this concrete: it tells you <code>T</code> has a
+<code>constraint &lt;: Ordered[T]</code>, and <code>Label</code> doesn’t satisfy it. <code>Label</code> never
+promised it could compare itself to anything.</p>
+<p>What about <code>T &gt;: Ordered[T]</code>? It doesn’t exist — a lower bound widens <em>away</em> from the
+interface, so you’d lose the ability to call <code>compare</code>. Self-referential bounds are
+always upper bounds: <code>T &lt;: Something[T]</code>.</p>
 <blockquote>
 <p><strong>You now have the full toolkit for the output side:</strong> covariance (<code>+A</code>) for safe widening,
 lower bounds (<code>&gt;:</code>) to add methods without breaking covariance, and upper bounds (<code>&lt;:</code>)
@@ -1313,6 +1391,22 @@ plays out in real code — shorter and more concrete.</p>
         <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
         <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
         <script>

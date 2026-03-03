@@ -309,8 +309,36 @@ to something that doesn't live on the heap.
 
 Don't worry if this feels advanced — you can safely skip this example and come back to it later. It's a clever use of upper bounds, not a prerequisite for what follows.
 
-Lower bounds *widen* — they accept broader types. Upper bounds *narrow* — they
-reject types that lack the required behavior.
+**Self-referential bounds** — when the type being bounded appears in its own bound:
+
+All the bounds so far have been straightforward — `A <: Shippable`, `A <: Item` — where
+the bound is a fixed type. But sometimes you'll encounter bounds like `T <: Ordered[T]`,
+where `T` appears on both sides. The first time you see this, it looks circular. It isn't —
+but it does take a moment to parse.
+
+```scala
+{{#include ../../../examples/step2/step2f1.scala}}
+```
+
+The trick is to read it in two steps:
+
+1. **Start simple** — read it as `T <: Ordered`: "T must be Ordered."
+2. **Then ask** — Ordered *of what?* Of itself.
+
+In plain English: **"T must know how to compare itself to other T values."**
+
+Substitute a concrete type and it clicks. `Temperature extends Ordered[Temperature]` —
+Temperature knows how to compare itself to other Temperatures. The generic bound
+`T <: Ordered[T]` just says: whatever `T` turns out to be, it must be a type that
+implements `compare` against its own kind.
+
+The compiler's error for `Label` makes this concrete: it tells you `T` has a
+`constraint <: Ordered[T]`, and `Label` doesn't satisfy it. `Label` never
+promised it could compare itself to anything.
+
+What about `T >: Ordered[T]`? It doesn't exist — a lower bound widens *away* from the
+interface, so you'd lose the ability to call `compare`. Self-referential bounds are
+always upper bounds: `T <: Something[T]`.
 
 > **You now have the full toolkit for the output side:** covariance (`+A`) for safe widening,
 > lower bounds (`>:`) to add methods without breaking covariance, and upper bounds (`<:`)
