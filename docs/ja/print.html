@@ -48,7 +48,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c98f0c37.js";
+            window.path_to_searchindex_js = "searchindex-c0f6b461.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-c986c171.js"></script>
@@ -1347,6 +1347,44 @@ program.run(AppEnv())  // LOG: fetched user-1
 </code></pre>
 <p>for 内包表記は <code>flatMap</code> と <code>map</code> にデシュガーされる ― だが <code>flatMap</code> の
 定義こそ、変位が立ちはだかるところだ。</p>
+<details>
+<summary><strong>Scala が初めて？ 配列以外の <code>flatMap</code> とは</strong></summary>
+<p>JavaScript や TypeScript で <code>flatMap</code> を知っているなら、それは配列のメソッド
+― map してから flatten する ― として記憶しているだろう。Scala では <code>Option</code>、
+<code>Either</code>、<code>List</code>、<code>Effect</code> のすべてが <code>flatMap</code> を持つ。理由は同じだ。</p>
+<p><code>Option</code> を考える。存在しないかもしれない値がある：</p>
+<pre><code class="language-scala">val input: Option[String] = Some("42")
+</code></pre>
+<p>変換関数も <code>Option</code> を返す：</p>
+<pre><code class="language-scala">def parseInt(s: String): Option[Int] = s.toIntOption
+</code></pre>
+<p><code>map</code> を使うとネストする ― <code>Option[Option[Int]]</code>：</p>
+<pre><code class="language-scala">val nested = input.map(s =&gt; parseInt(s))   // Some(Some(42))
+</code></pre>
+<p><code>flatMap</code> は一層に潰す：</p>
+<pre><code class="language-scala">val flat = input.flatMap(s =&gt; parseInt(s)) // Some(42)
+</code></pre>
+<p>配列と同じ問題だ。<code>map</code> に渡す関数がコンテナ型を返すとネストする。
+<code>flatMap</code> はそれを避ける。</p>
+<p>失敗し得る複数のステップを連鎖させる：</p>
+<pre><code class="language-scala">def findUser(id: Int): Option[User] = ...
+def getEmail(user: User): Option[String] = ...
+
+val email = findUser(42).flatMap(user =&gt; getEmail(user))
+</code></pre>
+<p>どちらかのステップが <code>None</code> を返せば、チェーン全体がショートサーキットする。
+Scala の for 内包表記はこのシンタックスシュガーだ：</p>
+<pre><code class="language-scala">val email =
+  for
+    user  &lt;- findUser(42)
+    email &lt;- getEmail(user)
+  yield email
+</code></pre>
+<p>すべての <code>&lt;-</code> は <code>flatMap</code> だ。<code>yield</code> を伴う最後のものは <code>map</code> になる。
+コンパイラが機械的に書き換える。</p>
+<p>つまり、上の <code>Effect</code> に対する for 内包表記も同じこと ― ネストした <code>flatMap</code>
+呼び出しを、前のステップの結果を使いながら逐次コードのように書いたものだ。</p>
+</details>
 <h3 id="問題flatmap-と--r"><a class="header" href="#問題flatmap-と--r">問題：<code>flatMap</code> と <code>-R</code></a></h3>
 <p>直感的には <code>flatMap</code> はクラスの <code>R</code> をそのまま使うはずだ ―
 現在のエフェクトも次のエフェクトも同じ環境で：</p>
