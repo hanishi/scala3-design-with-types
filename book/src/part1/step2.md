@@ -424,10 +424,19 @@ The mirror exists: `-A` forbids `A` in output positions, and upper bounds
 |---|---|---|---|
 | `+A` covariant | `A` can't appear in input | `[B >: A]` lower bound | widen up |
 | `-A` contravariant | `A` can't appear in output | `[B <: A]` upper bound | narrow down |
+| `A` invariant | no restriction | none needed | — |
 
 Lower bounds solve a covariance problem. Upper bounds solve a contravariance
 problem. They don't cross — covariance widens, so its escape hatch widens;
 contravariance narrows, so its escape hatch narrows.
+
+Bounds are the cost of variance. Invariant types pay nothing — `A` sits freely
+in both input and output positions — but they give up subtype compatibility in
+return. That's exactly why mutable containers like `ArrayDeque[A]` are invariant:
+they read *and* write `A`, so no position is off-limits, and no escape hatch
+is needed. The trade-off you saw in section 2-2 — mutability forces invariance —
+is the same trade-off viewed from the other side: invariance buys you
+unrestricted access to `A` at the cost of no subtype flexibility.
 
 But what about bounds on the class itself — not the escape hatch, but a
 constraint like `[+A <: Item]` or `[-A >: Item]`? Only one direction is useful:

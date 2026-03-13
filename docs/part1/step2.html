@@ -47,7 +47,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-b91d6f4d.js";
+            window.path_to_searchindex_js = "../searchindex-4089d57e.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-f899269a.js"></script>
@@ -973,12 +973,20 @@ an <code>A</code> as input.”</em> Lower bounds (<code>[B &gt;: A]</code>) were
 <tbody>
 <tr><td><code>+A</code> covariant</td><td><code>A</code> can’t appear in input</td><td><code>[B &gt;: A]</code> lower bound</td><td>widen up</td></tr>
 <tr><td><code>-A</code> contravariant</td><td><code>A</code> can’t appear in output</td><td><code>[B &lt;: A]</code> upper bound</td><td>narrow down</td></tr>
+<tr><td><code>A</code> invariant</td><td>no restriction</td><td>none needed</td><td>—</td></tr>
 </tbody>
 </table>
 </div>
 <p>Lower bounds solve a covariance problem. Upper bounds solve a contravariance
 problem. They don’t cross — covariance widens, so its escape hatch widens;
 contravariance narrows, so its escape hatch narrows.</p>
+<p>Bounds are the cost of variance. Invariant types pay nothing — <code>A</code> sits freely
+in both input and output positions — but they give up subtype compatibility in
+return. That’s exactly why mutable containers like <code>ArrayDeque[A]</code> are invariant:
+they read <em>and</em> write <code>A</code>, so no position is off-limits, and no escape hatch
+is needed. The trade-off you saw in section 2-2 — mutability forces invariance —
+is the same trade-off viewed from the other side: invariance buys you
+unrestricted access to <code>A</code> at the cost of no subtype flexibility.</p>
 <p>But what about bounds on the class itself — not the escape hatch, but a
 constraint like <code>[+A &lt;: Item]</code> or <code>[-A &gt;: Item]</code>? Only one direction is useful:</p>
 <div class="table-wrapper">
