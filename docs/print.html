@@ -48,7 +48,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4089d57e.js";
+            window.path_to_searchindex_js = "searchindex-c925f814.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-f899269a.js"></script>
@@ -1142,8 +1142,9 @@ they read <em>and</em> write <code>A</code>, so no position is off-limits, and n
 is needed. The trade-off you saw in section 2-2 — mutability forces invariance —
 is the same trade-off viewed from the other side: invariance buys you
 unrestricted access to <code>A</code> at the cost of no subtype flexibility.</p>
-<p>But what about bounds on the class itself — not the escape hatch, but a
-constraint like <code>[+A &lt;: Item]</code> or <code>[-A &gt;: Item]</code>? Only one direction is useful:</p>
+<p>So far, every bound has been an escape hatch — a method-level workaround
+for a variance restriction. But bounds can also appear on the class itself:
+<code>[+A &lt;: Item]</code> or <code>[-A &gt;: Item]</code>. Only one direction is useful:</p>
 <div class="table-wrapper">
 <table>
 <thead>

@@ -438,8 +438,9 @@ is needed. The trade-off you saw in section 2-2 — mutability forces invariance
 is the same trade-off viewed from the other side: invariance buys you
 unrestricted access to `A` at the cost of no subtype flexibility.
 
-But what about bounds on the class itself — not the escape hatch, but a
-constraint like `[+A <: Item]` or `[-A >: Item]`? Only one direction is useful:
+So far, every bound has been an escape hatch — a method-level workaround
+for a variance restriction. But bounds can also appear on the class itself:
+`[+A <: Item]` or `[-A >: Item]`. Only one direction is useful:
 
 | | Covariance | Contravariance |
 |---|---|---|
